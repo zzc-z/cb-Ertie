@@ -1,0 +1,32 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set club = payload.get('object') %}
+{% set tab = payload.get('tab') %}
+
+{# ################################################################################################################## #}
+{# BUTTONS ########################################################################################################## #}
+{# ################################################################################################################## #}
+{% if club is not none %}
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-2 d-md-flex justify-content-md-center">
+            <a class="btn btn-lg btn-outline-warning"
+               href="{{ url_for('club.clubEdit', objectID=club.uid) }}">
+                Änneren
+            </a>
+            <a class="btn btn-lg btn-outline-secondary text-dark disabled"
+               href="{{ url_for('club.clubDelete', objectID=club.uid) }}">
+                Läschen
+            </a>
+        </div>
+    </div>
+{% else %}
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+            <a class="btn btn-lg btn-outline-success"
+               href="{{ url_for('club.clubAdd') }}">
+                Veräin Erstellen
+            </a>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,168 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "cards/stub.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set tab = payload.get('tab') %}
+{% set member = payload.get('object') %}
+{% set historyTab = payload.get('historyTab', 'account') %}
+
+{% if member.address is not none %}
+    {% set address = member.address %}
+{% else %}
+    {% set address = none %}
+{% endif %}
+
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block cardTitle %}
+    <h1 style="text-align: center;">{{ member }}</h1>
+{% endblock %}
+
+{% block cardNavigation %}
+    {% include 'members/members/cards/header.html' %}
+{% endblock %}
+
+{# subs body -> details depending on the specified tab #}
+{% block cardBody %}
+    {% if tab == 'details' %}
+        {% include 'members/members/cards/details.html' %}
+
+    {% elif tab == 'address' %}
+        {% include 'addresses/cards/details.html' %}
+
+    {% elif tab == 'club' %}
+        {% include 'members/membersClubMembership/cards/details.html' %}
+
+    {% elif tab == 'board' %}
+        {% include 'members/membersBoardElection/cards/details.html' %}
+
+    {% elif tab == 'association' %}
+        {% include 'members/membersAssociationAffiliation/cards/details.html' %}
+
+    {% elif tab == 'history' %}
+        {# show history table #}
+        <div class="container">
+            <div class="d-grid gap-2 row-cols-lg-8 d-md-flex justify-content-md-center">
+                <a class="btn {% if member.history | count == 0 %} disabled
+                              {% endif %} {% if historyTab=='account' %} btn-info
+                              {% else %} btn-outline-info
+                              {% endif %} btn-lg"
+                   href="{{ url_for('members.memberView', objectID = member.uid,
+                                                          tab='history', historyTab='account') }}">
+                    Account
+                    <span class="badge badge-sm {% if member.history | count != 0 %} bg-info
+                                                {% else %} bg-dark
+                                                {% endif %}">
+                        {{ member.history | count }}
+                    </span>
+                </a>
+                <a class="btn {% if member.address.history | count == 0 %} disabled
+                              {% endif %}
+                              {% if historyTab=='address' %} btn-info
+                              {% else %} btn-outline-info
+                              {% endif %} btn-lg"
+                   href="{{ url_for('members.memberView', objectID = member.uid,
+                                                          tab='history', historyTab = 'address') }}">
+                    Adress
+                    <span class="badge badge-sm {% if member.address.history | count != 0 %} bg-info
+                                                {% else %} bg-dark
+                                                {% endif %}">
+                        {{ member.address.history | count }}
+                    </span>
+                </a>
+                <a class="btn {% if member.clubMembership.history | count == 0 %} disabled
+                              {% endif %} {% if historyTab=='club' %} btn-info
+                              {% else %} btn-outline-info
+                              {% endif %} btn-lg"
+                   href="{{ url_for('members.memberView', objectID = member.uid,
+                                                          tab='history', historyTab = 'club') }}">
+                    Memberskaart
+                    <span class="badge badge-sm {% if member.clubMembership.history | count != 0 %} bg-info
+                                                {% else %} bg-dark
+                                                {% endif %}">
+                        {{ member.clubMembership.history | count }}
+                    </span>
+                </a>
+                <a class="btn {% if member.associationAffiliation.history | count == 0 %} disabled
+                              {% endif %}
+                              {% if historyTab=='association' %} btn-info
+                              {% else %} btn-outline-info
+                              {% endif %} btn-lg"
+                   href="{{ url_for('members.memberView', objectID = member.uid,
+                                                          tab='history', historyTab = 'association') }}">
+                    Fedaratioun
+                    <span class="badge badge-sm {% if member.associationAffiliation.history | count != 0 %} bg-info
+                                                {% else %} bg-dark
+                                                {% endif %}">
+                        {{ member.associationAffiliation.history | count }}
+                    </span>
+                </a>
+                <a class="btn {% if member.boardElection.history | count == 0 %} disabled
+                              {% endif %}
+                              {% if historyTab=='board' %} btn-info
+                              {% else %} btn-outline-info
+                              {% endif %} btn-lg"
+                   href="{{ url_for('members.memberView', objectID = member.uid,
+                                                          tab='history', historyTab = 'board') }}">
+                    Virstand
+                    <span class="badge badge-sm {% if member.boardElection.history | count != 0 %} bg-info
+                                                {% else %} bg-dark
+                                                {% endif %}">
+                        {{ member.boardElection.history | count }}
+                    </span>
+                </a>
+            </div>
+        </div>
+        <hr>
+
+        {% if historyTab == 'account' %}
+            {% include 'members/members/tables/memberHistory.html' %}
+        {% elif historyTab == 'address' %}
+            {% include 'addresses/tables/addressHistory.html' %}
+        {% elif historyTab == 'club' %}
+            {% include 'members/membersClubMembership/tables/memberClubMembershipHistory.html' %}
+        {% elif historyTab == 'association' %}
+            {% include 'members/membersAssociationAffiliation/tables/memberAssociationAffiliationHistory.html' %}
+        {% elif historyTab == 'board' %}
+            {% include 'members/membersBoardElection/tables/memberBoardElectionHistory.html' %}
+        {% endif %}
+
+    {% endif %}
+{% endblock %}
+
+{% block cardFooter %}
+    {% if tab == 'details' %}
+        {% include 'members/members/cards/footer.html' %}
+    {% elif tab == 'address' %}
+        {% include 'addresses/cards/footer.html' %}
+    {% elif tab == 'club' %}
+        {% include 'members/membersClubMembership/cards/footer.html' %}
+    {% elif tab == 'association' %}
+        {% include 'members/membersAssociationAffiliation/cards/footer.html' %}
+    {% elif tab == 'board' %}
+        {% include 'members/membersBoardElection/cards/footer.html' %}
+    {% endif %}
+{% endblock %}
+
+{% if tab == 'address' %}
+    {% if address is not none %}
+        {% if address.phone is not none and address.phone != '' %}
+            {% block scripts %}
+                {{ super() }}
+                <script>
+                    var fancy_phone_field = document.getElementById('_phone{{ member.uid }}');
+                    var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                        separateDialCode: true,
+                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+                    });
+                </script>
+            {% endblock %}
+        {% endif %}
+    {% endif %}
+{% endif %}

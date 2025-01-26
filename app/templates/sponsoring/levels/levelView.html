@@ -1,0 +1,44 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "cards/stub.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set tab = payload.get('tab') %}
+{% set sponsors = payload.get('sponsors') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block cardTitle %}
+    <h1 style="text-align: center;">{{ object }}</h1>
+{% endblock %}
+
+{% block cardNavigation %}
+    {% include 'sponsoring/levels/cards/header.html' %}
+{% endblock %}
+
+{# subs body -> details depending on the specified tab #}
+{% block cardBody %}
+    {% if tab == 'details' %}
+        {# details #}
+        {% include 'sponsoring/levels/cards/details.html' %}
+    {% elif tab == 'boni' %}
+        {# table of boni #}
+        {% include 'sponsoring/boni/tables/boni.html' %}
+    {% elif tab == 'sponsors' %}
+        {% from "sponsoring/sponsors/macros/tableOptions.html" import renderTableOptions %}
+        {{ renderTableOptions(sponsors) }}
+    {% elif tab == 'history' %}
+        {% include 'sponsoring/levels/tables/levelHistory.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block cardFooter %}
+    {% if tab == 'details' %}
+        {% include 'sponsoring/levels/cards/footer.html' %}
+    {% endif %}
+{% endblock %}

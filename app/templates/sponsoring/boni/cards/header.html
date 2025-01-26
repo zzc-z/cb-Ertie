@@ -1,0 +1,50 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set nLevels = object.levels | count %}
+{% set nSponsors = payload.get('nSponsors', 0) %}
+
+{# ################################################################################################################## #}
+{# NAV LINKS ######################################################################################################## #}
+{# ################################################################################################################## #}
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'details' %} active {% endif %}"
+       href="{{ url_for('sponsoring.bonusView', objectID = object.uid, tab = 'details') }}"
+       style="color:black">
+        Detailer
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if nSponsors == 0 %} disabled {% elif tab == 'sponsors' %} active {% endif %}"
+       href="{{ url_for('sponsoring.bonusView', objectID = object.uid, tab = 'sponsors') }}"
+       style="color:black">
+        Sponsoren
+        <span class="badge badge-sm {% if nSponsors != 0 %} bg-info {% else %} bg-dark {% endif %}">
+            {{ nSponsors }}
+        </span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if nLevels == 0 %} disabled {% elif tab == 'levels' %} active {% endif %}"
+       href="{{ url_for('sponsoring.bonusView', objectID = object.uid, tab = 'levels') }}"
+       style="color:black">
+        Pyramid
+        <span class="badge badge-sm {% if nLevels != 0 %} bg-info {% else %} bg-dark {% endif %}">
+            {{ nLevels }}
+        </span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'history' %} active {% endif %}"
+       href="{{ url_for('sponsoring.bonusView', objectID = object.uid, tab = 'history') }}"
+       style="color:black">
+        Ännerungen
+        <span class="badge badge-sm {% if (object.history | count) != 0 %} bg-info {% else %} bg-dark {% endif %}">
+                    {{ object.history | count }}
+                </span>
+    </a>
+</li>

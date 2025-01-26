@@ -1,0 +1,76 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set currentSeason = payload.get('currentSeason') %}
+{% if currentSeason is not none %}
+    {% set currentSeasonObject = currentSeason.get('season') %}
+{% endif %}
+{% set pastSeasons = payload.get('pastSeasons') %}
+{% set pagination = payload.get('pagination') %}
+{% set step = payload.get('step') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content_fluid %}
+
+    <br>
+    <h1 class="text-center" id="top">Lafend Saison</h1>
+    <hr>
+
+    <div class="container">
+        {% if currentSeason is none %}
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('sports.seasonAdd') }}"
+                   class="btn btn-outline-success btn-lg">
+                    Nei Saison
+                </a>
+            </div>
+        {% else %}
+            <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('sports.practiceSessionAddStep1', seasonFK = currentSeasonObject.uid, step = step) }}"
+                   class="btn btn-outline-success btn-lg">
+                    Training
+                </a>
+
+                <a href="{{ url_for('sports.export') }}"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="Export als CSV-Datei"
+                   class="btn btn-outline-primary btn-lg">
+                    Export (Trainingspresenzen)
+                </a>
+
+                <a href="{{ url_for('sports.seasonToggleStatus', objectID=currentSeasonObject.uid,
+                                                                 completed=currentSeasonObject.completed) }}"
+                   class="btn btn-outline-warning btn-lg">
+                    Saison Ofschléissen
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Current Season -->
+    <hr>
+    {% if currentSeason is not none %}
+        {% from 'sports/seasons/macros/tableLobby.html' import renderTableLobby %}
+        {{ renderTableLobby([currentSeason]) }}
+    {% endif %}
+
+    <!-- Past Seasons -->
+    {% if pastSeasons != [] %}
+        <br>
+        <h3 class="text-center" id="bottom">Vergaange Saisonen</h3>
+        <hr>
+        {% from 'sports/seasons/macros/tableLobby.html' import renderTableLobby %}
+        {{ renderTableLobby(pastSeasons) }}
+    {% endif %}
+
+
+    <!-- Pagination -->
+{% endblock %}

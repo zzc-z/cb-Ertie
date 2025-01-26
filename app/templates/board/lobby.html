@@ -1,0 +1,61 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set members = payload.get('members') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content_fluid %}
+    <br>
+    <h1 class="text-center" id="top">Virstand</h1>
+    <hr>
+
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+            <a href="{{ url_for('members.boardElectionAdd') }}"
+               class="btn btn-outline-success btn-lg">
+                Member Ophuelen
+            </a>
+            <div class="vr"></div>
+            <a href="{{ payload.get('urlReports') }}" target="_blank"
+               class="btn btn-outline-primary btn-lg"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Cloud: Berichter vun de Virstandsversammlungen">
+                Berichter
+            </a>
+            <a href="{{ payload.get('urlWiki') }}" target="_blank"
+               class="btn btn-outline-primary btn-lg"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Online Wiki">
+                Wëssensdatebank
+            </a>
+        </div>
+    </div>
+
+    <!-- List of all Members -->
+    {% include 'members/members/tables/members.html' %}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {% for member in members %}
+        {% set member = member.get('member') %}
+        {% if member.address is not none and member.address.phone is not none %}
+            <script>
+                var fancy_phone_field = document.getElementById('_phone{{ member.uid }}');
+                var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                    separateDialCode: true,
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+                });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

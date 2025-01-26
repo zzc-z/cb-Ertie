@@ -1,0 +1,119 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "cards/stub.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set tab = payload.get('tab') %}
+{% set historyTab = payload.get('historyTab') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block cardTitle %}
+    <h1 style="text-align: center;">{{ object }}</h1>
+{% endblock %}
+
+{% block cardNavigation %}
+    {% include 'sponsoring/sponsors/cards/header.html' %}
+{% endblock %}
+
+{# subs body -> details depending on the specified tab #}
+{% block cardBody %}
+    {% if tab == 'account' %}
+        {% include 'members/members/cards/details.html' %}
+    {% elif tab == 'address' %}
+        {% include 'addresses/cards/details.html' %}
+    {% elif tab == 'details' %}
+        {% include 'sponsoring/sponsors/cards/details.html' %}
+    {% elif tab == 'history' %}
+
+        {# show history table #}
+        <div class="container">
+            <div class="d-grid gap-2 row-cols-lg-8 d-md-flex justify-content-md-center">
+                <a class="btn {% if object.member.history | count == 0 %} disabled
+                              {% endif %}
+                              {% if historyTab=='account' %} btn-info
+                              {% else %} btn-outline-info
+                              {% endif %} btn-lg"
+                   href="{{ url_for('sponsoring.sponsorView', objectID = object.uid,
+                                                              tab='history', historyTab='account') }}"> Account
+                    <span class="badge badge-sm {% if object.member.history | count != 0 %} bg-info
+                                                {% else %} bg-dark
+                                                {% endif %}">
+                        {{ object.member.history | count }}
+                    </span>
+                </a>
+                <a class="btn {% if object.member.address.history | count == 0 %} disabled
+                              {% endif %}
+                              {% if historyTab=='address' %} btn-info
+                              {% else %} btn-outline-info
+                              {% endif %} btn-lg"
+                   href="{{ url_for('sponsoring.sponsorView', objectID = object.uid, tab='history',
+                                                                                     historyTab = 'address') }}">Adress
+                    <span class="badge badge-sm {% if object.member.address.history | count != 0 %} bg-info
+                                                {% else %} bg-dark
+                                                {% endif %}">
+                            {{ object.member.address.history | count }}
+                    </span>
+                </a>
+                <a class="btn {% if object.history | count == 0 %} disabled
+                              {% endif %} {% if historyTab=='details' %} btn-info
+                              {% else %} btn-outline-info
+                              {% endif %} btn-lg"
+                   href="{{ url_for('sponsoring.sponsorView', objectID = object.uid, tab='history',
+                                                                                     historyTab = 'details') }}">
+                    Sponsoring
+                    <span class="badge badge-sm {% if object.history | count != 0 %} bg-info
+                                                {% else %} bg-dark
+                                                 {% endif %}">
+                        {{ object.history | count }}
+                    </span>
+                </a>
+            </div>
+        </div>
+        <hr>
+
+        {% if historyTab == 'account' %}
+            {% include 'members/members/tables/memberHistory.html' %}
+        {% elif historyTab == 'address' %}
+            {% include 'addresses/tables/addressHistory.html' %}
+        {% elif historyTab == 'details' %}
+            {% include 'sponsoring/sponsors/tables/sponsorHistory.html' %}
+
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}
+
+{% block cardFooter %}
+    {% if tab == 'details' %}
+        {% include 'sponsoring/sponsors/cards/footer.html' %}
+    {% elif tab == 'address' %}
+        {% include 'addresses/cards/footer.html' %}
+    {% elif tab == 'account' %}
+        {% include 'members/members/cards/footer.html' %}
+    {% endif %}
+{% endblock %}
+
+{% if tab == 'address' %}
+    {% set address = payload.get('address', None) %}
+    {% if address is not none %}
+        {% if address.phone is not none and address.phone != '' %}
+            {% block scripts %}
+                {{ super() }}
+                <script>
+                    var fancy_phone_field = document.getElementById('_phone{{ object.uid }}');
+                    var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                        separateDialCode: true,
+                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+                    });
+                </script>
+            {% endblock %}
+        {% endif %}
+    {% endif %}
+{% endif %}

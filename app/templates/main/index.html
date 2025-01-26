@@ -1,0 +1,44 @@
+{# LICENSE
+SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set env = payload.get('env') %}
+{% set club = payload.get('club', 'N/A') %}
+{% set association = payload.get('association', 'N/A') %}
+
+{# ######################ss############################################################################################ #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content %}
+    <br>
+    <h1 class="text-center">{{ club.name }}</h1>
+    <h2 class="text-center">{{ association.name }}</h2>
+    {% if env == 'test' %}
+        <br>
+        <hr>
+        <h4>Warning: This is the <span class="badge rounded-pill bg-warning text-dark">test</span> environment of Ertië.</h4>
+        <p>This version of Ertië is subject to constant changes.</p>
+        <hr>
+        <br>
+        <br>
+    {% elif env == 'development' %}
+        <br>
+        <hr>
+        <h4>Warning: This is the <span class="badge rounded-pill bg-danger">development</span> environment of Ertië.
+        </h4>
+        <p>This version of Ertië is subject to constant changes, and its stacks might be wiped clean without any prior
+            warnings and without mercy.</p>
+        <hr>
+        <br>
+        <br>
+    {% endif %}
+{% endblock %}

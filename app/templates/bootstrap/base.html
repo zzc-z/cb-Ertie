@@ -1,0 +1,35 @@
+{# LICENSE
+SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% block head %}
+        <!-- required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {% block styles %}
+            {{ bootstrap.load_css() }}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/css/intlTelInput.css">
+        {% endblock %}
+
+        <title>Ertië</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {% endblock %}
+</head>
+
+<body>
+{% block navbar %}{% endblock %}<br><br><br> {# top navbar #}
+{% block content %}{% endblock %} {# page content #}
+{% block scripts %}
+    {{ bootstrap.load_js() }}                                       {# scripts #}
+    {{ moment.include_moment() }}
+    {{ moment.locale('lb') }}
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/intlTelInput.min.js"></script>
+{% endblock %}
+</body>
+</html>

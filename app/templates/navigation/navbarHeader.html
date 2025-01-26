@@ -1,0 +1,18 @@
+{# LICENSE
+SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
+{# the navbar-brand sets the name seen on the left #}
+<a class="navbar-brand" href="{{ url_for('main.index') }}">Ertië</a>
+
+{# the navbar-toggler is shown when the screen is too small to render the entire navbar #}
+<button class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navErtie"
+        aria-controls="navErtie"
+        aria-expanded="false"
+        aria-label="Toggle Navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>

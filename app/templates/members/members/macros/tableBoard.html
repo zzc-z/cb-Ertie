@@ -1,0 +1,105 @@
+{% macro renderTableBoard(members) %}
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                <span aria-hidden="true">
+                    <a style="color:black"
+                       href="{{ url_for('board.lobby', sortBy = 'familyName', sortOrder = 'asc') }}">&uarr;</a>
+                </span>
+                Nonumm
+                <span aria-hidden="true">
+                    <a style="color:black"
+                       href="{{ url_for('board.lobby', sortBy = 'familyName', sortOrder = 'desc') }}">&darr;</a>
+                </span>
+            </th>
+            <th scope="col">
+                <span aria-hidden="true">
+                    <a style="color:black"
+                       href="{{ url_for('board.lobby', sortBy = 'givenName', sortOrder = 'asc') }}">&uarr;</a>
+                </span>
+                Virnumm
+                <span aria-hidden="true">
+                    <a style="color:black"
+                       href="{{ url_for('board.lobby', sortBy = 'givenName', sortOrder = 'desc') }}">&darr;</a>
+                </span>
+            </th>
+            <th scope="col">
+                E-Mail
+            </th>
+            <th scope="col">
+                Telefonsnummer
+            </th>
+            <th scope="col">
+                Positioun
+            </th>
+            <th>
+                <span aria-hidden="true">
+                    <a style="color:black"
+                       href="{{ url_for('board.lobby', sortBy = 'nextElection', sortOrder = 'asc') }}">&uarr;</a>
+                </span>
+                Nächst Walen
+                <span aria-hidden="true">
+                    <a style="color:black"
+                       href="{{ url_for('board.lobby', sortBy = 'nextElection', sortOrder = 'desc') }}">&darr;</a>
+                </span>
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for member in members %}
+            {% set isValid = member.get('isValid') %}
+            {% set nextElection = member.get('nextElection') %}
+            {% set member = member.get('member') %}
+            <tr>
+                <td>
+                    {{ member.familyName }}
+                </td>
+
+                <td>
+                    {{ member.givenName }}
+                </td>
+
+                <td>
+                    {{ member.email }}
+                </td>
+
+                <td>
+                    {% if member.address is none %}
+                    {% elif member.address.phone is none or member.address.phone == '' %}
+                    {% else %}
+                        <div><input type="tel" id="_phone{{ member.uid }}" value="{{ member.address.phone }}"
+                                    readonly="readonly"></div>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {{ member.boardElection.position }}
+                </td>
+
+                <td>
+                    {% if isValid %}
+                        <div class="col-2"><span
+                                class="badge rounded-pill badge-sm bg-success"> {{ nextElection }}</span></div>
+                    {% else %}
+                        <div class="col-2"><span
+                                class="badge rounded-pill badge-sm bg-danger"> {{ nextElection }}</span></div>
+                    {% endif %}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('members.memberView', objectID=member.uid, tab='board') }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('members.boardElectionReelect', objectID=member.uid) }}"
+                       class="btn btn-sm btn-outline-success">Gewielt</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

@@ -1,0 +1,35 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content %}
+    <h1 class="text-center">Eng nei Adress Erstellen</h1>
+    <hr>
+    {{ bootstrapForm.render_form(form, form_type='horizontal', button_map={'submit': 'outline-success'}) }}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        var wtf_phone_field = document.getElementById('phone');
+        wtf_phone_field.style.position = 'absolute';
+        wtf_phone_field.style.top = '-9999px';
+        wtf_phone_field.style.left = '-9999px';
+        wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+        var fancy_phone_field = document.getElementById('_phone');
+        var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+            separateDialCode: true,
+            onlyCountries: ["lu", "de", "be", "fr", "nl"],
+            preferredCountries: ["lu"],
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+        });
+        fancy_phone_iti.setNumber(wtf_phone_field.value);
+        fancy_phone_field.addEventListener('blur', function () {
+            wtf_phone_field.value = fancy_phone_iti.getNumber();
+        });
+    </script>
+{% endblock %}

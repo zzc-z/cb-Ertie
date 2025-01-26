@@ -1,0 +1,260 @@
+{# LICENSE
+SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends 'bootstrap/base.html' %}                                     {# the main BOOTSTRAP template #}
+{% import 'bootstrap5/form.html' as bootstrapForm %}                    {# let bootstrap handle forms  #}
+
+{# ################################################################################################################## #}
+{# TITLE ############################################################################################################ #}
+{# ################################################################################################################## #}
+{% block title %}
+    {% if title %}
+        Ertië - {{ title }}
+    {% else %}
+        {{ _('Ertië') }}
+    {% endif %}
+{% endblock %}
+
+{# ################################################################################################################## #}
+{# NAVIGATION BAR ################################################################################################### #}
+{# ################################################################################################################## #}
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" aria-label="Site Menu">
+        <div class="container-fluid">
+            <!-- load the navbar header -->
+            {% include 'navigation/navbarHeader.html' %}
+
+            <!-- create collapse navbar -->
+            <div class="collapse navbar-collapse" id="navErtie">
+                <!-- load the actual menus -->
+                {% include 'navigation/navbarItems.html' %}
+
+                <!-- load search form -->
+                {% include 'navigation/navbarSearchForm.html' %}
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block content %}
+    <!-- a container to show flashed messages at the top of the screen -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        <!-- the message categories define the colours of the flash message -->
+        {% if messages %}
+            <div class="container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {# full width content needs to be provided in the app_content_fluid block #}
+    <div class="container-fluid">
+        {% block app_content_fluid %}{% endblock %}
+    </div>
+
+    {# factory content in a more centric box needs to be provided in the app_content block #}
+    <div class="container">
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+{# ################################################################################################################## #}
+{# MACROS ########################################################################################################### #}
+{# ################################################################################################################## #}
+
+{# ################################################################################################################## #}
+{# MACROS: HISTORY HELPERS ########################################################################################## #}
+{# ################################################################################################################## #}
+
+{# DETAILS ########################################################################################################## #}
+{% macro renderHistoryDetails(history, historyMaker, historyMakerEndpoint) %}
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            Wien: <a
+                href="{{ url_for(historyMakerEndpoint, objectID = history.who) }}"
+                style="color:black">{{ historyMaker }}</a>
+        </li>
+
+        <li class="list-group-item">
+            Wéini: {{ moment(history.getTimeOfChange()).format('LL @ HH:mm:ss') }}
+            ({{ moment(history.getTimeOfChange()).fromNow() }})
+        </li>
+    </ul>
+
+    <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Wat</th>
+                <th scope="col">Vun</th>
+                <th scope="col">Op</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for change in history.getChanges() %}
+                <tr>
+                    <td> {{ change.get('name') }} </td>
+                    <td> {{ change.get('old') }} </td>
+                    <td> {{ change.get('new') }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+{% endmacro %}
+
+{# TABLE ############################################################################################################ #}
+{% macro renderHistoryTable(history, endpoint) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Wéini</th>
+            <th scope="col">Wat</th>
+            <th scope="col" style="text-align:right">Aktiounen</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in history %}
+            <tr>
+
+                <td>
+                    {{ moment(item.getTimeOfChange()).format('LL @ HH:mm:ss') }}
+                    ({{ moment(item.getTimeOfChange()).fromNow() }})
+                </td>
+
+                <td>
+                    {{ item.why }}
+                    </a>
+                </td>
+                <td style="text-align:right">
+                    <a href="{{ url_for(endpoint, historyID=item.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
+
+{# PAGINATION ####################################################################################################### #}
+{% macro renderHistoryPagination(pagination, endpoint, objectID) %}
+    {% if pagination.has_prev or pagination.has_next %}
+        <nav aria-label="pagination">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item {% if not pagination.has_prev %} disabled {% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for(endpoint, objectID = objectID, page = pagination.prev_num, tab = 'history') }}">
+                        <span aria-hidden="true">&larr;</span>Previous
+                    </a>
+                </li>
+
+                {% for page in pagination.iter_pages() %}
+                    {% if page %}
+                        {% if page != pagination.page %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="{{ url_for(endpoint, objectID = objectID, page = page, tab = 'history') }}">
+                                    {{ page }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link"> <strong> {{ page }} </strong> </a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <span class=ellipsis>…</span>
+                    {% endif %}
+                {% endfor %}
+
+                <li class="page-item {% if not pagination.has_next %} disabled {% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for(endpoint, objectID = objectID, page = pagination.next_num, tab = 'history') }}">
+                        Next<span aria-hidden="true">&rarr;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+{% endmacro %}
+
+
+
+{# ################################################################################################################## #}
+{# MACRO: PAGINATION ################################################################################################ #}
+{# ################################################################################################################## #}
+{% macro renderPagination(pagination, endpoint, objectID, tab, sortBy, sortOrder) %}
+    {% if pagination.has_prev or pagination.has_next %}
+        <nav aria-label="pagination">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item {% if not pagination.has_prev %} disabled {% endif %}">
+                    <a class="page-link" href="{{ url_for(endpoint, objectID = objectID, tab = tab,
+                                                          sortBy = sortBy, sortOrder = sortOrder,
+                                                          page = pagination.prev_num) }}">
+                        <span aria-hidden="true">&larr;</span>Previous
+                    </a>
+                </li>
+
+                {% for page in pagination.iter_pages() %}
+                    {% if page %}
+                        {% if page != pagination.page %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="{{ url_for(endpoint, objectID = objectID, tab = tab,
+                                                    sortBy = sortBy, sortOrder = sortOrder, page = page) }}">
+                                    {{ page }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link"> <strong> {{ page }} </strong> </a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <span class=ellipsis>…</span>
+                    {% endif %}
+                {% endfor %}
+
+                <li class="page-item {% if not pagination.has_next %} disabled {% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for(endpoint, objectID = objectID, tab = tab, sortBy = sortBy,
+                                        sortOrder = sortOrder, page = pagination.next_num) }}">
+                        Next<span aria-hidden="true">&rarr;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+{% endmacro %}
+
+{# ################################################################################################################## #}
+{# SCRIPTS ########################################################################################################## #}
+{# ################################################################################################################## #}
+{% block scripts %}
+    {{ super() }}
+
+    <script>
+        {# enable generic tooltips #}
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+{% endblock %}

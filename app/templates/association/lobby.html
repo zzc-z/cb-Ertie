@@ -1,0 +1,62 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set associations = payload.get('associations') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content_fluid %}
+    <hr>
+    <h1 class="text-center">Administratioun vun der Federatioun</h1>
+    {% if associations in [[], none] %}
+        <hr>
+        <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+            <a href="{{ url_for('association.associationAdd') }}"
+               class="btn btn-lg btn-outline-success">Federatioun Erstellen</a>
+        </div>
+        <br>
+    {% else %}
+        {% include 'association/association/tables/association.html' %}
+    {% endif %}
+    <br>
+    <div class="row row-cols-lg-auto justify-content-md-center">
+        <div class="col">
+            <h2 class="text-center">Arte vu Lizenzen</h2>
+            <hr>
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('association.licenceTypeAdd') }}"
+                   class="btn btn-lg btn-outline-success">Nei Art vu Lizenz</a>
+            </div>
+            <br>
+            {% include 'association/licenceTypes/tables/licenceTypes.html' %}
+        </div>
+
+        <div class="col">
+            <h2 class="text-center">Alterskategorien</h2>
+            <hr>
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('association.ageCategoryAdd') }}"
+                   class="btn btn-lg btn-outline-success">Nei Alterskategorie</a>
+            </div>
+            <br>
+            {% include 'association/ageCategories/tables/ageCategories.html' %}
+        </div>
+
+        <div class="col">
+            <h2 class="text-center">Kompetitiounen</h2>
+            <hr>
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('association.competitionAdd') }}"
+                   class="btn btn-lg btn-outline-success">Nei Kompetitioun</a>
+            </div>
+            <br>
+            {% include 'association/competitions/tables/competitions.html' %}
+        </div>
+    </div>
+{% endblock %}

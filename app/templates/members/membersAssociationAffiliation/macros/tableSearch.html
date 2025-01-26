@@ -1,0 +1,42 @@
+{% macro renderTableSearch(memberAssociationAffiliations) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Member
+            </th>
+            <th scope="col">
+                Licence
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for memberAssociationAffiliation in memberAssociationAffiliations %}
+            <tr>
+                <td>
+                    {{ memberAssociationAffiliation.member }}
+                </td>
+
+                <td>
+                    {{ memberAssociationAffiliation.licenceType }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href=""
+                       class="btn btn-sm btn-outline-info">
+                        Licence
+                    </a>
+                    <a href=""
+                       class="btn btn-sm btn-outline-info">
+                        Member
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

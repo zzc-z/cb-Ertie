@@ -1,0 +1,51 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set details = payload.get('details') %}
+
+{# ################################################################################################################## #}
+{# CARD ############################################################################################################# #}
+{# ################################################################################################################## #}
+<ul class="list-group list-group-flush">
+    {% for detail in details %}
+        <li class="list-group-item">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">{{ detail.get('lux') }}</div>
+                    <div class="col-lg" style="text-align: right">
+                        {% if detail.get('key') == 'value' %}
+                            {{ detail.get('value') | localizeCurrency }}
+                        {% elif detail.get('key') == 'term' %}
+                            {{ detail.get('value') }} Joer
+                        {% else %}
+                            {{ detail.get('value') }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+
+    <!-- progress bar -->
+    {% set total = object.limit %}
+    {% set taken = object.sponsors | count %}
+    {% set utilisation = ((taken / total) * 100) | round(2, 'floor') %}
+    {% if utilisation < 50 %}
+        {% set classText = "progress-bar bg-success" %}
+    {% elif 50 <= utilisation < 90 %}
+        {% set classText = "progress-bar bg-warning" %}
+    {% else %}
+        {% set classText = "progress-bar bg-danger" %}
+    {% endif %}
+
+    <div class="{{ classText }}"
+         role="progressbar"
+         style="width: 5%"
+         aria-valuenow="{{ utilisation }}"
+         aria-valuemin="0"
+         aria-valuemax="100">
+        {{ taken }} / {{ total }}
+    </div>
+
+</ul>

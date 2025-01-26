@@ -1,0 +1,77 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set clubMembership = payload.get('clubMembership') %}
+{% set member = payload.get('object') %}
+{% set details = payload.get('details', []) %}
+
+{# ################################################################################################################## #}
+{# CARD ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% if clubMembership is not none %}
+    <ul class="list-group list-group-flush">
+        {% for detail in details %}
+            {% if detail.get('value') is not none or detail.get('value') != '' %}
+                <li class="list-group-item">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">{{ detail.get('lux') }}</div>
+                            <div class="col-lg" style="text-align:right">
+                                {% if detail.get('key') == 'active' %}
+                                    {% if detail.get('value') %}
+                                        <span class="badge rounded-pill badge-sm bg-success">Aktiv</span>
+                                    {% else %}
+                                        <span class="badge rounded-pill badge-sm bg-danger">Inaktiv</span>
+                                    {% endif %}
+                                {% elif detail.get('key') == 'coach' %}
+                                    {% if detail.get('value') == True %}
+                                        <span class="badge rounded-pill bg-success">Jo</span>
+                                    {% else %}
+                                        <span class="badge rounded-pill bg-danger">Nee</span>
+                                    {% endif %}
+                                {% elif detail.get('key') == 'eligibleToVote' %}
+                                    {% if detail.get('value') %}
+                                        <span class="badge rounded-pill badge-sm bg-success">Jo</span>
+                                    {% else %}
+                                        <span class="badge rounded-pill badge-sm bg-danger">Nee</span>
+                                    {% endif %}
+                                {% elif detail.get('key') == 'membershipTypeFK' %}
+                                    {{ clubMembership.membershipType }}
+                                    ({{ clubMembership.membershipType.fee | localizeCurrency }})
+
+                                {% elif detail.get('key') == 'lastPayment' %}
+                                    {% if detail.get('value') is none %}
+                                        <span class="badge rounded-pill badge-sm bg-warning">Nach ni bezuelt</span>
+
+                                    {% elif detail.get('valid') %}
+                                        <span class="badge rounded-pill badge-sm bg-success">
+                                            {{ moment(detail.get('value')).format('LL') }}
+                                        </span>
+
+                                    {% else %}
+                                        <span class="badge rounded-pill badge-sm bg-danger">
+                                            {{ moment(detail.get('value')).format('LL') }}
+                                         </span>
+
+                                    {% endif %}
+                                {% elif detail.get('key') in ['birthday','joined'] %}
+                                    {{ moment(detail.get('value')).format('LL') }}
+                                {% elif detail.get('key') == 'nationality' %}
+                                    <img
+                                            src="https://flagcdn.com/w20/{{ detail.get('value').lower() }}.png"
+                                            srcset="https://flagcdn.com/w40/{{ detail.get('value').lower() }}.png 2x"
+                                            width="20"
+                                            alt="{{ detail.get('value') }}"> (
+                                    {{ payload.get('nationalityCountryName') }})
+
+                                {% else %}
+                                    {{ detail.get('value') }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

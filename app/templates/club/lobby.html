@@ -1,0 +1,62 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set clubs = payload.get('clubs') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content_fluid %}
+    <hr>
+    <h1 class="text-center">Administratioun vum Veräin</h1>
+    {% if clubs in [[], none] %}
+        <hr>
+        <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+            <a href="{{ url_for('club.clubAdd') }}"
+               class="btn btn-lg btn-outline-success">Veräin Erstellen</a>
+        </div>
+        <br>
+    {% else %}
+        {% include 'club/club/tables/club.html' %}
+    {% endif %}
+    <br>
+    <div class="row row-cols-lg-auto justify-content-md-center">
+        <div class="col">
+            <h2 class="text-center">Mitgliedschaften</h2>
+            <hr>
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('club.membershipTypeAdd') }}"
+                   class="btn btn-lg btn-outline-success">Nei Art vu Mitgliedschaft</a>
+            </div>
+            <br>
+            {% include 'club/membershipTypes/tables/membershipTypes.html' %}
+        </div>
+
+        <div class="col">
+            <h2 class="text-center">Trainingskategorien</h2>
+            <hr>
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('club.practiceTypeAdd') }}"
+                   class="btn btn-lg btn-outline-success">Trainingskategorie Erstellen</a>
+            </div>
+            <br>
+            {% include 'club/practiceTypes/tables/practiceTypes.html' %}
+        </div>
+
+        <div class="col">
+            <h2 class="text-center">Positiounen am Virstand</h2>
+            <hr>
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('club.boardTypeAdd') }}"
+                   class="btn btn-lg btn-outline-success">Nei Positioun am Virstand</a>
+            </div>
+            <br>
+            {% include 'club/boardTypes/tables/boardTypes.html' %}
+        </div>
+    </div>
+{% endblock %}

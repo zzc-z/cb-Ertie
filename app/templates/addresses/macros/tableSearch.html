@@ -1,0 +1,43 @@
+{% macro renderTableSearch(addresses) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Address
+            </th>
+            <th scope="col">
+                Member
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for address in addresses %}
+            <tr>
+                <td>
+                    {{ address }}
+                </td>
+
+                <td>
+                    {{ address.member }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('members.memberView', objectID=address.member.uid, tab='address') }}"
+                       class="btn btn-sm btn-outline-info">
+                        Adress
+                    </a>
+                    <a href="{{ url_for('members.memberView', objectID=address.member.uid, tab='details') }}"
+                       class="btn btn-sm btn-outline-info">
+                        Member
+                    </a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

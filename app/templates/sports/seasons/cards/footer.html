@@ -1,0 +1,27 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+
+{# ################################################################################################################## #}
+{# BUTTONS ########################################################################################################## #}
+{# ################################################################################################################## #}
+<div class="container">
+    <div class="d-grid gap-2 row-cols-lg-2 d-md-flex justify-content-md-center">
+        <a class="btn btn-outline-warning btn-lg"
+           href="{{ url_for('sports.seasonEdit', objectID = object.uid) }}">
+            Änneren
+        </a>
+        {% if not object.completed %}
+            <a class="btn btn-outline-warning btn-lg"
+               href="{{ url_for('sports.seasonToggleStatus', objectID = object.uid) }}">
+                Ofschléissen
+            </a>
+        {% else %}
+        <a class="btn btn-lg {% if object.practiceSessions | count > 0 %} btn-secondary disabled
+                             {% else %} btn-outline-danger
+                             {% endif %}"
+           href="{{ url_for('sports.seasonDelete', objectID = object.uid) }}">Läschen</a>
+        {% endif %}
+    </div>
+</div>

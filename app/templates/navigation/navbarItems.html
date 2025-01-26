@@ -1,0 +1,118 @@
+{# LICENSE
+SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    {% if current_user.is_anonymous %}
+        <!-- items to show when the user is offline -->
+        <li class="nav-item">
+            <!-- the login button -->
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+        </li>
+    {% elif current_user.hasRoles(['admin', 'board', 'taskForceSponsoring', 'coach']) %}
+        {% if current_user.hasRoles(['admin', 'board']) %}
+            <li class="nav-item">
+                <a class="nav-link"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="bottom"
+                   title="Lëscht vun de Memberen"
+                   href="{{ url_for('members.lobby') }}">
+                    Memberen</a>
+            </li>
+        {% endif %}
+
+        {% if current_user.hasRoles(['admin', 'board', 'coach']) %}
+            <li class="nav-item">
+                <a class="nav-link"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="bottom"
+                   title="Trainingspresenzen Androen"
+                   href="{{ url_for('sports.lobby') }}">
+                    Training</a>
+            </li>
+        {% endif %}
+
+        {% if current_user.hasRoles(['admin', 'board']) %}
+            <li class="nav-item">
+                <a class="nav-link"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="bottom"
+                   title="Virstand"
+                   href="{{ url_for('board.lobby') }}">
+                    Virstand</a>
+            </li>
+        {% endif %}
+
+
+
+        {% if current_user.hasRoles(['admin', 'board', 'taskForceSponsoring']) %}
+            <li class="nav-item">
+                <a class="nav-link"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="bottom"
+                   title="Lëscht vun de Sponsoren"
+                   href="{{ url_for('sponsoring.lobby') }}">
+                    Sponsoring</a>
+            </li>
+        {% endif %}
+        {% if current_user.hasRoles(['admin', 'board']) %}
+            <li class="nav-item">
+                <!-- Club -->
+                <a class="nav-link"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="bottom"
+                   title="Administratioun vum Veräin"
+                   href="{{ url_for('club.lobby') }}">
+                    Veräin</a>
+            </li>
+            <li class="nav-item">
+                <!-- Association -->
+                <a class="nav-link"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="bottom"
+                   title="Administratioun vun der Federatioun"
+                   href="{{ url_for('association.lobby') }}">
+                    Federatioun</a>
+            </li>
+            <li class="nav-item">
+                <!-- Administration -->
+                <a class="nav-link"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="bottom"
+                   title="Adminstratioun vum Intranet"
+                   href="{{ url_for("admin.lobby") }}">
+                    Administratioun</a>
+            </li>
+        {% endif %}
+    {% endif %}
+
+    {% if current_user.is_authenticated %}
+        <!-- items to show when the user is online -->
+        <li class="nav-item">
+            <a class="nav-link"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title="Account"
+               href="{{ url_for('members.memberView', objectID=current_user.uid) }}">
+                Account
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title="Hëllef">
+                Hëllef</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title="Äddi"
+               href="{{ url_for('auth.logout') }}">Logout</a>
+        </li>
+    {% endif %}
+</ul>
+
+

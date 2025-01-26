@@ -1,0 +1,42 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set sponsor = payload.get('object') %}
+
+{# ################################################################################################################## #}
+{# NAV LINKS ######################################################################################################## #}
+{# ################################################################################################################## #}
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'account' %} active {% endif %}"
+       href="{{ url_for('sponsoring.sponsorView', objectID = sponsor.uid, tab = 'account') }}"
+       style="color:black">
+        Kontaktpersoun
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'address' %} active {% endif %}"
+       href="{{ url_for('sponsoring.sponsorView', objectID = sponsor.uid, tab = 'address') }}"
+       style="color:black">
+        Adress
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'details' %} active {% endif %}"
+       href="{{ url_for('sponsoring.sponsorView', objectID = sponsor.uid, tab = 'details') }}"
+       style="color:black">
+        Sponsoring
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'history' %} active {% endif %}"
+       href="{{ url_for('sponsoring.sponsorView', objectID = sponsor.uid, tab = 'history') }}"
+       style="color:black">
+        Ännerungen
+        <span class="badge badge-sm {% if sponsor.history | count != 0 %} bg-info {% else %} bg-dark {% endif %}">
+                    {{ sponsor.history | count }}
+                </span>
+    </a>
+</li>

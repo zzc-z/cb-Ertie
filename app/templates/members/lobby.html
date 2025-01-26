@@ -1,0 +1,117 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set form = payload.get('form') %}
+{% set nFilters = payload.get('nFilters',0) %}
+{% set members = payload.get('members') %}
+{% set pagination = payload.get('pagination') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content_fluid %}
+    <br>
+    <h1 class="text-center" id="top">Memberen</h1>
+    <hr>
+
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+            <a href="{{ url_for('members.memberAdd') }}"
+               class="btn btn-outline-success btn-lg">
+                Neie Member
+            </a>
+            <button type="button"
+                    class="btn btn-lg {% if nFilters == 0 %} btn-outline-dark {% else %} btn-dark {% endif %}"
+                    data-bs-toggle="modal" data-bs-target="#filtersModal">
+                Filter {% if nFilters > 0 %}
+                <span class="badge badge-sm bg-light">{{ nFilters }}</span>{% endif %}
+            </button>
+            <a href="{{ url_for('members.export') }}"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Export als CSV-Datei"
+               class="btn btn-outline-primary btn-lg">
+                Export
+            </a>
+        </div>
+    </div>
+
+    <!-- List of all Members -->
+    {% include 'members/members/tables/members.html' %}
+
+    <!-- pagination -->
+    {% if pagination is not none and pagination.total_pages > 1 %}
+        <div style="text-align: center;">
+            {{ pagination.info }}
+        </div>
+        {% if payload.get('showPagination') in [1,'1'] %}
+            <hr>
+            {{ pagination.links }}
+        {% endif %}
+
+        <hr>
+        {% if nFilters <= 0 %}
+            <div class="container">
+                <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+                    {% if payload.get('showAll') in [0, '0'] %}
+                        <a href="{{ url_for('members.lobby', showAll='1', showPagination='0',
+                                            sortBy=payload.get('sortBy'), sortOrder=payload.get('sortOrder')) }}"
+                           class="btn btn-outline-info btn-lg">
+                            Alleguer Uweisen
+                        </a>
+                    {% elif payload.get('showPagination') in [1, '1'] %}
+                        <a href="{{ url_for('members.lobby',
+                                    sortBy=payload.get('sortBy'), sortOrder=payload.get('sortOrder')) }}"
+                           class="btn btn-outline-info btn-lg">
+                            Bliederen
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+        {% endif %}
+    {% endif %}
+
+
+    <!-- Modal Filters Dialog -->
+    <div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModal" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="filtersModal">Filter Auswielen</h1>
+                    <p>Filter désaktivéieren d'Sortéierung an d'Bliederen.</p>
+                </div>
+                <div class="modal-body">
+                    {{ bootstrapForm.render_form(form, form_type='horizontal',
+                                              button_map={'submit': 'outline-primary', 'reset': 'outline-secondary'}) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fenster Zou
+                        Maachen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {% for member in members %}
+        {% set member = member.get('member') %}
+        {% if member.address is not none and member.address.phone is not none %}
+            <script>
+                var fancy_phone_field = document.getElementById('_phone{{ member.uid }}');
+                var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
+                    separateDialCode: true,
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.4/js/utils.js",
+                });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

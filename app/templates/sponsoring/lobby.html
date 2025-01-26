@@ -1,0 +1,173 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+{% from 'sponsoring/sponsors/macros/tableLobby.html' import renderTableLobby %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set sponsors = payload.get('sponsors', []) %}
+{% set nFilters = payload.get('nFilters', 0) %}
+{% set form = payload.get('form') %}
+{% set pagination = payload.get('pagination') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content_fluid %}
+    <br>
+    <h1 class="text-center" id="top">Sponsoring</h1>
+    <hr>
+    <p class="d-flex justify-content-end"><a href="#bottom">&darr; Optioune, Pyramid a Boni &darr;</a></p>
+    <hr>
+
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+            <a href="{{ url_for('sponsoring.sponsorAdd', mode='new') }}"
+               class="btn btn-outline-success btn-lg"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="E neie Sponsor erstellen.">
+                Neie Sponsor
+            </a>
+            <a href="{{ url_for('sponsoring.sponsorAdd', mode='member') }}"
+               class="btn btn-outline-success btn-lg"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Een existéierende Member als Sponsor definéieren.">
+                Neie Sponsor (Member)
+            </a>
+            <button type="button"
+                    class="btn btn-lg {% if nFilters == 0 %} btn-outline-dark {% else %} btn-dark {% endif %}"
+                    data-bs-toggle="modal" data-bs-target="#filtersModal">
+                Filter {% if nFilters > 0 %}
+                <span class="badge badge-sm bg-light">{{ nFilters }}</span>{% endif %}
+            </button>
+
+        </div>
+        <hr>
+        <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+            <a href="{{ url_for('sponsoring.export') }}"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Export als CSV-Datei"
+               class="btn btn-outline-primary btn-lg">
+                Export
+            </a>
+            <a href="{{ payload.get('urlInvoices') }}" target="_blank"
+               class="btn btn-outline-primary btn-lg"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Cloud: Rechnungen">
+                Rechnungen
+            </a>
+            <a href="{{ payload.get('urlLogos') }}" target="_blank"
+               class="btn btn-outline-primary btn-lg"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Cloud: Logoen">
+                Logoen
+            </a>
+        </div>
+    </div>
+
+    <!-- List of all Sponsors -->
+    {{ renderTableLobby(sponsors, nFilters<=0) }}
+
+    <!-- pagination -->
+    {% if pagination is not none and pagination.total_pages > 1 %}
+        <div style="text-align: center;">
+            {{ pagination.info }}
+        </div>
+        {% if payload.get('showPagination') in [1,'1'] %}
+            <hr>
+            {{ pagination.links }}
+        {% endif %}
+
+        <hr>
+        {% if nFilters <= 0 %}
+            <div class="container">
+                <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+
+                    {% if payload.get('showAll') in [0, '0'] %}
+                        <a href="{{ url_for('sponsoring.lobby', showAll='1', showPagination='0',
+                                                                             sortBy=payload.get('sortBy'),
+                                                                             sortOrder=payload.get('sortOrder')) }}"
+                           class="btn btn-outline-info btn-lg">
+                            Alleguer Uweisen
+                        </a>
+                    {% elif payload.get('showPagination') in [0, '0'] %}
+                        <a href="{{ url_for('sponsoring.lobby', sortBy=payload.get('sortBy'),
+                                                                sortOrder=payload.get('sortOrder')) }}"
+                           class="btn btn-outline-info btn-lg">
+                            Bliederen
+                        </a>
+                        <br>
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+        {% endif %}
+    {% endif %}
+
+    <br>
+    <p class="d-flex justify-content-end"><a href="#top">&uarr; Sponsoren &uarr;</a></p>
+    <hr>
+    <div class="row row-cols-lg-auto justify-content-md-center" id="bottom">
+        <div class="col">
+            <h2 class="text-center">Optiounen</h2>
+            <hr>
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('sponsoring.optionAdd') }}"
+                   class="btn btn-lg btn-outline-success">Nei Optioun</a>
+            </div>
+            <br>
+            {% include 'sponsoring/options/tables/options.html' %}
+        </div>
+
+        <div class="col">
+            <h2 class="text-center">Pyramid</h2>
+            <hr>
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('sponsoring.levelAdd') }}"
+                   class="btn btn-lg btn-outline-success">Neie Level</a>
+            </div>
+            <br>
+            {% include 'sponsoring/levels/tables/levels.html' %}
+        </div>
+
+        <div class="col">
+            <h2 class="text-center">Boni</h2>
+            <hr>
+            <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('sponsoring.bonusAdd') }}"
+                   class="btn btn-lg btn-outline-success">Neie Bonus</a>
+            </div>
+            <br>
+            {% include 'sponsoring/boni/tables/boni.html' %}
+        </div>
+    </div>
+
+    <!-- Modal Filters Dialog -->
+    <div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModal" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="filtersModal">Filter Auswielen</h1>
+                    <p>Filter désaktivéieren d'Sortéierung an d'Bliederen.</p>
+                </div>
+                <div class="modal-body">
+                    {{ bootstrapForm.render_form(form, form_type='horizontal',
+                                              button_map={'submit': 'outline-primary', 'reset': 'outline-secondary'}) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fenster Zou
+                        Maachen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

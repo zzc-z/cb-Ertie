@@ -1,0 +1,46 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set associationAffiliation = payload.get('associationAffiliation') %}
+{% set member = payload.get('object') %}
+{% set details = payload.get('details', []) %}
+
+{# ################################################################################################################## #}
+{# CARD ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% if associationAffiliation is not none %}
+    <ul class="list-group list-group-flush">
+        {% for detail in details %}
+            {% if detail.get('value') is not none or detail.get('value') != '' %}
+                <li class="list-group-item">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">{{ detail.get('lux') }}</div>
+                            <div class="col-lg" style="text-align:right">
+                                {% if detail.get('key') in ['left', 'joined'] %}
+                                    {{ moment(detail.get('value')).format('LL') }}
+                                {% elif detail.get('key') == 'associationLicenceTypeFK' %}
+                                    {{ associationAffiliation.licenceType }}
+                                {% elif detail.get('key') == 'competitions' %}
+
+                                    {% for competition in detail.get('value') %}
+                                        <span class="badge rounded-pill bg-success"> {{ competition.key }}</span>
+                                    {% endfor %}
+
+                                {% elif detail.get('key') == 'ageCategories' %}
+
+                                    {% for ageCategory in detail.get('value') %}
+                                        <span class="badge rounded-pill bg-success"> {{ ageCategory.name }}</span>
+                                    {% endfor %}
+
+                                {% else %}
+                                    {{ detail.get('value') }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

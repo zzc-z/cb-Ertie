@@ -1,0 +1,46 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set associationAffiliation = payload.get('associationAffiliation') %}
+{% set member = payload.get('object') %}
+{% set tab = payload.get('tab') %}
+
+{# ################################################################################################################## #}
+{# BUTTONS ########################################################################################################## #}
+{# ################################################################################################################## #}
+{% if associationAffiliation is not none %}
+    <div class="container">
+        <div class="d-grid gap-2 {% if not associationAffiliation.left %} row-cols-lg-2
+                                 {% else %} row-cols-lg-3
+                                 {% endif %} d-md-flex justify-content-md-center">
+            <a class="btn btn-lg btn-outline-warning"
+               href="{{ url_for('members.associationAffiliationEdit', objectID=associationAffiliation.uid) }}">
+                Änneren
+            </a>
+            {% if not associationAffiliation.left %}
+                <a class="btn btn-lg btn-outline-danger"
+                   href="{{ url_for('members.associationAffiliationLeave', objectID=associationAffiliation.uid) }}">
+                    Desaktivéieren
+                </a>
+            {% else %}
+                <a class="btn btn-lg btn-outline-success"
+                   href="{{ url_for('members.associationAffiliationJoin', objectID=associationAffiliation.uid) }}">
+                    Aktivéieren
+                </a>
+                <a class="btn btn-lg btn-outline-danger"
+                   href="{{ url_for('members.associationAffiliationDelete', objectID=associationAffiliation.uid) }}">
+                    Läschen
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+            <a class="btn btn-lg btn-outline-success"
+               href="{{ url_for('members.associationAffiliationAdd', memberFK=member.uid) }}">
+                Eng Lizenz Erstellen
+            </a>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,42 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "cards/stub.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set tab = payload.get('tab') %}
+{% set members = payload.get('members') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block cardTitle %}
+    <h1 style="text-align: center;">{{ object }}</h1>
+{% endblock %}
+
+{% block cardNavigation %}
+    {% include 'sports/seasons/cards/header.html' %}
+{% endblock %}
+
+{# subs body -> details depending on the specified tab #}
+{% block cardBody %}
+    {% if tab == 'details' %}
+        {# details #}
+        {% include 'sports/seasons/cards/details.html' %}
+    {% elif tab == 'practiceSessions' %}
+        {% include 'sports/practiceSessions/tables/practiceSessions.html' %}
+    {% elif tab in ['youth', 'adults'] %}
+        {% include 'members/members/tables/members.html' %}
+    {% elif tab == 'history' %}
+        {% include 'sports/seasons/tables/seasonHistory.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block cardFooter %}
+    {% if tab == 'details' %}
+        {% include 'sports/seasons/cards/footer.html' %}
+    {% endif %}
+{% endblock %}

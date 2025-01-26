@@ -1,0 +1,50 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set nPlayers = payload.get('nPlayers') %}
+{% set nCoaches = payload.get('nCoaches') %}
+
+{# ################################################################################################################## #}
+{# NAV LINKS ######################################################################################################## #}
+{# ################################################################################################################## #}
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'details' %} active {% endif %}"
+       href="{{ url_for('sports.practiceSessionView', objectID = object.uid, tab = 'details') }}"
+       style="color:black">
+        Detailer
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if nPlayers == 0 %} disabled {% elif tab == 'players' %} active {% endif %}"
+       href="{{ url_for('sports.practiceSessionView', objectID = object.uid, tab = 'players') }}"
+       style="color:black">
+        Spiller
+        <span class="badge badge-sm {% if nPlayers != 0 %} bg-info {% else %} bg-dark {% endif %}">
+            {{ nPlayers }}
+        </span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if nCoaches == 0 %} disabled {% elif tab == 'coaches' %} active {% endif %}"
+       href="{{ url_for('sports.practiceSessionView', objectID = object.uid, tab = 'coaches') }}"
+       style="color:black">
+        Coaches
+        <span class="badge badge-sm {% if nCoaches != 0 %} bg-info {% else %} bg-dark {% endif %}">
+            {{ nCoaches }}
+        </span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'history' %} active {% endif %}"
+       href="{{ url_for('sports.practiceSessionView', objectID = object.uid, tab = 'history') }}"
+       style="color:black">
+        Ännerungen
+        <span class="badge badge-sm {% if (object.history | count) != 0 %} bg-info {% else %} bg-dark {% endif %}">
+                    {{ object.history | count }}
+                </span>
+    </a>
+</li>

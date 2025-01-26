@@ -1,0 +1,51 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set boardElection = payload.get('boardElection') %}
+{% set member = payload.get('object') %}
+{% set tab = payload.get('tab') %}
+
+{# ################################################################################################################## #}
+{# BUTTONS ########################################################################################################## #}
+{# ################################################################################################################## #}
+{% if boardElection is not none %}
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+            {% if not boardElection.left %}
+                <a class="btn btn-lg btn-outline-success"
+                   href="{{ url_for('members.boardElectionReelect', objectID=boardElection.uid) }}">
+                    Am Amt Bestätegt
+                </a>
+            {% else %}
+                <a class="btn btn-lg btn-outline-success"
+                   href="{{ url_for('members.boardElectionJoin', objectID=boardElection.uid) }}">
+                    Nei Gewielt
+                </a>
+            {% endif %}
+            <a class="btn btn-lg btn-outline-warning"
+               href="{{ url_for('members.boardElectionEdit', objectID=boardElection.uid) }}">
+                Änneren
+            </a>
+            {% if not boardElection.left %}
+                <a class="btn btn-lg btn-outline-danger"
+                   href="{{ url_for('members.boardElectionLeave', objectID=boardElection.uid) }}">
+                    Austrëtt
+                </a>
+            {% else %}
+                <a class="btn btn-lg btn-outline-danger"
+                   href="{{ url_for('members.boardElectionDelete', objectID=boardElection.uid) }}">
+                    Läschen
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-1 d-md-flex justify-content-md-center">
+            <a class="btn btn-lg btn-outline-success"
+               href="{{ url_for('members.boardElectionAdd', memberFK=member.uid) }}">
+                An de Virstand Ophuelen
+            </a>
+        </div>
+    </div>
+{% endif %}

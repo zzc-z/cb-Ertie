@@ -1,0 +1,38 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set nMembers = payload.get('nMembers', 0) %}
+
+{# ################################################################################################################## #}
+{# NAV LINKS ######################################################################################################## #}
+{# ################################################################################################################## #}
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'details' %} active {% endif %}"
+       href="{{ url_for('club.boardTypeView', objectID = object.uid, tab = 'details') }}"
+       style="color:black">
+        Detailer
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if nMembers == 0 %} disabled {% elif tab == 'members' %} active {% endif %}"
+       href="{{ url_for('club.boardTypeView', objectID = object.uid, tab = 'members') }}"
+       style="color:black">
+        Memberen
+        <span class="badge badge-sm {% if nMembers != 0 %} bg-info {% else %} bg-dark {% endif %}">
+            {{ nMembers }}
+        </span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'history' %} active {% endif %}"
+       href="{{ url_for('club.boardTypeView', objectID = object.uid, tab = 'history') }}"
+       style="color:black">
+        Ännerungen
+        <span class="badge badge-sm {% if (object.history | count) != 0 %} bg-info {% else %} bg-dark {% endif %}">
+                    {{ object.history | count }}
+                </span>
+    </a>
+</li>

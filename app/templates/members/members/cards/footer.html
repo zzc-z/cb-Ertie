@@ -1,0 +1,51 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% if payload.get('referrer') == 'sponsor' %}
+    {% set member = payload.get('object').member %}
+{% else %}
+    {% set member = payload.get('object') %}
+{% endif %}
+
+{% set tab = payload.get('tab') %}
+
+{# ################################################################################################################## #}
+{# BUTTONS ########################################################################################################## #}
+{# ################################################################################################################## #}
+<div class="container">
+    {% if tab in ['details', 'account'] %}
+        <div class="d-grid gap-2 row-cols-lg-2 d-md-flex justify-content-md-center">
+            {% if member.authID == 0 or member.authID is none %}
+                <!-- the member is not yet authorized via Zitadel -->
+                <a class="btn btn-outline-warning btn-lg"
+                   href="{{ url_for('members.memberEdit', objectID = member.uid) }}">
+                    Änneren
+                </a>
+            {% else %}
+                <a class="btn btn-outline-warning btn-lg"
+                   href="https://zitadel.dtl.lu" target="_blank">
+                    Änneren
+                </a>
+            {% endif %}
+            {% if member.clubMembership is not none and not member.clubMembership.active %}
+                <a class="btn btn-lg btn-outline-danger"
+                   href="{{ url_for('members.memberDelete', objectID = member.uid) }}">
+                    Läschen
+                </a>
+            {% elif member.clubMembership is none %}
+                <a class="btn btn-lg btn-outline-danger"
+                   href="{{ url_for('members.memberDelete', objectID = member.uid) }}">
+                    Läschen
+                </a>
+            {% else %}
+                <a class="btn btn-lg btn-secondary disabled"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="Aktiv Membere kënnen net geläscht ginn."
+                   href="{{ url_for('members.memberDelete', objectID = member.uid) }}">
+                    Läschen
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

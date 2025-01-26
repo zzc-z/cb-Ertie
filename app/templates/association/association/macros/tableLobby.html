@@ -1,0 +1,46 @@
+{% macro renderTableLobby(associations) %}
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:center">
+                Ofkierzung
+            </th>
+            <th scope="col" style="text-align:center">
+                Beitrag
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for association in associations %}
+            <tr>
+                <td>
+                    {{ association.name }}
+                </td>
+
+                <td style="text-align:center">
+                    {{ association.abbreviation }}
+                </td>
+
+                <td style="text-align:center">
+                    {{ association.fee | localizeCurrency }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('association.associationView', objectID=association.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('association.associationEdit', objectID=association.uid) }}"
+                       class="btn btn-sm btn-outline-warning">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

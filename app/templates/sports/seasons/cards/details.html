@@ -1,0 +1,31 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set details = payload.get('details') %}
+
+{# ################################################################################################################## #}
+{# CARD ############################################################################################################# #}
+{# ################################################################################################################## #}
+<ul class="list-group list-group-flush">
+    {% for detail in details %}
+        <li class="list-group-item">
+            <div class="container">
+                <div class="row">
+                    <div class="col">{{ detail.get('lux') }}</div>
+                    {% if detail.get('key') in ['start', 'end'] %}
+                        <div class="col-2">{{ moment(detail.get('value')).format('LL') }}</div>
+                    {% elif detail.get('key') == 'completed' %}
+                        {% if detail.get('value') == True %}
+                            <div class="col-2"><span class="badge rounded-pill bg-success">Jo</span></div>
+                        {% else %}
+                            <div class="col-2"><span class="badge rounded-pill bg-danger">Nee</span></div>
+                        {% endif %}
+                    {% else %}
+                        <div class="col-2">{{ detail.get('value') }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

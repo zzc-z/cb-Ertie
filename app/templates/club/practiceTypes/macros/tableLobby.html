@@ -1,0 +1,35 @@
+{% macro renderTableLobby(practiceTypes) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for practiceType in practiceTypes %}
+            <tr>
+                <td>
+                    {{ practiceType.name }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('club.practiceTypeView', objectID=practiceType.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('club.practiceTypeEdit', objectID=practiceType.uid) }}"
+                       class="btn btn-sm btn-outline-warning">Edit</a>
+                    <a href="{{ url_for('club.practiceTypeDelete', objectID=practiceType.uid) }}"
+                       class="btn btn-sm {% if practiceType.practiceSessions | count > 0 %} btn-secondary disabled
+                                         {% else %} btn-outline-danger
+                                         {% endif %}">Del</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

@@ -1,0 +1,33 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set club = payload.get('object') %}
+{% set details = payload.get('details', []) %}
+
+{# ################################################################################################################## #}
+{# CARD ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% if club is not none %}
+    <ul class="list-group list-group-flush">
+        {% for detail in details %}
+            {% if detail.get('value') is not none or detail.get('value') != '' %}
+                <li class="list-group-item">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">{{ detail.get('lux') }}</div>
+                            <div class="col-lg" style="text-align: right">
+                                {% if detail.get('key') == 'established' %}
+                                    {{ moment(detail.get('value')).format('LL') }}
+                                {% elif detail.get('key') in ['fiscalYearStart', 'fiscalYearEnd'] %}
+                                    {{ moment(detail.get('value')).format('D. MMMM') }}
+                                {% else %}
+                                    {{ detail.get('value') }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

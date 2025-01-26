@@ -1,0 +1,43 @@
+{% macro renderTableBoni(levels) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:center">
+                Ab
+            </th>
+            <th scope="col" style="text-align:center">
+                # Boni
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for level in levels %}
+            <tr>
+                <td>
+                    {{ level.name }}
+                </td>
+                <td style="text-align:center">
+                    {{ level.threshold | localizeCurrency }}
+                </td>
+                <td style="text-align:center">
+                    {{ level.boni | count }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('sponsoring.levelView', objectID=level.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('sponsoring.levelEdit', objectID=level.uid) }}"
+                       class="btn btn-sm btn-outline-warning">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

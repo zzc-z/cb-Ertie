@@ -1,0 +1,62 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set nPracticeSessions = payload.get('nPracticeSessions') %}
+{% set nAdults = payload.get('nAdults') %}
+{% set nYouth = payload.get('nYouth') %}
+
+{# ################################################################################################################## #}
+{# NAV LINKS ######################################################################################################## #}
+{# ################################################################################################################## #}
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'details' %} active {% endif %}"
+       href="{{ url_for('sports.seasonView', objectID = object.uid, tab = 'details') }}"
+       style="color:black">
+        Detailer
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if nPracticeSessions == 0 %} disabled {% elif tab == 'practiceSessions' %} active {% endif %}"
+       href="{{ url_for('sports.seasonView', objectID = object.uid, tab = 'practiceSessions') }}"
+       style="color:black">
+        Trainingen
+        <span class="badge badge-sm {% if nPracticeSessions != 0 %} bg-info {% else %} bg-dark {% endif %}">
+            {{ nPracticeSessions }}
+        </span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if nYouth == 0 %} disabled {% elif tab == 'youth' %} active {% endif %}"
+       href="{{ url_for('sports.seasonView', objectID = object.uid, tab = 'youth') }}"
+       style="color:black">
+        Jugend
+        <span class="badge badge-sm {% if nYouth != 0 %} bg-info {% else %} bg-dark {% endif %}">
+            {{ nYouth }}
+        </span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if nAdults == 0 %} disabled {% elif tab == 'adults' %} active {% endif %}"
+       href="{{ url_for('sports.seasonView', objectID = object.uid, tab = 'adults') }}"
+       style="color:black">
+        Seniors
+        <span class="badge badge-sm {% if nAdults != 0 %} bg-info {% else %} bg-dark {% endif %}">
+            {{ nAdults }}
+        </span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'history' %} active {% endif %}"
+       href="{{ url_for('sports.seasonView', objectID = object.uid, tab = 'history') }}"
+       style="color:black">
+        Ännerungen
+        <span class="badge badge-sm {% if (object.history | count) != 0 %} bg-info {% else %} bg-dark {% endif %}">
+                    {{ object.history | count }}
+                </span>
+    </a>
+</li>

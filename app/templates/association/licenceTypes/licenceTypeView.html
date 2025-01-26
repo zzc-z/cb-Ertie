@@ -1,0 +1,40 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "cards/stub.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set tab = payload.get('tab') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block cardTitle %}
+    <h1 style="text-align: center;">{{ object }}</h1>
+{% endblock %}
+
+{% block cardNavigation %}
+    {% include 'association/licenceTypes/cards/header.html' %}
+{% endblock %}
+
+{# subs body -> details depending on the specified tab #}
+{% block cardBody %}
+    {% if tab == 'details' %}
+        {# details #}
+        {% include 'association/licenceTypes/cards/details.html' %}
+    {% elif tab == 'members' %}
+        {# table of members #}
+        {% include 'members/members/tables/members.html' %}
+    {% elif tab == 'history' %}
+        {% include 'association/licenceTypes/tables/licenceTypeHistory.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block cardFooter %}
+    {% if tab == 'details' %}
+        {% include 'association/licenceTypes/cards/footer.html' %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set step = payload.get('step') %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content %}
+    <h1 class="text-center">Training Androen</h1>
+    <hr>
+    {% if step in [1,'1'] %}
+        <h3 style="text-align: center;">Schrëtt 1: Trainingskategorie Auswielen</h3>
+        <hr>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-label="step1" style="width: 50%;" aria-valuenow="50"
+                 aria-valuemin="0" aria-valuemax="100">Schrëtt 1 vun 2
+            </div>
+        </div>
+        <hr>
+        {{ bootstrapForm.render_form(form, form_type='horizontal', button_map={'submit': 'outline-primary'}) }}
+    {% elif step in [2,'2'] %}
+        <h3 style="text-align: center;">Schrëtt 2: Trainer a Spiller Auswielen</h3>
+        <hr>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-label="step1" style="width: 100%;" aria-valuenow="100"
+                 aria-valuemin="0" aria-valuemax="100">Schrëtt 2 vun 2
+            </div>
+        </div>
+        <hr>
+        {{ bootstrapForm.render_form(form, form_type='horizontal', button_map={'submit': 'outline-success'}) }}
+    {% endif %}
+{% endblock %}

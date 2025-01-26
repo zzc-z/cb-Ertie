@@ -1,0 +1,38 @@
+{# ################################################################################################################## #}
+{# IMPORTS  ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% from 'members/members/macros/tableLobby.html' import renderTableLobby %}
+{% from 'members/members/macros/tableRoles.html' import renderTableRole %}
+{% from 'members/members/macros/tableSearch.html' import renderTableSearch %}
+{% from 'members/members/macros/tableBoard.html' import renderTableBoard %}
+{% from 'members/members/macros/tableSeason.html' import renderTableSeason %}
+
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set members = payload.get('members') %}
+{% set referrer = payload.get('referrer', 'lobby') %}
+{% set memRef = payload.get('memRef', 'players') %}
+
+{# ################################################################################################################## #}
+{# TABLE ############################################################################################################ #}
+{# ################################################################################################################## #}
+{% if referrer == 'lobby' %}
+    {{ renderTableLobby(members, nFilters<=0) }}
+{% elif referrer == 'season' %}
+    {{ renderTableSeason(members) }}
+{% elif referrer in ['role', 'licenceType', 'competition', 'boardType',
+                     'membershipType', 'ageCategory', 'practiceType'] %}
+    {{ renderTableRole(members) }}
+{% elif referrer == 'practiceSession' %}
+    {% if memRef == 'players' %}
+        {{ renderTableRole(payload.get('players')) }}
+    {% elif memRef == 'coaches' %}
+        {{ renderTableRole(payload.get('coaches')) }}
+    {% endif %}
+{% elif referrer == 'search' %}
+    {{ renderTableSearch(members) }}
+{% elif referrer == 'board' %}
+    {{ renderTableBoard(members) }}
+{% endif %}

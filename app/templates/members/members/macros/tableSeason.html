@@ -1,0 +1,43 @@
+{% macro renderTableSeason(members) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Nonumm
+            </th>
+            <th scope="col">
+                Virnumm
+            </th>
+            <th scope="col">
+                #
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for member in members %}
+            <tr>
+                <td>
+                    {{ member[0].familyName }}
+                </td>
+
+                <td>
+                    {{ member[0].givenName }}
+                </td>
+
+                <td>
+                    {{ member[1] }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('members.memberView', objectID=member[0].uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

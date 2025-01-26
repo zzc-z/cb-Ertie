@@ -1,0 +1,40 @@
+{% macro renderTableSponsor(boni) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:center">
+                Wéivill
+            </th>
+            <th scope="col">
+                Beschreiwung
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for bonus in boni %}
+            <tr>
+                <td>
+                    {{ bonus.name }}
+                </td>
+                <td style="text-align:center">
+                    {{ bonus.amount }}
+                </td>
+                <td>
+                    {{ bonus.description }}
+                </td>
+                <td style="text-align:right">
+                    <a href="{{ url_for('sponsoring.bonusView', objectID=bonus.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

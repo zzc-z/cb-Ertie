@@ -1,0 +1,19 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set nCompetitions = payload.get('nCompetitions') %}
+
+{# ################################################################################################################## #}
+{# BUTTONS ########################################################################################################## #}
+{# ################################################################################################################## #}
+<div class="container">
+    <div class="d-grid gap-2 row-cols-lg-2 d-md-flex justify-content-md-center">
+        <a class="btn btn-outline-warning btn-lg"
+           href="{{ url_for('association.ageCategoryEdit', objectID = object.uid) }}">
+            Änneren
+        </a>
+        <a class="btn btn-lg {% if nCompetitions > 0 %} btn-secondary disabled {% else %} btn-outline-danger {% endif %}"
+           href="{{ url_for('association.ageCategoryDelete', objectID = object.uid) }}">Läschen</a>
+    </div>
+</div>

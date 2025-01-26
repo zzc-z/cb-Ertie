@@ -1,0 +1,35 @@
+{% macro renderTableSearch(licenceTypes) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:center">
+                Cotisatioun
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for licenceType in licenceTypes %}
+            <tr>
+                <td>
+                    {{ licenceType.name }}
+                </td>
+                <td style="text-align:center">
+                    {{ licenceType.fee | localizeCurrency }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('association.licenceTypeView', objectID=licenceType.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

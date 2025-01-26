@@ -1,0 +1,59 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set member = payload.get('object') %}
+
+{# ################################################################################################################## #}
+{# NAV LINKS ######################################################################################################## #}
+{# ################################################################################################################## #}
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'details' %} active {% endif %}"
+       href="{{ url_for('members.memberView', objectID = member.uid, tab = 'details') }}"
+       style="color:black">
+        Account
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'address' %} active {% endif %}"
+       href="{{ url_for('members.memberView', objectID = member.uid, tab = 'address') }}"
+       style="color:black">
+        Adress
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'club' %} active {% endif %}"
+       href="{{ url_for('members.memberView', objectID = member.uid, tab = 'club') }}"
+       style="color:black">
+        Memberskaart
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'association' %} active {% endif %}"
+       href="{{ url_for('members.memberView', objectID = member.uid, tab = 'association') }}"
+       style="color:black">
+        Federatioun
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'board' %} active {% endif %}"
+       href="{{ url_for('members.memberView', objectID = member.uid, tab = 'board') }}"
+       style="color:black">
+        Virstand
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'history' %} active {% endif %}"
+       href="{{ url_for('members.memberView', objectID = member.uid, tab = 'history') }}"
+       style="color:black">
+        Ännerungen
+        {% set nChanges = member.history | count + member.address.history | count + member.clubMembership.history | count + member.associationAffiliation.history | count %}
+        <span class="badge badge-sm {% if nChanges != 0 %} bg-info {% else %} bg-dark {% endif %}">
+                    {{ nChanges }}
+                </span>
+    </a>
+</li>

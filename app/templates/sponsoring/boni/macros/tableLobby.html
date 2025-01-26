@@ -1,0 +1,34 @@
+{% macro renderTableLobby(boni) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for bonus in boni %}
+            <tr>
+                   <td>
+                    {{ bonus.name }}
+                </td>
+                <td style="text-align:right">
+                    <a href="{{ url_for('sponsoring.bonusView', objectID=bonus.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('sponsoring.bonusEdit', objectID=bonus.uid) }}"
+                       class="btn btn-sm btn-outline-warning">Edit</a>
+                    <a href="{{ url_for('sponsoring.bonusDelete', objectID=bonus.uid) }}"
+                       class="btn btn-sm {% if bonus.levels | count > 0 or bonus.sponsors %} btn-secondary disabled
+                                         {% else %} btn-outline-danger
+                                         {% endif %}">Del</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

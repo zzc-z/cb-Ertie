@@ -1,0 +1,54 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set roles = payload.get('roles') %}
+
+{# ################################################################################################################## #}
+{# TABLE ############################################################################################################ #}
+{# ################################################################################################################## #}
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">
+            Key
+        </th>
+        <th scope="col">
+            Numm
+        </th>
+        <th scope="col">
+            Beschreiwung
+        </th>
+        <th scope="col" style="text-align:right">
+            Aktiounen
+        </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for role in roles %}
+        <tr>
+            <td>
+                {{ role.key }}
+            </td>
+            <td>
+                {{ role.name }}
+            </td>
+
+            <td>
+                {{ role.description|truncate(1024, True) }}
+            </td>
+
+            <td style="text-align:right">
+                <a href="{{ url_for('admin.roleView', objectID = role.uid) }}"
+                   class="btn btn-sm btn-outline-info">View</a>
+                <a href="{{ url_for('admin.roleEdit', objectID = role.uid) }}"
+                   class="btn btn-sm btn-outline-warning">Edit</a>
+                <a href="{{ url_for('admin.roleDelete', objectID = role.uid) }}"
+                   class="btn btn-sm {% if role.users | count > 0 %} btn-secondary disabled
+                                     {% else %} btn-outline-danger
+                                     {% endif %}">Del</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

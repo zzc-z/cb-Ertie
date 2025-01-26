@@ -1,0 +1,37 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set details = payload.get('details') %}
+
+{# ################################################################################################################## #}
+{# CARD ############################################################################################################# #}
+{# ################################################################################################################## #}
+<ul class="list-group list-group-flush">
+    {% for detail in details %}
+        <li class="list-group-item">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">{{ detail.get('lux') }}</div>
+                    <div class="col-lg" style="text-align:right">
+                        {% if detail.get('key') == 'gender' %}
+                            {% if detail.get('value') == 'A' %}
+                                <span class="badge bg-success">Alleguer</span>
+                            {% elif detail.get('value') == 'M' %}
+                                <span class="badge bg-success">Männer</span>
+                            {% else %}
+                                <span class="badge bg-success">Fraen</span>
+                            {% endif %}
+                        {% elif detail.get('key') == 'ageCategories' %}
+                                {% for ageCategory in detail.get('value') %}
+                                    <span class="badge rounded-pill bg-success">{{ ageCategory }}</span>
+                                {% endfor %}
+                        {% else %}
+                            {{ detail.get('value') }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

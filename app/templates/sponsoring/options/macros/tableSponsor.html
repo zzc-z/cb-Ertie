@@ -1,0 +1,40 @@
+{% macro renderTableSponsor(options) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:center">
+                Wäert
+            </th>
+            <th scope="col">
+                Lafzäit
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for option in options %}
+            <tr>
+                <td>
+                    {{ option.name }}
+                </td>
+                <td style="text-align:center">
+                    {{ option.value | localizeCurrency }}
+                </td>
+                <td>
+                    {{ option.term }} Joer
+                </td>
+                <td style="text-align:right">
+                    <a href="{{ url_for('sponsoring.optionView', objectID=option.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

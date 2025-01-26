@@ -1,0 +1,44 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set boardElection = payload.get('boardElection') %}
+{% set member = payload.get('object') %}
+{% set details = payload.get('details', []) %}
+
+{# ################################################################################################################## #}
+{# CARD ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% if boardElection is not none %}
+    <ul class="list-group list-group-flush">
+        {% for detail in details %}
+            {% if detail.get('value') is not none or detail.get('value') != '' %}
+                <li class="list-group-item">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">{{ detail.get('lux') }}</div>
+                            <div class="col-lg" style="text-align:right">
+                                {% if detail.get('key') in ['left', 'joined', 'lastElected'] %}
+                                    {% if detail.get('key') == 'lastElected' %}
+                                        {% if detail.get('valid') %}
+                                            <span class="badge bg-success">
+                                        {% else %}
+                                            <span class="badge bg-danger">
+                                        {% endif %}
+                                                {{ moment(detail.get('value')).format('LL') }}
+                                            </span>
+                                    {% else %}
+                                        {{ moment(detail.get('value')).format('LL') }}
+                                    {% endif %}
+                                {% elif detail.get('key') == 'boardTypeFK' %}
+                                    {{ boardElection.position }}
+                                {% else %}
+                                    {{ detail.get('value') }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

@@ -1,0 +1,73 @@
+{% macro renderTableSponsoring(members) %}
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Nonumm
+            </th>
+            <th scope="col">
+                Virnumm
+            </th>
+            <th scope="col">
+                E-Mail
+            </th>
+            <th scope="col">
+                Telefonsnummer
+            </th>
+            <th scope="col" style="text-align:center">
+                Level
+            </th>
+            <th scope="col" style="text-align:center">
+                # Boni
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for member in members %}
+            <tr>
+                <td>
+                    {{ member.familyName }}
+                </td>
+
+                <td>
+                    {{ member.givenName }}
+                </td>
+
+                <td>
+                    {{ member.email }}
+                </td>
+
+                <td>
+                    {% if member.address is none %}
+                    {% elif member.address.phone is none or member.address.phone == '' %}
+                    {% else %}
+                        <div><input type="tel" id="_phone{{ member.uid }}" value="{{ member.address.phone }}"
+                                    readonly="readonly"></div>
+                    {% endif %}
+                </td>
+                <td style="text-align:center">
+                    1
+                </td>
+
+                <td style="text-align:center">
+                    2
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('sponsoring.sponsorView', objectID=member.sponsor.uid, tab='details') }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    {% if member.clubMembership %}
+                        <a href="{{ url_for('members.clubMembershipPay', objectID=member.sponsor.uid) }}"
+                           class="btn btn-sm btn-outline-success">Bezuelt</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

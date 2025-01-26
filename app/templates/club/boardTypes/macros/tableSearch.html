@@ -1,0 +1,35 @@
+{% macro renderTableSearch(boardTypes) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col">
+                Amtszäit
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for boardType in boardTypes %}
+            <tr>
+                <td>
+                    {{ boardType.name }}
+                </td>
+                <td>
+                    {{ boardType.term }} Joer
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('club.boardTypeView', objectID=boardType.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

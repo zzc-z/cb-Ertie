@@ -1,0 +1,43 @@
+{% macro renderTableRole(members) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Nonumm
+            </th>
+            <th scope="col">
+                Virnumm
+            </th>
+            <th scope="col">
+                E-Mail
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for member in members %}
+            <tr>
+                <td>
+                    {{ member.familyName }}
+                </td>
+
+                <td>
+                    {{ member.givenName }}
+                </td>
+
+                <td>
+                    {{ member.email }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('members.memberView', objectID=member.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

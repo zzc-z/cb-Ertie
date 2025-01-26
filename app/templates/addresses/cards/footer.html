@@ -1,0 +1,92 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set address = payload.get('address') %}
+{% set object = payload.get('object') %}
+{% set titleAuto = 'Verifikatioun via Open Street Map' %}
+{% set titleManual = 'Manuell Eingabe ouni Verifikatioun' %}
+{% set referrer = payload.get('referrer') %}
+
+{# ################################################################################################################## #}
+{# BUTTONS ########################################################################################################## #}
+{# ################################################################################################################## #}
+<div class="container">
+    {% if address is none %}
+        {# show buttons to create addresses #}
+        <div class="d-grid gap-2 row-cols-lg-2 d-md-flex justify-content-md-center">
+            <a class="btn btn-outline-success btn-lg"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="{{ titleAuto }}"
+                    {% if referrer == 'member' %}
+               href="{{ url_for('addresses.addressAdd', memberFK=object.uid, mode='auto') }}">
+                    {% elif referrer == 'sponsor' %}
+                        href="{{ url_for('addresses.addressAdd', sponsorFK=object.uid, mode='auto') }}">
+                    {% else %}
+                        href="">
+                    {% endif %}
+            Adress Erstellen (Auto)
+            </a>
+            {% if not current_user.hasRole('admin') %}
+                <a class="btn btn-outline-dark btn-lg disabled"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="{{ titleManual }}"
+                        {% if referrer == 'member' %}
+                   href="{{ url_for('addresses.addressAdd', memberFK=object.uid, mode='manual') }}">
+                        {% elif referrer == 'sponsor' %}
+                            href="{{ url_for('addresses.addressAdd', sponsorFK=object.uid, mode='manual') }}">
+                        {% else %}
+                            href="">
+                        {% endif %}
+                Adress Erstellen (Manuell)
+                </a>
+            {% else %}
+                <a class="btn btn-outline-success btn-lg"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="{{ titleManual }}"
+                        {% if referrer == 'member' %}
+                   href="{{ url_for('addresses.addressAdd', memberFK=object.uid, mode='manual') }}">
+                        {% elif referrer == 'sponsor' %}
+                            href="{{ url_for('addresses.addressAdd', sponsorFK=object.uid, mode='manual') }}">
+                        {% else %}
+                            href="">
+                        {% endif %}
+                Adress Erstellen (Manuell)
+                </a>
+            {% endif %}
+        </div>
+    {% else %}
+        {# show buttons to modify addresses #}
+        <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+            <a class="btn btn-outline-warning btn-lg"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="{{ titleAuto }}"
+               href="{{ url_for('addresses.addressEdit', objectID=address.uid, mode='auto') }}">
+                Änneren (Auto)
+            </a>
+            {% if not current_user.hasRole('admin') %}
+                <a class="btn btn-outline-dark btn-lg disabled"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="{{ titleManual }}"
+                   href="{{ url_for('addresses.addressEdit', objectID=address.uid, mode='manual') }}">
+                    Änneren (Manuell)
+                </a>
+            {% else %}
+                <a class="btn btn-outline-warning btn-lg"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="{{ titleManual }}"
+                   href="{{ url_for('addresses.addressEdit', objectID=address.uid, mode='manual') }}">
+                    Änneren (Manuell)
+                </a>
+
+            {% endif %}
+            <a class="btn btn-lg btn-outline-danger "
+               href="{{ url_for('addresses.addressDelete', objectID=address.uid) }}">Läschen</a>
+        </div>
+    {% endif %}
+</div>

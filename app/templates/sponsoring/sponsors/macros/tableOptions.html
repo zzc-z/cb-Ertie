@@ -1,0 +1,48 @@
+{% macro renderTableOptions(objects) %}
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>
+                Firma
+            </th>
+
+            <th scope="col">
+                Kontaktpersoun
+            </th>
+
+            <th scope="col">
+                E-Mail
+            </th>
+
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for obj in objects %}
+            {% set member = obj.member %}
+            <tr>
+                <td>
+                    {{ member.sponsor.name }}
+                </td>
+
+                <td>
+                    {{ member }}
+                </td>
+
+                <td>
+                    {{ member.email }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('sponsoring.sponsorView', objectID=member.sponsor.uid, tab='details') }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

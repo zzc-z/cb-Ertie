@@ -1,0 +1,47 @@
+{% macro renderTableLobby(competitions) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col">
+                Geschlecht
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for competition in competitions %}
+            <tr>
+                <td>
+                    {{ competition.name }}
+                </td>
+                <td>
+                    {% if competition.gender == 'A' %}
+                        Alleguer
+                    {% elif competition.gender == 'M' %}
+                        Männer
+                    {% else %}
+                        Frae
+                    {% endif %}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('association.competitionView', objectID=competition.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('association.competitionEdit', objectID=competition.uid) }}"
+                       class="btn btn-sm btn-outline-warning">Edit</a>
+                    <a href="{{ url_for('association.competitionDelete', objectID=competition.uid) }}"
+                       class="btn btn-sm {% if competition.associationCompetitions | count > 0 %} btn-secondary disabled
+                                         {% else %} btn-outline-danger
+                                         {% endif %}">Del</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

@@ -1,0 +1,51 @@
+{% macro renderTableLobby(membershipTypes) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:center">
+                Cotisatioun
+            </th>
+            <th scope="col" style="text-align:center">
+                Walen
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for membershipType in membershipTypes %}
+            <tr>
+                 <td>
+                    {{ membershipType.name }}
+                </td>
+                <td style="text-align:center">
+                    {{ membershipType.fee | localizeCurrency }}
+                </td>
+                <td style="text-align:center">
+                    {% if membershipType.vote %}
+                        <span class="badge rounded-pill bg-success text-dark">Jo</span>
+                    {% else %}
+                        <span class="badge rounded-pill bg-success text-dark">Nee</span>
+                    {% endif %}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('club.membershipTypeView', objectID=membershipType.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('club.membershipTypeEdit', objectID=membershipType.uid) }}"
+                       class="btn btn-sm btn-outline-warning">Edit</a>
+                    <a href="{{ url_for('club.membershipTypeDelete', objectID=membershipType.uid) }}"
+                       class="btn btn-sm {% if membershipType.clubMemberships | count > 0 %} btn-secondary disabled
+                                         {% else %} btn-outline-danger
+                                         {% endif %}">Del</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

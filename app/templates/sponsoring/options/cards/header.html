@@ -1,0 +1,38 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set object = payload.get('object') %}
+{% set nSponsors = object.sponsors | count %}
+
+{# ################################################################################################################## #}
+{# NAV LINKS ######################################################################################################## #}
+{# ################################################################################################################## #}
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'details' %} active {% endif %}"
+       href="{{ url_for('sponsoring.optionView', objectID = object.uid, tab = 'details') }}"
+       style="color:black">
+        Detailer
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if nSponsors == 0 %} disabled {% elif tab == 'sponsors' %} active {% endif %}"
+       href="{{ url_for('sponsoring.optionView', objectID = object.uid, tab = 'sponsors') }}"
+       style="color:black">
+        Sponsoren
+        <span class="badge badge-sm {% if nSponsors != 0 %} bg-info {% else %} bg-dark {% endif %}">
+            {{ nSponsors }}
+        </span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {% if tab == 'history' %} active {% endif %}"
+       href="{{ url_for('sponsoring.optionView', objectID = object.uid, tab = 'history') }}"
+       style="color:black">
+        Ännerungen
+        <span class="badge badge-sm {% if (object.history | count) != 0 %} bg-info {% else %} bg-dark {% endif %}">
+                    {{ object.history | count }}
+                </span>
+    </a>
+</li>

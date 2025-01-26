@@ -1,0 +1,49 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set referrer = payload.get('referrer') %}
+{% set member = payload.get('object') %}
+{% if referrer == 'sponsor' %}
+    {% set member = member.member %}
+{% endif %}
+{% set details = payload.get('details', []) %}
+
+{# ################################################################################################################## #}
+{# CARD ############################################################################################################# #}
+{# ################################################################################################################## #}
+<ul class="list-group list-group-flush">
+    {% for detail in details %}
+        {% if detail.get('key') !='picture' or (detail.get('value') is not none or detail.get('value') != '') %}
+            {# hide photo tab if no URL was specified #}
+            <li class="list-group-item">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">{{ detail.get('lux') }}</div>
+                        <div class="col-lg" style="text-align:right">
+                            {% if detail.get('key') == 'picture' %}
+                                <img src="{{ detail.get('value') }}" alt="" height="100">
+                            {% elif detail.get('key') in ['lastLogin', 'lastSeen'] %}
+                                {% if detail.get('value') is not none %}
+                                    {{ moment(member.getTime(mode=detail.get('key'))).format('LL @ HH:mm:ss') }} (
+                                    {{ moment(member.getTime(mode=detail.get('key'))).fromNow() }})
+                                {% else %}
+                                    Nach Ni
+                                {% endif %}
+                            {% elif detail.get('key') == 'gender' %}
+                                {% if detail.get('value') in ['m', 'M'] %}
+                                    Männlech
+                                {% elif detail.get('value') in ['w', 'W'] %}
+                                    Weiblech
+                                {% else %}
+                                    Divers
+                                {% endif %}
+                            {% else %}
+                                {{ detail.get('value') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

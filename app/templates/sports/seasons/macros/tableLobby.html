@@ -1,0 +1,72 @@
+{% macro renderTableLobby(seasons) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+             <th scope="col">
+                Numm
+            </th>
+            <th scope="col">
+                Ufank
+            </th>
+            <th scope="col">
+                Enn
+            </th>
+            <th scope="col">
+                Jugend
+            </th>
+            <th scope="col">
+                Seniors
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for season in seasons %}
+            {% set practiceChampions = season.get('practiceChampions') %}
+            {% set season = season.get('season') %}
+            {% if season is not none %}
+                <tr>
+                    <td>
+                        {{ season.name }}
+                    </td>
+                    <td>
+                        {{ season.start | localizeDate }}
+                    </td>
+                    <td>
+                        {{ season.end | localizeDate }}
+                    </td>
+                    <td>
+                        {% if practiceChampions.get('youth')[1] is not none %}
+                            {{ practiceChampions.get('youth')[1] }} ({{ practiceChampions.get('youth')[0] }})
+                        {% else %}
+                            Nach Keen Training
+                        {% endif %}
+                    </td>
+                    <td>
+                            {% if practiceChampions.get('adults')[1] is not none %}
+                            {{ practiceChampions.get('adults')[1] }} ({{ practiceChampions.get('adults')[0] }})
+                        {% else %}
+                            Nach Keen Training
+                        {% endif %}
+                    </td>
+
+                    <td style="text-align:right">
+                        <a href="{{ url_for('sports.seasonView', objectID=season.uid) }}"
+                           class="btn btn-sm btn-outline-info">View</a>
+                        <a href="{{ url_for('sports.seasonEdit', objectID=season.uid) }}"
+                           class="btn btn-sm btn-outline-warning">Edit</a>
+                        <a href="{{ url_for('sports.seasonDelete', objectID=season.uid) }}"
+                           class="btn btn-sm {% if not season.completed or season.practiceSessions | count > 0 %}
+                                                btn-secondary disabled
+                                             {% else %} btn-outline-danger
+                                             {% endif %}">Del</a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

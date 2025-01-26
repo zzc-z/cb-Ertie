@@ -1,0 +1,39 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set sponsor = payload.get('object') %}
+{% set tab = payload.get('tab') %}
+{% set deletable = payload.get('deletable', False) %}
+
+{# ################################################################################################################## #}
+{# BUTTONS ########################################################################################################## #}
+{# ################################################################################################################## #}
+<div class="container">
+    {% if tab == 'details' %}
+        <div class="d-grid gap-2 row-cols-lg-4 d-md-flex justify-content-md-center">
+            <a class="btn btn-outline-success btn-lg"
+               href="{{ url_for('sponsoring.sponsorInvoice', objectID = sponsor.uid) }}">
+                Rechnung
+            </a>
+            <a class="btn btn-outline-success btn-lg"
+               href="{{ url_for('sponsoring.sponsorPay', objectID = sponsor.uid) }}">
+                Bezuelt
+            </a>
+            <a class="btn btn-outline-warning btn-lg"
+               href="{{ url_for('sponsoring.sponsorEdit', objectID = sponsor.uid) }}">
+                Änneren
+            </a>
+            {% if deletable %}
+                <a class="btn btn-lg btn-outline-danger"
+                   href="{{ url_for('sponsoring.sponsorDelete', objectID = sponsor.uid) }}">
+                    Läschen
+                </a>
+            {% else %}
+                <a class="btn btn-lg btn-secondary disabled"
+                   href="{{ url_for('sponsoring.sponsorDelete', objectID = sponsor.uid) }}">
+                    Läschen
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,42 @@
+{% macro renderTableSearch(class, objects) %}
+    {% if class == 'Member' %}
+        {% from 'members/members/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'Address' %}
+        {% from 'addresses/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'MembershipType' %}
+        {% from 'club/membershipTypes/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'BoardType' %}
+        {% from 'club/boardTypes/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'PracticeType' %}
+        {% from 'club/practiceTypes/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'LicenceType' %}
+        {% from 'association/licenceTypes/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'Competition' %}
+        {% from 'association/competitions/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'AgeCategory' %}
+        {% from 'association/ageCategories/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'Season' %}
+        {% from 'sports/seasons/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'Sponsor' %}
+        {% from 'sponsoring/sponsors/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'Option' %}
+        {% from 'sponsoring/options/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'Level' %}
+        {% from 'sponsoring/levels/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% elif class == 'Bonus' %}
+        {% from 'sponsoring/boni/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
+    {% endif %}
+{% endmacro %}

@@ -1,0 +1,71 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set address = payload.get('address') %}
+{% set member = payload.get('object') %}
+{% set details = payload.get('details') %}
+{% set referrer = payload.get('referrer') %}
+
+{# ################################################################################################################## #}
+{# CARD ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% if address is not none %}
+    {# show custom designed phone number and address field first #}
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">Telefonsnummer</div>
+                    <div class="col-lg" style="text-align:right">
+                        {% if address.phone is not none and address.phone != '' %}
+                            {% if referrer == 'member' %}
+                                <input type="tel" id="_phone{{ address.member.uid }}" value="{{ address.phone }}"
+                                       readonly="readonly" width="5cm">
+                            {% elif referrer == 'sponsor' %}
+                                <input type="tel" id="_phone{{ address.sponsor.uid }}" value="{{ address.phone }}"
+                                       readonly="readonly">
+                            {% else %}
+                                Net Bekannt
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">Adress</div>
+                    <div class="col-lg" style="text-align:right">{{ address }}</div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <hr>
+
+    {# now loop through the other attributes #}
+    <ul class="list-group list-group-flush">
+        {% for detail in details %}
+            {% if detail.get('key') not in ['phone', 'countryCode'] and detail.get('value') != '' %}
+                <li class="list-group-item">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">{{ detail.get('lux') }}</div>
+                            <div class="col-lg" style="text-align:right">
+                                {% if detail.get('key') == 'country' %}
+                                    {{ address.country }} <img
+                                        src="https://flagcdn.com/w20/{{ address.countryCode }}.png"
+                                        srcset="https://flagcdn.com/w40/{{ address.countryCode }}.png 2x" width="20"
+                                        alt="{{ address.country }}"> ({{ address.countryCode }})
+
+                                {% else %}
+                                    {{ detail.get('value') }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

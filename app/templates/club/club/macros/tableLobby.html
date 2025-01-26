@@ -1,0 +1,67 @@
+{% macro renderTableLobby(clubs) %}
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:center">
+                Ofkierzung
+            </th>
+            <th scope="col" style="text-align:center">
+                Walen
+            </th>
+            <th scope="col" style="text-align:center">
+                Matricule
+            </th>
+            <th scope="col" style="text-align:center">
+                RBE
+            </th>
+            <th scope="col" style="text-align:center">
+                NACE
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for club in clubs %}
+            <tr>
+                <td>
+                    {{ club.name }}
+                </td>
+
+                <td style="text-align:center">
+                    {{ club.abbreviation }}
+                </td>
+
+                <td style="text-align:center">
+                    ab {{ club.minVotingAge }}
+                </td>
+
+                <td style="text-align:center">
+                    {{ club.matricule }}
+                </td>
+
+                <td style="text-align:center">
+                    {{ club.rbe }}
+                </td>
+
+                <td style="text-align:center">
+                    {{ club.nace }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('club.clubView', objectID=club.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('club.clubEdit', objectID=club.uid) }}"
+                       class="btn btn-sm btn-outline-warning">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

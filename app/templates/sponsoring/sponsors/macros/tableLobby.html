@@ -1,0 +1,130 @@
+{% macro renderTableLobby(objects, sort) %}
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>
+                {% if sort %}
+                    <span aria-hidden="true">
+                        <a style="color:black"
+                           href="{{ url_for('sponsoring.lobby', sortBy = 'name', sortOrder = 'asc') }}">&uarr;</a>
+                    </span>
+                {% endif %}
+                Firma
+                {% if sort %}
+                    <span aria-hidden="true">
+                        <a style="color:black"
+                           href="{{ url_for('sponsoring.lobby', sortBy = 'name', sortOrder = 'desc') }}">&darr;</a>
+                    </span>
+                {% endif %}
+            </th>
+            <th style="text-align:center">
+                {% if sort %}
+                    <span aria-hidden="true">
+                        <a style="color:black"
+                           href="{{ url_for('sponsoring.lobby', sortBy = 'totalAmount', sortOrder = 'asc') }}">&uarr;</a>
+                    </span>
+                {% endif %}
+                Wäert
+                {% if sort %}
+                    <span aria-hidden="true">
+                        <a style="color:black"
+                           href="{{ url_for('sponsoring.lobby', sortBy = 'totalAmount', sortOrder = 'desc') }}">&darr;</a>
+                    </span>
+                {% endif %}
+            </th>
+            <th scope="col" style="text-align:center">
+                Level
+            </th>
+            <th style="text-align:center">
+                {% if sort %}
+                    <span aria-hidden="true">
+                        <a style="color:black"
+                           href="{{ url_for('sponsoring.lobby', sortBy = 'payment', sortOrder = 'asc') }}">&uarr;</a>
+                    </span>
+                {% endif %}
+                Bezuelt
+                {% if sort %}
+                    <span aria-hidden="true">
+                        <a style="color:black"
+                           href="{{ url_for('sponsoring.lobby', sortBy = 'payment', sortOrder = 'desc') }}">&darr;</a>
+                    </span>
+                {% endif %}
+            </th>
+            <th style="text-align:center">
+                {% if sort %}
+                    <span aria-hidden="true">
+                        <a style="color:black"
+                           href="{{ url_for('sponsoring.lobby', sortBy = 'invoice', sortOrder = 'asc') }}">&uarr;</a>
+                    </span>
+                {% endif %}
+                Rechnung
+                {% if sort %}
+                    <span aria-hidden="true">
+                        <a style="color:black"
+                           href="{{ url_for('sponsoring.lobby', sortBy = 'invoice', sortOrder = 'desc') }}">&darr;</a>
+                    </span>
+                {% endif %}
+            </th>
+            <th style="text-align:center">
+                Anon
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for obj in objects %}
+            {% set member = obj.get('member') %}
+            <tr>
+                <td>
+                    {{ member.sponsor.name }}
+                </td>
+
+                <td style="text-align:center">
+                    {{ obj.get('totalAmount') | localizeCurrency }}
+                </td>
+
+                <td style="text-align:center">
+                    {{ obj.get('highestLevel') }}
+                </td>
+
+                <td style="text-align:center">
+                    {% if obj.get('isValid') %}
+                        <span class="badge rounded-pill badge-sm bg-success"> {{ obj.get('lastPayment') }} </span>
+                    {% else %}
+                        <span class="badge rounded-pill badge-sm bg-danger"> {{ obj.get('lastPayment') }} </span>
+                    {% endif %}
+                </td>
+
+                <td style="text-align:center">
+                    {% if obj.get('validInvoice') %}
+                        <span class="badge rounded-pill badge-sm bg-success"> {{ obj.get('lastInvoice') }} </span>
+                    {% else %}
+                        <span class="badge rounded-pill badge-sm bg-danger"> {{ obj.get('lastInvoice') }} </span>
+                    {% endif %}
+                </td>
+
+                <td style="text-align:center">
+                    {% if member.sponsor.anonymous == True %}
+                        <span class="badge badge-sm bg-danger">Jo</span>
+                    {% else %}
+                        <span class="badge badge-sm bg-success">Nee</span>
+                    {% endif %}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('sponsoring.sponsorView', objectID=member.sponsor.uid, tab='details') }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('sponsoring.sponsorPay', objectID=member.sponsor.uid) }}"
+                       class="btn btn-sm btn-outline-success">Bezuelt</a>
+                    <a href="{{ url_for('sponsoring.sponsorInvoice', objectID=member.sponsor.uid) }}"
+                       class="btn btn-sm btn-outline-primary">Rechnung</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

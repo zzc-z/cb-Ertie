@@ -1,0 +1,47 @@
+{% macro renderTableLobby(ageCategories) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:center">
+                Min
+            </th>
+            <th scope="col" style="text-align:center">
+                Max
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for ageCategory in ageCategories %}
+            <tr>
+                <td>
+                    {{ ageCategory.name }}
+                </td>
+                <td style="text-align:center">
+                    {{ ageCategory.ageMin }}
+                </td>
+                <td style="text-align:center">
+                    {{ ageCategory.ageMax }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('association.ageCategoryView', objectID=ageCategory.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a href="{{ url_for('association.ageCategoryEdit', objectID=ageCategory.uid) }}"
+                       class="btn btn-sm btn-outline-warning">Edit</a>
+                    <a href="{{ url_for('association.ageCategoryDelete', objectID=ageCategory.uid) }}"
+                       class="btn btn-sm {% if ageCategory.competitions | count > 0 %} btn-secondary disabled
+                                         {% else %} btn-outline-danger
+                                         {% endif %}">Del</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

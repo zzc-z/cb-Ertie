@@ -1,0 +1,29 @@
+{% macro renderTableSearch(ageCategories) %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                Numm
+            </th>
+            <th scope="col" style="text-align:right">
+                Aktiounen
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for ageCategory in ageCategories %}
+            <tr>
+                <td>
+                    {{ ageCategory.name }}
+                </td>
+
+                <td style="text-align:right">
+                    <a href="{{ url_for('association.ageCategoryView', objectID=ageCategory.uid) }}"
+                       class="btn btn-sm btn-outline-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
