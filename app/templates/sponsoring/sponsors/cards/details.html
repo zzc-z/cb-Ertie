@@ -35,60 +35,48 @@
             <li class="list-group-item">
                 <div class="container">
                     <div class="row">
-                        <div class="col">{{ detail.get('lux') }}</div>
-                        {% if detail.get('key') in ['lastPayment', 'lastInvoice'] %}
-                            {% if detail.get('key') == 'lastPayment' %}
-                                {% if payload.get('isValid') %}
-                                    <div class="col-2">
-                                        <span class="badge badge-sm bg-success">
-                                            {{ moment(detail.get('value')).format('LL') }}
-                                        </span>
-                                    </div>
+                        <div class="col-sm">{{ detail.get('lux') }}</div>
+                        <div class="col-lg" style="text-align: right">
+                            {% if detail.get('key') in ['lastPayment', 'lastInvoice'] %}
+                                {% if detail.get('key') == 'lastPayment' %}
+                                    {% if payload.get('isValid') %}
+                                            <span class="badge badge-sm bg-success">
+                                                {{ moment(detail.get('value')).format('LL') }}
+                                            </span>
+                                    {% else %}
+                                            <span class="badge badge-sm bg-danger">
+                                                {{ moment(detail.get('value')).format('LL') }}
+                                            </span>
+                                    {% endif %}
                                 {% else %}
-                                    <div class="col-2">
-                                        <span class="badge badge-sm bg-danger">
-                                            {{ moment(detail.get('value')).format('LL') }}
-                                        </span>
-                                    </div>
+                                    {% if payload.get('validInvoice') %}
+                                            <span class="badge badge-sm bg-success">
+                                                {{ moment(detail.get('value')).format('LL') }}
+                                            </span>
+                                    {% else %}
+                                            <span class="badge badge-sm bg-danger">
+                                                {{ moment(detail.get('value')).format('LL') }}
+                                            </span>
+                                    {% endif %}
                                 {% endif %}
-                            {% else %}
-                                {% if payload.get('validInvoice') %}
-                                    <div class="col-2">
-                                        <span class="badge badge-sm bg-success">
-                                            {{ moment(detail.get('value')).format('LL') }}
+                            {% elif detail.get('key') in ['totalAmount', 'donation'] %}
+                                {{ detail.get('value') | localizeCurrency }}
+                            {% elif detail.get('key') == 'anonymous' %}
+                                {% if detail.get('value') == True %}
+                                        <span class="badge badge-sm bg-danger">
+                                            Jo
                                         </span>
-                                    </div>
                                 {% else %}
-                                    <div class="col-2">
-                                        <span class="badge badge-sm bg-danger">
-                                            {{ moment(detail.get('value')).format('LL') }}
-                                        </span>
-                                    </div>
-                                {% endif %}
-                            {% endif %}
-                        {% elif detail.get('key') == 'totalAmount' %}
-                            <div class="col-2">{{ detail.get('value') | localizeCurrency }}</div>
-                        {% elif detail.get('key') == 'anonymous' %}
-                            {% if detail.get('value') == True %}
-                                <div class="col-2">
-                                    <span class="badge badge-sm bg-danger">
-                                        Jo
+                                    <span class="badge badge-sm bg-success">
+                                        Nee
                                     </span>
-                                </div>
+                                {% endif %}
+                            {% elif detail.get('key') == 'level' %}
+                                <span class="badge rounded-pill bg-success">{{ detail.get('value') }}</span>
                             {% else %}
-                                <div class="col-2">
-                                <span class="badge badge-sm bg-success">
-                                    Nee
-                                </span>
-                                </div>
+                                {{ detail.get('value') }}
                             {% endif %}
-                        {% elif detail.get('key') == 'level' %}
-                            <div class="col-2"><span
-                                    class="badge rounded-pill bg-success text-dark">{{ detail.get('value') }}</span>
-                            </div>
-                        {% else %}
-                            <div class="col-2">{{ detail.get('value') }}</div>
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
             </li>

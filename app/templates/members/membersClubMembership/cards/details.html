@@ -61,8 +61,7 @@
                                             src="https://flagcdn.com/w20/{{ detail.get('value').lower() }}.png"
                                             srcset="https://flagcdn.com/w40/{{ detail.get('value').lower() }}.png 2x"
                                             width="20"
-                                            alt="{{ detail.get('value') }}"> (
-                                    {{ payload.get('nationalityCountryName') }})
+                                            alt="{{ detail.get('value') }}"> ({{ payload.get('nationalityCountryName') }})
 
                                 {% else %}
                                     {{ detail.get('value') }}

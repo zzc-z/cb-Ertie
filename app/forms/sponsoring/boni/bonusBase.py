@@ -26,4 +26,3 @@ class FormBonusBase(FormBase):
     name = StringField('Numm', validators=[validators.InputRequired(), validators.Length(max=64)])
     description = StringField('Beschreiwung',
                               validators=[validators.InputRequired(), validators.Length(max=4096)])
-    amount = IntegerField('Unzuel', validators=[validators.InputRequired(), validators.NumberRange(min=1)])

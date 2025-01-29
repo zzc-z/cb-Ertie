@@ -38,9 +38,9 @@ class Sponsor(MutableMixin, SearchableMixin, database.db.Model):
     __tablename__ = 'sponsor'
 
     # TRACK CHANGES ####################################################################################################
-    __columns__ = {'memberFK', 'lastPayment', 'name', 'lastInvoice', 'anonymous'}
+    __columns__ = {'memberFK', 'lastPayment', 'name', 'lastInvoice', 'anonymous', 'donation'}
     __required__ = {'memberFK', 'name', 'anonymous'}
-    __mutable__ = {'memberFK', 'lastPayment', 'name', 'lastInvoice', 'anonymous'}
+    __mutable__ = {'memberFK', 'lastPayment', 'name', 'lastInvoice', 'anonymous', 'donation'}
     __unique__ = {'name'}
     __luxNames__ = luxNames
 
@@ -52,6 +52,7 @@ class Sponsor(MutableMixin, SearchableMixin, database.db.Model):
     memberFK: sqlalchemy.orm.Mapped[Optional[int]] = sqlalchemy.orm.mapped_column(
         'member_fk', sqlalchemy.Integer, sqlalchemy.ForeignKey('member.uid'))
     name = sqlalchemy.orm.mapped_column('name', sqlalchemy.String(64), unique=True, nullable=False)
+    donation = sqlalchemy.orm.mapped_column('donation', sqlalchemy.Float, default=0)
     lastPayment: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column(
         'last_payment', sqlalchemy.Date)
     lastInvoice: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column(

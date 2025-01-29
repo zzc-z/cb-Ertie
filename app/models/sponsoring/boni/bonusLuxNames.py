@@ -10,5 +10,4 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 ########################################################################################################################
 luxNames = [{'field': 'key', 'lux': 'Key', 'position': 1},
             {'field': 'name', 'lux': 'Numm', 'position': 2},
-            {'field': 'description', 'lux': 'Beschreiwung', 'position': 3},
-            {'field': 'amount', 'lux': 'Unzuel', 'position': 4}]
+            {'field': 'description', 'lux': 'Beschreiwung', 'position': 3}]

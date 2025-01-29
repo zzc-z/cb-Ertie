@@ -13,7 +13,7 @@
 {# ################################################################################################################## #}
 <ul class="list-group list-group-flush">
     {% for detail in details %}
-        {% if detail.get('key') !='picture' or (detail.get('value') is not none or detail.get('value') != '') %}
+        {% if detail.get('key') not in ['picture', 'nickname'] or (detail.get('value') is not none and detail.get('value') != '') %}
             {# hide photo tab if no URL was specified #}
             <li class="list-group-item">
                 <div class="container">

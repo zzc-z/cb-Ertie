@@ -16,9 +16,9 @@
                     <div class="col-lg" style="text-align: right">
                         {% if detail.get('key') == 'vote' %}
                             {% if detail.get('value') %}
-                                <span class="badge rounded-pill bg-success text-dark">Jo</span>
+                                <span class="badge rounded-pill bg-success">Jo</span>
                             {% else %}
-                                <span class="badge rounded-pill bg-danger text-dark">Nee</span>
+                                <span class="badge rounded-pill bg-danger">Nee</span>
                             {% endif %}
                         {% elif detail.get('key') == 'fee' %}
                             {{ detail.get('value') | localizeCurrency }}

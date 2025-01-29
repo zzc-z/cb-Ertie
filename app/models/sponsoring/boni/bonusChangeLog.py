@@ -30,7 +30,7 @@ class BonusChangeLog(ChangeLogMixin, database.db.Model):
     __tablename__ = 'sponsoring_bonus_changelog'
 
     # TRACK CHANGES ####################################################################################################
-    __trackedFields__ = {'key', 'name', 'description', 'amount'}
+    __trackedFields__ = {'key', 'name', 'description'}
     __luxNames__ = luxNames
 
     # DATABASE MODEL ###################################################################################################
@@ -44,8 +44,6 @@ class BonusChangeLog(ChangeLogMixin, database.db.Model):
                                                                                   sqlalchemy.String(64))
     new_description: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_description',
                                                                                          sqlalchemy.String(4096))
-    new_amount: sqlalchemy.orm.Mapped[Optional[int]] = sqlalchemy.orm.mapped_column('new_amount',
-                                                                                    sqlalchemy.Integer)
 
     old_key: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_key',
                                                                                  sqlalchemy.String(32))
@@ -53,8 +51,6 @@ class BonusChangeLog(ChangeLogMixin, database.db.Model):
                                                                                   sqlalchemy.String(64))
     old_description: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_description',
                                                                                          sqlalchemy.String(4096))
-    old_amount: sqlalchemy.orm.Mapped[Optional[int]] = sqlalchemy.orm.mapped_column('old_amount',
-                                                                                    sqlalchemy.Integer)
 
     # RELATIONSHIP #####################################################################################################
     bonus: sqlalchemy.orm.Mapped['Bonus'] = sqlalchemy.orm.relationship(

@@ -33,9 +33,10 @@ class AddressChangeLog(ChangeLogMixin, database.db.Model):
     __tablename__ = 'address_changelog'
 
     # TRACKED FIELDS ###################################################################################################
-    __trackedFields__ = {'houseNumber', 'street', 'suburb', 'districtCity', 'city', 'village',
+    __trackedFields__ = {'houseNumber', 'street', 'suburb', 'districtCity', 'city', 'village', 'shop', 'industrial',
                          'county', 'postalCode', 'country', 'phone', 'iso3166_2_lvl4', 'iso3166_2_lvl6', 'countryCode',
-                         'districtState', 'state', 'hamlet', 'town', 'region', 'municipality'}
+                         'districtState', 'state', 'hamlet', 'town', 'region', 'municipality', 'commercial', 'amenity',
+                         'locality', 'building'}
     __luxNames__ = luxNames
 
     # DATABASE MODEL ###################################################################################################
@@ -59,8 +60,8 @@ class AddressChangeLog(ChangeLogMixin, database.db.Model):
         'new_iso3166_2_lvl4', sqlalchemy.String(12))
     new_iso3166_2_lvl6: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column(
         'new_iso3166_2_lvl6', sqlalchemy.String(12))
-    new_postalCode: sqlalchemy.orm.Mapped[Optional[int]] = sqlalchemy.orm.mapped_column('new_postal_code',
-                                                                                        sqlalchemy.Integer)
+    new_postalCode: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_postal_code',
+                                                                                        sqlalchemy.String(12))
     new_country: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_country',
                                                                                      sqlalchemy.String(64))
     new_countryCode: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_country_code',
@@ -81,6 +82,19 @@ class AddressChangeLog(ChangeLogMixin, database.db.Model):
                                                                                     sqlalchemy.String(64))
     new_municipality: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column(
         'new_municipality', sqlalchemy.String(64))
+    new_industrial: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_industrial',
+                                                                                        sqlalchemy.String(64))
+    new_amenity: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_amenity',
+                                                                                     sqlalchemy.String(64))
+    new_commercial: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_commercial',
+                                                                                        sqlalchemy.String(64))
+    new_shop: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_shop',
+                                                                                        sqlalchemy.String(64))
+    new_locality: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_locality',
+                                                                                        sqlalchemy.String(64))
+    new_building: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_building',
+                                                                                        sqlalchemy.String(64))
+
 
     old_houseNumber: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_house_number',
                                                                                          sqlalchemy.String(12))
@@ -98,8 +112,8 @@ class AddressChangeLog(ChangeLogMixin, database.db.Model):
         'old_iso3166_2_lvl4', sqlalchemy.String(12))
     old_iso3166_2_lvl6: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column(
         'old_iso3166_2_lvl6', sqlalchemy.String(12))
-    old_postalCode: sqlalchemy.orm.Mapped[Optional[int]] = sqlalchemy.orm.mapped_column('old_postal_code',
-                                                                                        sqlalchemy.Integer)
+    old_postalCode: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_postal_code',
+                                                                                        sqlalchemy.String(12))
     old_country: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_country',
                                                                                      sqlalchemy.String(64))
     old_countryCode: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_country_code',
@@ -120,6 +134,18 @@ class AddressChangeLog(ChangeLogMixin, database.db.Model):
         'old_region', sqlalchemy.String(64))
     old_municipality: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column(
         'old_municipality', sqlalchemy.String(64))
+    old_industrial: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_industrial',
+                                                                                        sqlalchemy.String(64))
+    old_amenity: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_amenity',
+                                                                                     sqlalchemy.String(64))
+    old_commercial: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_commercial',
+                                                                                        sqlalchemy.String(64))
+    old_shop: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_shop',
+                                                                                        sqlalchemy.String(64))
+    old_locality: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_locality',
+                                                                                        sqlalchemy.String(64))
+    old_building: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_building',
+                                                                                        sqlalchemy.String(64))
 
     # RELATIONSHIPS ####################################################################################################
     address: sqlalchemy.orm.Mapped['Address'] = sqlalchemy.orm.relationship(back_populates='history',

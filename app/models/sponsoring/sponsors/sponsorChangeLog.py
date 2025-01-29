@@ -33,7 +33,7 @@ class SponsorChangeLog(ChangeLogMixin, database.db.Model):
     __tablename__ = 'sponsor_changelog'
 
     # TRACK CHANGES ####################################################################################################
-    __trackedFields__ = {'lastPayment', 'name', 'lastInvoice', 'anonymous'}
+    __trackedFields__ = {'lastPayment', 'name', 'lastInvoice', 'anonymous', 'donation'}
     __luxNames__ = luxNames
 
     # DATABASE MODEL ###################################################################################################
@@ -49,6 +49,8 @@ class SponsorChangeLog(ChangeLogMixin, database.db.Model):
                                                                                   sqlalchemy.String(64))
     new_anonymous: sqlalchemy.orm.Mapped[Optional[bool]] = sqlalchemy.orm.mapped_column('new_anonymous',
                                                                                         sqlalchemy.Boolean)
+    new_donation: sqlalchemy.orm.Mapped[Optional[float]] = sqlalchemy.orm.mapped_column('new_donation',
+                                                                                          sqlalchemy.Float)
     old_lastPayment: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column('old_last_payment',
                                                                                           sqlalchemy.Date)
     old_lastInvoice: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column('old_last_invoice',
@@ -57,6 +59,8 @@ class SponsorChangeLog(ChangeLogMixin, database.db.Model):
                                                                                   sqlalchemy.String(64))
     old_anonymous: sqlalchemy.orm.Mapped[Optional[bool]] = sqlalchemy.orm.mapped_column('old_anonymous',
                                                                                         sqlalchemy.Boolean)
+    old_donation: sqlalchemy.orm.Mapped[Optional[float]] = sqlalchemy.orm.mapped_column('old_donation',
+                                                                                          sqlalchemy.Float)
 
     # RELATIONSHIP #####################################################################################################
     sponsor: sqlalchemy.orm.Mapped['Sponsor'] = sqlalchemy.orm.relationship(

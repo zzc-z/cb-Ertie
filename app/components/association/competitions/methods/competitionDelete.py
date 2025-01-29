@@ -34,7 +34,7 @@ def delete(objectID: int) -> int:
         ageCategoriesToRemove = {ageCategory.uid for ageCategory in obj.ageCategories}
         for ageCategory in ageCategoriesToRemove:
             ageCategory = database.getObject(AgeCategory, ageCategory)
-            obj.removeBonus(ageCategory)
+            obj.removeAgeCategory(ageCategory)
 
         return database.deleteObjectAndHistory(Competition, objectID)
 

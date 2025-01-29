@@ -40,7 +40,7 @@ class Competition(MutableMixin, SearchableMixin, database.db.Model):
     __columns__ = {'name', 'description', 'key', 'gender'}
     __required__ = {'name', 'description', 'key', 'gender'}
     __mutable__ = {'name', 'description', 'key', 'gender'}
-    __unique__ = {'name', 'description', 'key'}
+    __unique__ = {'name', 'key'}
     __luxNames__ = luxNames
 
     # DATABASE MODEL ###################################################################################################
@@ -50,7 +50,7 @@ class Competition(MutableMixin, SearchableMixin, database.db.Model):
     name: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column(
         'name', sqlalchemy.String(64), unique=True, nullable=False)
     description: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column(
-        'description', sqlalchemy.String(4096), unique=True, nullable=False)
+        'description', sqlalchemy.String(4096), nullable=False)
     gender: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column(
         'gender', sqlalchemy.String(1), nullable=False)
 

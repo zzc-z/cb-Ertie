@@ -11,5 +11,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 luxNames = [{'field': 'name', 'lux': 'Numm', 'position': 1},
             {'field': 'lastPayment', 'lux': 'Bezuelt', 'position': 2},
             {'field': 'options', 'lux': 'Optiounen', 'position': 3},
+            {'field': 'donation', 'lux': 'Spende', 'position': 6},
             {'field': 'lastInvoice', 'lux': 'Rechnung', 'position': 4},
             {'field': 'anonymous', 'lux': 'Anonym', 'position': 5}]

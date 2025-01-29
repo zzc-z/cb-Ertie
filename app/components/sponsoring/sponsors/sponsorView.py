@@ -56,7 +56,7 @@ def sponsorView(objectID: str) -> str | flask.Response:
 
                 # compute the sponsoring level and get the boni
                 levels = database.getObjects(Level)
-                totalAmount, highestLevel, boni = gta(obj.options, levels, getBoni=True)
+                totalAmount, highestLevel, boni = gta(obj.options, levels, getBoni=True, donation=obj.donation)
                 payload['details'].append({'key': 'level', 'value': highestLevel, 'lux': 'Level'})
                 payload['details'].append({'key': 'totalAmount', 'value': totalAmount, 'lux': 'Wäert'})
                 payload['isValid'] = (False if not obj.lastPayment else (datetime(

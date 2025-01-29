@@ -37,11 +37,10 @@ class Bonus(MutableMixin, SearchableMixin, database.db.Model):
     __searchable__ = ['key', 'name', 'description']
 
     # TRACK CHANGES ####################################################################################################
-    __columns__ = {'key', 'name', 'description', 'amount'}
-    __required__ = {'key', 'name', 'description', 'amount'}
-    __mutable__ = {'key', 'name', 'description', 'amount'}
+    __columns__ = {'key', 'name', 'description'}
+    __required__ = {'key', 'name', 'description'}
+    __mutable__ = {'key', 'name', 'description'}
     __unique__ = {'key', 'name', 'description'}
-    __uniqueTuples__ = [('key', 'amount')]
     __luxNames__ = luxNames
 
     # DATABASE MODEL ###################################################################################################
@@ -53,8 +52,6 @@ class Bonus(MutableMixin, SearchableMixin, database.db.Model):
     description: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('description',
                                                                            sqlalchemy.String(4096),
                                                                            unique=True, nullable=False)
-    amount: sqlalchemy.orm.Mapped[int] = sqlalchemy.orm.mapped_column('amount', sqlalchemy.Integer,
-                                                                      nullable=False)
 
     # RELATIONSHIPS ####################################################################################################
     history: sqlalchemy.orm.Mapped[List['BonusChangeLog']] = sqlalchemy.orm.relationship(

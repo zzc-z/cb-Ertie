@@ -57,7 +57,8 @@ def export() -> str | flask.Response:
                 optionsString += f'{option.name} '
             optionsString = optionsString.strip()
 
-            totalValue, level, boni = gta(member.sponsor.options, database.getObjects(Level), getBoni=True)
+            totalValue, level, boni = gta(member.sponsor.options, database.getObjects(Level), getBoni=True,
+                                          donation=member.sponsor.donation)
             csv += f';{optionsString};{totalValue}'
             csv += f';{member.sponsor.lastPayment.strftime("%d/%m/%Y") if member.sponsor.lastPayment else ""}'
             csv += f';{member.sponsor.lastInvoice.strftime("%d/%m/%Y") if member.sponsor.lastPayment else ""}'

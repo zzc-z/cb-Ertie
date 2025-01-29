@@ -26,13 +26,14 @@ from typing import Set, List
 ########################################################################################################################
 # METHODS ##############################################################################################################
 ########################################################################################################################
-def getTotalAmountHighestLevelAndBoni(options: Set[Option], levels: List[Level], getBoni: bool = False):
+def getTotalAmountHighestLevelAndBoni(options: Set[Option], levels: List[Level], getBoni: bool = False,
+                                      donation: float = 0):
     try:
         inputValidator.set(options)
         inputValidator.list(levels)
         inputValidator.boolean(getBoni)
 
-        totalAmount = sum(option.value for option in options)
+        totalAmount = sum(option.value for option in options) + donation
         highestLevel = max((level for level in levels
                             if totalAmount >= level.threshold), default=None, key=lambda level: level.threshold)
 

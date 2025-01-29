@@ -5,6 +5,9 @@
             <th scope="col">
                 Numm
             </th>
+            <th scope="col">
+                U
+            </th>
             <th scope="col" style="text-align:center">
                 Min
             </th>
@@ -20,6 +23,9 @@
         <tbody>
         {% for ageCategory in ageCategories %}
             <tr>
+                <td>
+                    {{ ageCategory.description }}
+                </td>
                 <td>
                     {{ ageCategory.name }}
                 </td>

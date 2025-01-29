@@ -34,7 +34,7 @@
             <th scope="col">
                 Positioun
             </th>
-            <th>
+            <th style="text-align:center">
                 <span aria-hidden="true">
                     <a style="color:black"
                        href="{{ url_for('board.lobby', sortBy = 'nextElection', sortOrder = 'asc') }}">&uarr;</a>
@@ -82,13 +82,11 @@
                     {{ member.boardElection.position }}
                 </td>
 
-                <td>
+                <td style="text-align:center">
                     {% if isValid %}
-                        <div class="col-2"><span
-                                class="badge rounded-pill badge-sm bg-success"> {{ nextElection }}</span></div>
+                        <span class="badge rounded-pill badge-sm bg-success"> {{ nextElection }}</span>
                     {% else %}
-                        <div class="col-2"><span
-                                class="badge rounded-pill badge-sm bg-danger"> {{ nextElection }}</span></div>
+                        <span class="badge rounded-pill badge-sm bg-danger"> {{ nextElection }}</span>
                     {% endif %}
                 </td>
 

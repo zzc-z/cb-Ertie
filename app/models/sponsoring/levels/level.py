@@ -88,7 +88,7 @@ class Level(MutableMixin, SearchableMixin, database.db.Model):
         try:
             # for each sponsor -> get options -> get total amount -> check against threshold
             eligibleSponsors = [sponsor for sponsor in sponsors
-                                if sum(option.value for option in sponsor.options) >= self.threshold]
+                                if sum(option.value for option in sponsor.options) + sponsor.donation >= self.threshold]
             return eligibleSponsors
         except Exception as e:
             raise RuntimeError(f'Runtime Error @ Level.eligibleSponsors: {e}')

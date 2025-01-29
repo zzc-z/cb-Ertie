@@ -15,7 +15,7 @@ luxNames = [{'field': 'authID', 'lux': 'AuthID', 'position': 8},
             {'field': 'email', 'lux': 'E-Mail', 'position': 5},
             {'field': 'nickname', 'lux': 'Spëtznumm', 'position': 4},
             {'field': 'gender', 'lux': 'Geschlecht', 'position': 6},
-            {'field': 'picture', 'lux': 'Photo', 'position': 1},
+            {'field': 'picture', 'lux': 'Foto', 'position': 1},
             {'field': 'lastLogin', 'lux': 'Leschte Login', 'position': 9},
             {'field': 'lastSeen', 'lux': 'Lescht Aktioun', 'position': 10}]
 

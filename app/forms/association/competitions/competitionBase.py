@@ -27,5 +27,5 @@ class FormCompetitionBase(FormBase):
     description = StringField('Beschreiwung', validators=[validators.InputRequired(),
                                                           validators.Length(max=4096)])
     gender = SelectField('Geschlecht', validators=[validators.InputRequired()],
-                         choices=[('A', 'All'), ('F', 'Frae'), ('M', 'Männer')])
+                         choices=[('A', 'All'), ('F', 'Fraen'), ('M', 'Männer')])
     ageCategories = SelectMultipleField('Alterskategorien', validators=[validators.InputRequired()])

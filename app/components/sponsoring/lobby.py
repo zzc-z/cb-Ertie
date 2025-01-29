@@ -129,6 +129,9 @@ def _createDict(query) -> Tuple[List, List]:
             'lastPayment': ('Nach Ni Bezuelt'
                             if member.sponsor.lastPayment is None
                             else member.sponsor.lastPayment.strftime('%d/%m/%Y')),
+            'lastPaymentDelta': (currentDateTime - datetime(member.sponsor.lastPayment.year,
+                                                           member.sponsor.lastPayment.month,
+                                                           member.sponsor.lastPayment.day)).days,
             'lastPaymentISO': member.sponsor.lastPayment,
             'lastInvoice': ('Nach Ni Verschéckt'
                             if member.sponsor.lastInvoice is None
@@ -142,7 +145,8 @@ def _createDict(query) -> Tuple[List, List]:
             **({'totalAmount': highestLevel[0],
                 'highestLevel': highestLevel[1],
                 'nBoni': highestLevel[2]
-                } if (highestLevel := gta(member.sponsor.options, levels, getBoni=False)) else {})
+                } if (highestLevel := gta(member.sponsor.options, levels,
+                                          getBoni=False, donation=member.sponsor.donation)) else {})
         }
         for member in database.db.session.scalars(query).all()
     ]
@@ -211,7 +215,8 @@ def _applyAdditionalFilters(sponsors, filters: dict, levels: List[Level]) -> Tup
         sponsors = [
             sponsor for sponsor in sponsors
             if filters['bonus'] in [
-                bonus.uid for _, _, boni in [gta(sponsor.get('member').sponsor.options, levels, getBoni=True)]
+                bonus.uid for _, _, boni in [gta(sponsor.get('member').sponsor.options, levels,
+                                                 getBoni=True, donation=sponsor.get('member').sponsor.donation)]
                 for bonus in boni]]
         nAdditionalFilters += 1
 

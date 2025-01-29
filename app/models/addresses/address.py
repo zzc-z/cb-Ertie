@@ -36,18 +36,21 @@ class Address(MutableMixin, SearchableMixin, database.db.Model):
     __tablename__ = 'address'
 
     # FULL-TEXT SEARCH #################################################################################################
-    __searchable__ = ['houseNumber', 'street', 'suburb', 'districtCity', 'city', 'village',
+    __searchable__ = ['houseNumber', 'street', 'suburb', 'districtCity', 'city', 'village', 'industrial', 'amenity',
                       'county', 'postalCode', 'country', 'phone', 'iso3166_2_lvl4', 'iso3166_2_lvl6', 'countryCode',
-                      'districtState', 'state', 'hamlet', 'town', 'region', 'municipality']
+                      'districtState', 'state', 'hamlet', 'town', 'region', 'municipality', 'commercial', 'shop',
+                      'locality', 'building']
 
     # MUTABLE ##########################################################################################################
     __columns__ = {'houseNumber', 'street', 'suburb', 'districtCity', 'city', 'village', 'memberFK', 'sponsorFK',
                    'county', 'postalCode', 'country', 'phone', 'iso3166_2_lvl4', 'iso3166_2_lvl6', 'countryCode',
-                   'districtState', 'state', 'hamlet', 'town', 'region', 'municipality'}
+                   'districtState', 'state', 'hamlet', 'town', 'region', 'municipality', 'industrial', 'amenity',
+                   'commercial', 'shop', 'locality', 'building'}
     __required__ = {'houseNumber', 'street', 'postalCode', 'country'}
-    __mutable__ = {'houseNumber', 'street', 'suburb', 'districtCity', 'city', 'village',
+    __mutable__ = {'houseNumber', 'street', 'suburb', 'districtCity', 'city', 'village', 'amenity', 'industrial',
                    'county', 'postalCode', 'country', 'phone', 'iso3166_2_lvl4', 'iso3166_2_lvl6', 'countryCode',
-                   'districtState', 'state', 'hamlet', 'town', 'region', 'municipality'}
+                   'districtState', 'state', 'hamlet', 'town', 'region', 'municipality', 'commercial', 'shop',
+                   'locality', 'building'}
     __luxNames__ = luxNames
 
     # DATABASE MODEL ###################################################################################################
@@ -102,6 +105,19 @@ class Address(MutableMixin, SearchableMixin, database.db.Model):
                                                                                      sqlalchemy.String(12), default='')
     phone: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('phone',
                                                                                sqlalchemy.String(32), default='')
+    industrial: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('industrial',
+                                                                                    sqlalchemy.String(64),
+                                                                                    default='')
+    amenity: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('amenity',
+                                                                                 sqlalchemy.String(64), default='')
+    commercial: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('commercial',
+                                                                                    sqlalchemy.String(64), default='')
+    shop: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('shop',
+                                                                                    sqlalchemy.String(64), default='')
+    locality: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('locality',
+                                                                                    sqlalchemy.String(64), default='')
+    building: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('building',
+                                                                                    sqlalchemy.String(64), default='')
 
     # RELATIONSHIPS ####################################################################################################
     history: sqlalchemy.orm.Mapped[List['AddressChangeLog']] = sqlalchemy.orm.relationship(
