@@ -179,11 +179,10 @@ class Member(MutableMixin, UserMixin, SearchableMixin, database.db.Model):
             if not self.clubMembership and not self.associationAffiliation:
                 return False
 
-            # match all age criteria as well as the gender criteria
-            return all([self.eligibleForAgeCategory(ageCategory, leqMax=True)
-                        for ageCategory in competition.ageCategories]
-                       + [self.gender.casefold() == competition.gender.casefold()
-                          if competition.gender != 'A' else True])
+            # match any age criteria as well as the gender criteria
+            return (any([self.eligibleForAgeCategory(ageCategory, leqMax=True)
+                         for ageCategory in competition.ageCategories])
+                    and self.gender.casefold() == competition.gender.casefold()) if competition.gender != 'A' else True
 
         except Exception as e:
             raise RuntimeError(f'Runtime Error @ Member.eligibleForCompetition: {e}')
@@ -210,10 +209,10 @@ class Member(MutableMixin, UserMixin, SearchableMixin, database.db.Model):
                 return False
 
             # match all age criteria as well as the gender criteria
-            return all([self.eligibleForAgeCategory(ageCategory, leqMax=True)
-                        for ageCategory in practiceType.ageCategories]
-                       + [self.gender.casefold() == practiceType.gender.casefold()
-                          if practiceType.gender != 'A' else True])
+            return (any([self.eligibleForAgeCategory(ageCategory, leqMax=True)
+                         for ageCategory in practiceType.ageCategories])
+                    and self.gender.casefold() == practiceType.gender.casefold()) \
+                if practiceType.gender != 'A' else True
 
         except Exception as e:
             raise RuntimeError(f'Runtime Error @ Member.eligibleForPracticeType: {e}')
@@ -260,7 +259,7 @@ class Member(MutableMixin, UserMixin, SearchableMixin, database.db.Model):
         except Exception as e:
             raise RuntimeError(f'Runtime Error @ Member.hasRole {e}')
 
-    def getTime(self, tz: str = 'UTC', mode:str='lastLogin') -> datetime:
+    def getTime(self, tz: str = 'UTC', mode: str = 'lastLogin') -> datetime:
         try:
             inputValidator.string(tz)
             match mode:
