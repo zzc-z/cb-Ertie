@@ -17,6 +17,9 @@
     {% elif class == 'LicenceType' %}
         {% from 'association/licenceTypes/macros/tableSearch.html' import renderTableSearch %}
         {{ renderTableSearch(objects) }}
+    {% elif class == 'MemberAssociationAffiliation' %}
+        {% from 'members/membersAssociationAffiliation/macros/tableSearch.html' import renderTableSearch %}
+        {{ renderTableSearch(objects) }}
     {% elif class == 'Competition' %}
         {% from 'association/competitions/macros/tableSearch.html' import renderTableSearch %}
         {{ renderTableSearch(objects) }}

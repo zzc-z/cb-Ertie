@@ -3,6 +3,9 @@
         <thead>
         <tr>
             <th scope="col">
+                Lizenz
+            </th>
+            <th scope="col">
                 Member
             </th>
             <th scope="col">
@@ -17,6 +20,10 @@
         <tbody>
         {% for memberAssociationAffiliation in memberAssociationAffiliations %}
             <tr>
+                <td>
+                    {{ memberAssociationAffiliation.associationLicenceNumber }}
+                </td>
+
                 <td>
                     {{ memberAssociationAffiliation.member }}
                 </td>

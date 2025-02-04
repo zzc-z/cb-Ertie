@@ -29,6 +29,7 @@ from app.models.association.licenceTypes import LicenceType
 from app.models.association.competitions import Competition
 from app.models.association.ageCategories import AgeCategory
 from app.models.club.practiceTypes import PracticeType
+from app.models.members.membersAssociationAffiliation.memberAssociationAffiliation import MemberAssociationAffiliation
 from app.models.sports.seasons import Season
 from app.models.sponsoring.sponsors import Sponsor
 from app.models.sponsoring.options import Option
@@ -93,6 +94,18 @@ def results() -> str | flask.Response:
             payload['results'].append({'class': 'LicenceType', 'lux': 'Arte vu Lizenzen',
                                        'objects': licenceTypes, 'nObjects': nLicenceTypes})
             nTotal += nLicenceTypes
+        except RuntimeError:
+            pass
+
+        # LICENCE NUMBERS ###############################################################################################
+        try:
+            memberAssociationAffiliations, nMemberAssociationAffiliation = MemberAssociationAffiliation.search(
+                flask.g.searchForm.q.data, returnList=True)
+
+            payload['results'].append({'class': 'MemberAssociationAffiliation', 'lux': 'Lizenzen',
+                                       'objects': memberAssociationAffiliations,
+                                       'nObjects': nMemberAssociationAffiliation})
+            nTotal += nMemberAssociationAffiliation
         except RuntimeError:
             pass
 

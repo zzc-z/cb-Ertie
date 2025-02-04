@@ -18,6 +18,7 @@ from flask_login import UserMixin
 import sqlalchemy.orm
 from app.factory.extensions import database
 from app.models.mutableMixin import MutableMixin
+from app.models.searchableMixin import SearchableMixin
 from app.models.members.membersAssociationAffiliation.memberAssociationAffiliationChangeLog import \
     MemberAssociationAffiliationChangeLog
 from app.models.association.competitions import Competition
@@ -37,9 +38,12 @@ if TYPE_CHECKING:
 ########################################################################################################################
 # CLASSES ##############################################################################################################
 ########################################################################################################################
-class MemberAssociationAffiliation(MutableMixin, UserMixin, database.db.Model):
+class MemberAssociationAffiliation(MutableMixin, UserMixin, SearchableMixin, database.db.Model):
     # TABLE NAME #######################################################################################################
     __tablename__ = 'member_association_affiliation'
+
+    # FULL-TEXT SEARCH #################################################################################################
+    __searchable__ = ['associationLicenceNumber']
 
     # MUTABLE ##########################################################################################################
     __columns__ = {'memberFK', 'associationLicenceTypeFK', 'associationLicenceNumber', 'joined', 'left'}
