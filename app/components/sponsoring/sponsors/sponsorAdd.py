@@ -80,7 +80,7 @@ def sponsorAdd() -> str | flask.Response:
                 return flask.redirect(flask.url_for('sponsoring.sponsorAdd', mode='new'))
 
         # add all possible sponsoring options to the form
-        form.options.choices = [(option.uid, option) for option in database.getObjects(Option) if option.available]
+        form.options.choices = [(option.uid, option) for option in database.getObjects(Option) if option.available()]
 
         if form.validate_on_submit():
             # validate and commit the new object to the DB

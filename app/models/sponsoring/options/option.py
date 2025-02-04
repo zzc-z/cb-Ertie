@@ -68,8 +68,11 @@ class Option(MutableMixin, SearchableMixin, database.db.Model):
                                                                                   back_populates='options')
 
     # METHODS ##########################################################################################################
-    def available(self, mode: str = 'add') -> bool:
-        return len(self.sponsors) < self.limit if mode == 'add' else len(self.sponsors) <= self.limit
+    def available(self) -> bool:
+        return len(self.sponsors) < self.limit
+
+    def availableForSponsor(self, sponsor: 'Sponsor') -> bool:
+        return True if self in sponsor.options else self.available()
 
     # OVERRIDES ########################################################################################################
     def canBeApplied(self) -> bool:

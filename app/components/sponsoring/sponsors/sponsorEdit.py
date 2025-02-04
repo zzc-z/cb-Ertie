@@ -44,7 +44,9 @@ def sponsorEdit(objectID: str) -> str | flask.Response:
 
         # create prefilled form
         form = FormSponsorEdit(obj=obj)
-        form.options.choices = [(option.uid, option) for option in database.getObjects(Option) if option.available(mode='edit')]
+        form.options.choices = [(option.uid, option) for option in database.getObjects(Option) if
+                                option.availableForSponsor(sponsor=obj)]
+
         if flask.request.method == 'GET':
             form.options.default = [default.uid for default in obj.options]
             form.options.process(formdata=None)
