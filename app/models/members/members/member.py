@@ -182,7 +182,8 @@ class Member(MutableMixin, UserMixin, SearchableMixin, database.db.Model):
             # match any age criteria as well as the gender criteria
             return (any([self.eligibleForAgeCategory(ageCategory, leqMax=True)
                          for ageCategory in competition.ageCategories])
-                    and self.gender.casefold() == competition.gender.casefold()) if competition.gender != 'A' else True
+                    and (self.gender.casefold() == competition.gender.casefold()
+                         if competition.gender != 'A' else True))
 
         except Exception as e:
             raise RuntimeError(f'Runtime Error @ Member.eligibleForCompetition: {e}')
@@ -211,8 +212,8 @@ class Member(MutableMixin, UserMixin, SearchableMixin, database.db.Model):
             # match all age criteria as well as the gender criteria
             return (any([self.eligibleForAgeCategory(ageCategory, leqMax=True)
                          for ageCategory in practiceType.ageCategories])
-                    and self.gender.casefold() == practiceType.gender.casefold()) \
-                if practiceType.gender != 'A' else True
+                    and (self.gender.casefold() == practiceType.gender.casefold()
+                         if practiceType.gender != 'A' else True))
 
         except Exception as e:
             raise RuntimeError(f'Runtime Error @ Member.eligibleForPracticeType: {e}')
