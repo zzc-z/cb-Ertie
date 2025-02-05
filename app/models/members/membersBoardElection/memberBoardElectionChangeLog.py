@@ -35,7 +35,7 @@ class MemberBoardElectionChangeLog(ChangeLogMixin, database.db.Model):
     __tablename__ = 'member_board_election_changelog'
 
     # TRACKED FIELDS ###################################################################################################
-    __trackedFields__ = {'boardTypeFK', 'joined', 'left', 'lastElected'}
+    __trackedFields__ = {'joined', 'left', 'lastElected'}
     __luxNames__ = luxNames
 
     # DATABASE MODEL ###################################################################################################
@@ -43,8 +43,6 @@ class MemberBoardElectionChangeLog(ChangeLogMixin, database.db.Model):
     objectFK: sqlalchemy.orm.Mapped[int] = sqlalchemy.orm.mapped_column(
         'object_fk', sqlalchemy.ForeignKey('member_board_election.uid'), index=True, nullable=False)
 
-    new_boardTypeFK: sqlalchemy.orm.Mapped[Optional[int]] = sqlalchemy.orm.mapped_column(
-        'new_board_type_fk', sqlalchemy.Integer)
     new_joined: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column(
         'new_joined', sqlalchemy.Date)
     new_left: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column(
@@ -52,8 +50,6 @@ class MemberBoardElectionChangeLog(ChangeLogMixin, database.db.Model):
     new_lastElected: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column(
         'new_last_elected', sqlalchemy.Date)
 
-    old_boardTypeFK: sqlalchemy.orm.Mapped[Optional[int]] = sqlalchemy.orm.mapped_column(
-        'old_board_type_fk', sqlalchemy.Integer)
     old_joined: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column(
         'old_joined', sqlalchemy.Date)
     old_left: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column(

@@ -45,14 +45,17 @@ def boardElectionEdit(objectID: str) -> str | flask.Response:
 
         # create prefilled form
         form = FormMemberBoardElectionEdit(obj=obj)
+        form.memberFK.choices = [(obj.member.uid, obj.member)]
 
         # get DB data
         boardTypes = database.getObjects(BoardType)
 
-        # set form choices
-        form.boardTypeFK.choices = [(obj.position.uid, obj.position.name)] + [
-            (bt.uid, bt.name) for bt in boardTypes if bt.uid != obj.boardTypeFK]
-        form.memberFK.choices = [(obj.member.uid, obj.member)]
+        # set position choices
+        form.positions.choices = [(position.uid, position) for position in boardTypes
+                                  if position.uid not in obj.positions]
+        if flask.request.method == 'GET':
+            form.positions.default = [default.uid for default in obj.positions]
+            form.positions.process(formdata=None)
 
         # create payload
         payload = {

@@ -41,14 +41,14 @@ def modifyAndCommit(objectID: int, changesDict: dict) -> int:
         if status not in [returnCodes.success, returnCodes.noChanges]:
             return status
 
-        # get the level object
+        # get the practice type object
         obj = database.getObject(PracticeType, objectID)
 
         # get the current ageCategories and decide which to remove and which to add
         currentAgeCategories = {ageCategory.uid for ageCategory in obj.ageCategories}
         desiredAgeCategories = set(ageCategories)
 
-        # remove ageCategories that are no longer associated with the level
+        # remove ageCategories that are no longer associated with the practice type
         for removedAgeCategory in currentAgeCategories - desiredAgeCategories:
             removedAgeCategory = database.getObject(AgeCategory, removedAgeCategory)
             obj.removeAgeCategory(removedAgeCategory)

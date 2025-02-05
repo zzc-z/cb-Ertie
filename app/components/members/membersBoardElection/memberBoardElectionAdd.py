@@ -49,7 +49,7 @@ def boardElectionAdd() -> str | flask.Response:
 
         # create form choices
         form.memberFK.choices = [(m.uid, m) for m in database.db.session.scalars(query).all()]
-        form.boardTypeFK.choices = [(mt.uid, mt.name) for mt in boardTypes]
+        form.positions.choices = [(mt.uid, mt.name) for mt in boardTypes]
 
         if form.validate_on_submit():
             # validate and commit the new object to the DB

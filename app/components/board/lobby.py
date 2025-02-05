@@ -56,7 +56,8 @@ def lobby() -> str | flask.Response:
                 'isValid': (next_election := datetime(member.boardElection.lastElected.year,
                                                       member.boardElection.lastElected.month,
                                                       member.boardElection.lastElected.day)
-                                             + timedelta(days=365 * member.boardElection.position.term))
+                                             + timedelta(
+                    days=365 * min((position.term for position in member.boardElection.positions), default=0)))
                            > datetime.now(),
                 'nextElection': next_election.strftime('%d/%m/%Y')
             }

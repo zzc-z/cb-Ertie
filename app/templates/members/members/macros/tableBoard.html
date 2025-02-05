@@ -32,7 +32,7 @@
                 Telefonsnummer
             </th>
             <th scope="col">
-                Positioun
+                Positioun(en)
             </th>
             <th style="text-align:center">
                 <span aria-hidden="true">
@@ -79,7 +79,9 @@
                 </td>
 
                 <td>
-                    {{ member.boardElection.position }}
+                    {% for position in member.boardElection.positions %}
+                        <span class="badge rounded-pill badge-sm bg-info">{{ position }}</span>
+                    {% endfor %}
                 </td>
 
                 <td style="text-align:center">

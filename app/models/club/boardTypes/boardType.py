@@ -16,6 +16,7 @@ from app.models.members.membersBoardElection import MemberBoardElection
 from app.models.searchableMixin import SearchableMixin
 from app.models.mutableMixin import MutableMixin
 from app.models.club.boardTypes.boardTypeLuxNames import luxNames
+from app.models.members import boardElectionPositionsMapping
 
 # TYPE HINTS ###########################################################################################################
 from typing import List, Optional, TYPE_CHECKING
@@ -60,8 +61,8 @@ class BoardType(MutableMixin, SearchableMixin, database.db.Model):
         order_by='desc(BoardTypeChangeLog.when)')
 
     boardElections: sqlalchemy.orm.Mapped[Optional[List['MemberBoardElection']]] = sqlalchemy.orm.relationship(
-        back_populates='position',
-        foreign_keys='MemberBoardElection.boardTypeFK')
+        secondary=boardElectionPositionsMapping,
+        back_populates='positions')
 
     # OVERRIDES ########################################################################################################
     def canBeDeleted(self) -> bool:

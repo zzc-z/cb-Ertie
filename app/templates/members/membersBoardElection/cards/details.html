@@ -29,10 +29,10 @@
                                     {% else %}
                                         {{ moment(detail.get('value')).format('LL') }}
                                     {% endif %}
-                                {% elif detail.get('key') == 'boardTypeFK' %}
-                                    {{ boardElection.position }}
-                                {% else %}
-                                    {{ detail.get('value') }}
+                                {% elif detail.get('key') == 'positions' %}
+                                    {% for position in detail.get('value') %}
+                                        <span class="badge rounded-pill bg-info"> {{ position.name }}</span>
+                                    {% endfor %}
                                 {% endif %}
                             </div>
                         </div>
