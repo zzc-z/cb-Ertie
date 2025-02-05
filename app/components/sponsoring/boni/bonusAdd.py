@@ -20,6 +20,9 @@ import werkzeug.exceptions
 from app.components.sponsoring import bpSponsoring
 from app.components.sponsoring.boni.methods.bonusAdd import validateAndCommit
 
+# MODELS ###############################################################################################################
+from app.models.sponsoring.options.option import Option
+
 # HELPERS ##############################################################################################################
 from app.factory.extensions.custom.returnCodes import returnCodes
 
@@ -35,6 +38,10 @@ def bonusAdd() -> str | flask.Response:
     try:
         # create the form
         form = FormBonusAdd()
+
+        # get boni choices
+        form.optionFK.choices = ([(0, '')] +
+                                 [(option.uid, option) for option in Option.query.all() if option.available()])
 
         if form.validate_on_submit():
             # validate and commit the new object to the DB

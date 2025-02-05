@@ -2,13 +2,14 @@
 {# INCLUDES ######################################################################################################### #}
 {# ################################################################################################################## #}
 {% extends "cards/stub.html" %}
-{% from "sponsoring/sponsors/macros/tableOptions.html" import renderTableOptions %}
+
 
 {# ################################################################################################################## #}
 {# DATA ############################################################################################################# #}
 {# ################################################################################################################## #}
 {% set object = payload.get('object') %}
 {% set sponsors = payload.get('sponsors') %}
+{% set boni = payload.get('boni') %}
 {% set tab = payload.get('tab') %}
 
 {# ################################################################################################################## #}
@@ -29,7 +30,12 @@
         {% include 'sponsoring/options/cards/details.html' %}
     {% elif tab == 'sponsors' %}
         {# table of sponsors #}
+        {% from "sponsoring/sponsors/macros/tableOptions.html" import renderTableOptions %}
         {{ renderTableOptions(sponsors) }}
+    {% elif tab == 'boni' %}
+        {# table of sponsors #}
+        {% from "sponsoring/boni/macros/tableLevel.html" import renderTableLevel %}
+        {{ renderTableLevel(boni) }}
     {% elif tab == 'history' %}
         {% include 'sponsoring/options/tables/optionHistory.html' %}
     {% endif %}

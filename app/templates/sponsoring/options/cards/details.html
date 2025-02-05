@@ -29,7 +29,7 @@
 
     <!-- progress bar -->
     {% set total = object.limit %}
-    {% set taken = object.sponsors | count %}
+    {% set taken = (object.sponsors | count) + (object.boni | count) %}
     {% set utilisation = ((taken / total) * 100) | round(2, 'floor') %}
     {% if utilisation < 50 %}
         {% set classText = "progress-bar bg-success" %}

@@ -23,6 +23,7 @@ from typing import List, TYPE_CHECKING, Set
 if TYPE_CHECKING:
     from app.models.sponsoring.options.optionChangeLog import OptionChangeLog
     from app.models.sponsoring.sponsors.sponsor import Sponsor
+    from app.models.sponsoring.boni.bonus import Bonus
 
 
 ########################################################################################################################
@@ -66,15 +67,22 @@ class Option(MutableMixin, SearchableMixin, database.db.Model):
 
     sponsors: sqlalchemy.orm.Mapped[Set['Sponsor']] = sqlalchemy.orm.relationship(secondary=sponsorOptionsMapping,
                                                                                   back_populates='options')
+    boni: sqlalchemy.orm.Mapped[Set['Bonus']] = sqlalchemy.orm.relationship(back_populates='option')
 
     # METHODS ##########################################################################################################
     def available(self) -> bool:
-        return len(self.sponsors) < self.limit
+        return len(self.sponsors) + len(self.boni) < self.limit
 
     def availableForSponsor(self, sponsor: 'Sponsor') -> bool:
         return True if self in sponsor.options else self.available()
 
+    def availableForBonus(self, bonus: 'Bonus') -> bool:
+        return True if self == bonus.option else self.available()
+
     # OVERRIDES ########################################################################################################
+    def canBeDeleted(self) -> bool:
+        return len(self.sponsors) + len(self.boni) == 0
+
     def canBeApplied(self) -> bool:
         # do not delete options that are associated to sponsors
         return len(self.sponsors) == 0

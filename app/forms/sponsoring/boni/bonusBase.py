@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 ########################################################################################################################
 # INCLUDES #############################################################################################################
 ########################################################################################################################
-from wtforms import StringField, IntegerField
+from wtforms import StringField, SelectField
 from wtforms import validators
 from app.forms import FormBase
 
@@ -26,3 +26,4 @@ class FormBonusBase(FormBase):
     name = StringField('Numm', validators=[validators.InputRequired(), validators.Length(max=64)])
     description = StringField('Beschreiwung',
                               validators=[validators.InputRequired(), validators.Length(max=4096)])
+    optionFK = SelectField('Optioun', choices=[], coerce=int, validators=[validators.Optional()])

@@ -16,6 +16,10 @@
                     <div class="col-lg" style="text-align: right">
                         {% if detail.get('key') == 'description' %}
                             {{ detail.get('value') }}
+                        {% elif detail.get('key') == 'optionFK' %}
+                            {% if object.option is not none %}
+                                {{ object.option }}
+                            {% endif %}
                         {% else %}
                             {{ detail.get('value') }}
                         {% endif %}

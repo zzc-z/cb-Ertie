@@ -19,11 +19,12 @@ from app.models.sponsoring import levelBoniMapping
 from app.models.sponsoring.levels.level import Level
 
 # TYPE HINTS ###########################################################################################################
-from typing import List, TYPE_CHECKING, Set
+from typing import List, TYPE_CHECKING, Set, Optional
 
 if TYPE_CHECKING:
     from app.models.sponsoring.boni.bonusChangeLog import BonusChangeLog
     from app.models.sponsoring.sponsors.sponsor import Sponsor
+    from app.models.sponsoring.options.option import Option
 
 
 ########################################################################################################################
@@ -37,9 +38,9 @@ class Bonus(MutableMixin, SearchableMixin, database.db.Model):
     __searchable__ = ['key', 'name', 'description']
 
     # TRACK CHANGES ####################################################################################################
-    __columns__ = {'key', 'name', 'description'}
+    __columns__ = {'key', 'name', 'description', 'optionFK'}
     __required__ = {'key', 'name', 'description'}
-    __mutable__ = {'key', 'name', 'description'}
+    __mutable__ = {'key', 'name', 'description', 'optionFK'}
     __unique__ = {'key', 'name', 'description'}
     __luxNames__ = luxNames
 
@@ -52,6 +53,8 @@ class Bonus(MutableMixin, SearchableMixin, database.db.Model):
     description: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('description',
                                                                            sqlalchemy.String(4096),
                                                                            unique=True, nullable=False)
+    optionFK: sqlalchemy.orm.Mapped[Optional[int]] = sqlalchemy.orm.mapped_column(
+        'option_fk', sqlalchemy.Integer, sqlalchemy.ForeignKey('sponsoring_option.uid'))
 
     # RELATIONSHIPS ####################################################################################################
     history: sqlalchemy.orm.Mapped[List['BonusChangeLog']] = sqlalchemy.orm.relationship(
@@ -61,6 +64,8 @@ class Bonus(MutableMixin, SearchableMixin, database.db.Model):
 
     levels: sqlalchemy.orm.Mapped[Set['Level']] = sqlalchemy.orm.relationship(secondary=levelBoniMapping,
                                                                               back_populates='boni')
+
+    option: sqlalchemy.orm.Mapped['Option'] = sqlalchemy.orm.relationship(back_populates='boni')
 
     # methods ##########################################################################################################
     def eligibleSponsors(self, sponsors: List['Sponsor']) -> Set['Sponsor']:

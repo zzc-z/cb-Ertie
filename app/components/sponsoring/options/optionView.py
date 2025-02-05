@@ -49,6 +49,8 @@ def optionView(objectID: str) -> str | flask.Response:
                 payload['details'] = obj.viewPayload()
             case 'sponsors':
                 payload['sponsors'] = sorted([sponsor for sponsor in obj.sponsors], key=lambda s: s.name.casefold())
+            case 'boni':
+                payload['boni'] = sorted([bonus for bonus in obj.boni], key=lambda s: s.name.casefold())
             case 'history':
                 payload['history'] = obj.history
 

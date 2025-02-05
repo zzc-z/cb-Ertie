@@ -18,6 +18,8 @@ import werkzeug.exceptions
 
 # DB & MODELS ##########################################################################################################
 from app.models.sponsoring.boni import Bonus
+from app.models.sponsoring.options import Option
+from app.factory.extensions.custom.database import database
 
 # COMPONENT ############################################################################################################
 from app.components.sponsoring import bpSponsoring
@@ -42,6 +44,15 @@ def bonusEdit(objectID: str) -> str | flask.Response:
 
         # create prefilled form
         form = FormBonusEdit(obj=obj)
+
+        # get boni choices
+        currentOption = obj.option
+        currentOptionUID = currentOption.uid if currentOption else 0
+        firstChoice = [(currentOption.uid, currentOption), (0, '')] if currentOption else [(0, '')]
+
+        # Add remaining options to the list, excluding the current option
+        form.optionFK.choices = firstChoice + [(option.uid, option) for option in database.getObjects(Option)
+                                               if option.uid != currentOptionUID]
 
         # create payload
         payload = {

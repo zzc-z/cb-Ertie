@@ -12,7 +12,7 @@
            href="{{ url_for('sponsoring.optionEdit', objectID = object.uid) }}">
             Änneren
         </a>
-        <a class="btn btn-lg {% if object.sponsors | count > 0 %} btn-secondary disabled
+        <a class="btn btn-lg {% if (object.sponsors | count) + (object.boni | count) > 0 %} btn-secondary disabled
                              {% else %} btn-outline-danger
                              {% endif %}"
            href="{{ url_for('sponsoring.optionDelete', objectID = object.uid) }}">Läschen</a>

@@ -27,7 +27,7 @@
                     {{ option.value | localizeCurrency }}
                 </td>
                 <td style="text-align:center">
-                    {{ option.sponsors | count }} / {{ option.limit }}
+                    {{ (option.sponsors | count) + (option.boni | count) }} / {{ option.limit }}
                 </td>
 
                 <td style="text-align:right">
@@ -36,7 +36,8 @@
                     <a href="{{ url_for('sponsoring.optionEdit', objectID=option.uid) }}"
                        class="btn btn-sm btn-outline-warning">Edit</a>
                     <a href="{{ url_for('sponsoring.optionDelete', objectID=option.uid) }}"
-                       class="btn btn-sm {% if option.sponsors | count > 0 %} btn-secondary disabled
+                       class="btn btn-sm {% if (option.sponsors | count) + (option.boni | count) > 0 %}
+                                            btn-secondary disabled
                                          {% else %} btn-outline-danger
                                          {% endif %}">Del</a>
                 </td>
