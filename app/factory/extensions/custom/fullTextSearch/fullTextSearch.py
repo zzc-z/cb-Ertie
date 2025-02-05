@@ -94,6 +94,14 @@ class FullTextSearch:
             logger.error(f'Runtime Error @ FullTextSearch.queryIndex: {e}')
             raise RuntimeError(f'Runtime Error @ FullTextSearch.queryIndex: {e}')
 
+    def deleteIndex(self, index: str):
+        try:
+            inputValidator.string(index)
+            return self._engine.removeIndex(index)
+        except Exception as e:
+            logger.error(f'Runtime Error @ FullTextSearch.deleteIndex: {e}')
+            raise RuntimeError(f'Runtime Error @ FullTextSearch.deleteIndex: {e}')
+
     ####################################################################################################################
     # PRIVATE METHODS ##################################################################################################
     ####################################################################################################################

@@ -103,3 +103,6 @@ class MemberAssociationAffiliation(MutableMixin, UserMixin, SearchableMixin, dat
             return True if self.left else False
         except Exception as e:
             raise RuntimeError(f'Runtime Error @ MemberAssociationAffiliation: {e}') from e
+
+    def __repr__(self) -> str:
+        return f'{self.member} ({self.associationLicenceNumber})'

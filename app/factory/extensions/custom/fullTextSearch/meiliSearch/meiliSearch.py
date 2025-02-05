@@ -118,6 +118,14 @@ class MeiliSearch:
         except Exception as e:
             raise RuntimeError(f'Runtime Error @ MeiliSearch.queryIndex: {e}')
 
+    def removeIndex(self, index: str) -> None:
+        try:
+            inputValidator.string(index)
+            index = self._indexHelper(index)
+            self._client.index(index).delete()
+        except Exception as e:
+            raise RuntimeError(f'Runtime Error @ MeiliSearch.removeIndex: {e}')
+
     ####################################################################################################################
     # PRIVATE METHODS ##################################################################################################
     ####################################################################################################################
