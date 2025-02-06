@@ -21,7 +21,7 @@
                                 {% elif detail.get('key') == 'fee' %}
                                         {{ detail.get('value') | localizeCurrency }}
                                 {% elif detail.get('key') in ['seasonStart', 'seasonEnd'] %}
-                                    {{ moment(detail.get('value')).format('D. MMMM') }}
+                                    {{ detail.get('value') | localizeDate(year=False) }}
                                 {% else %}
                                     {{ detail.get('value') }}
                                 {% endif %}

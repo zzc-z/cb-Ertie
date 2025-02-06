@@ -19,7 +19,7 @@
                                 {% if detail.get('key') == 'established' %}
                                     {{ moment(detail.get('value')).format('LL') }}
                                 {% elif detail.get('key') in ['fiscalYearStart', 'fiscalYearEnd'] %}
-                                    {{ moment(detail.get('value')).format('D. MMMM') }}
+                                    {{ detail.get('value') | localizeDate(year=False) }}
                                 {% else %}
                                     {{ detail.get('value') }}
                                 {% endif %}
