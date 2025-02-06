@@ -60,8 +60,8 @@ try:
 
 
     @ertie.template_filter()
-    def localizeDate(date):
-        return date.strftime("%d. %B %Y")
+    def localizeDate(date, year=True):
+        return date.strftime("%d. %B %Y") if year else date.strftime("%d. %B")
 
 except ImportError as e:
     print(f"Critical Error (Ertië): Missing dependency - {e}")
