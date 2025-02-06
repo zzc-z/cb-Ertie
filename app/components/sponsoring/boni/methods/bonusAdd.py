@@ -27,6 +27,9 @@ from app.factory.extensions.custom.inputValidator import inputValidator
 def validateAndCommit(objectDict: dict) -> int:
     try:
         inputValidator.dictionary(objectDict, notAllowed=['submit', 'csrf_token'])
+        if objectDict['optionFK'] == 0:
+            objectDict.pop('optionFK')
+
         return database.createObject(Bonus, objectDict, BonusChangeLog)
 
     except SQLAlchemyError as e:

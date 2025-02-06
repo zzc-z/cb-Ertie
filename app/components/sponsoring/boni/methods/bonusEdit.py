@@ -30,6 +30,9 @@ def modifyAndCommit(objectID: int, changesDict: dict) -> int:
         inputValidator.positiveInteger(objectID)
         inputValidator.dictionary(changesDict, notAllowed=['submit', 'csrf_token'])
 
+        if changesDict['optionFK'] == 0:
+            changesDict['optionFK'] = None
+
         # demand to change the object
         return database.modifyObject(Bonus, objectID, changesDict, BonusChangeLog)
 
