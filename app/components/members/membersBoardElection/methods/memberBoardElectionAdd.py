@@ -41,7 +41,7 @@ def validateAndCommit(objectDict: dict) -> int:
             return statusCode
 
         # add the positions to the newly created level
-        obj = database.getObject(BoardType, objID)
+        obj = database.getObject(MemberBoardElection, objID)
         for position in positions:
             position = database.getObject(BoardType, position)
             obj.addPosition(position)
