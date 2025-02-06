@@ -2,7 +2,7 @@
 Tests for the FTS component.
 Warning: this is a stub
 
-SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
+SPDX-FileCopyrightText: © 2024 Gilles Bellot <licence@sl.bell0bytes.eu>
 SPDX-License-Identifier: AGPL-3.0-or-later
 """
 
