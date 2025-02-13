@@ -45,17 +45,17 @@
 
                                     {% elif detail.get('valid') %}
                                         <span class="badge rounded-pill badge-sm bg-success">
-                                            {{ moment(detail.get('value')).format('LL') }}
+                                            {{ detail.get('value') | localizeDate() }}
                                         </span>
 
                                     {% else %}
                                         <span class="badge rounded-pill badge-sm bg-danger">
-                                            {{ moment(detail.get('value')).format('LL') }}
+                                            {{ detail.get('value') | localizeDate() }}
                                          </span>
 
                                     {% endif %}
                                 {% elif detail.get('key') in ['birthday','joined'] %}
-                                    {{ moment(detail.get('value')).format('LL') }}
+                                    {{ detail.get('value') | localizeDate() }}
                                 {% elif detail.get('key') == 'nationality' %}
                                     <img
                                             src="https://flagcdn.com/w20/{{ detail.get('value').lower() }}.png"

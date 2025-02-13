@@ -17,7 +17,7 @@ from typing import Type
 
 # FLASK & EXTENSIONS ###################################################################################################
 import flask
-from .extensions import csrf, bootstrap, moment, auth, paranoid, loginManager
+from .extensions import csrf, bootstrap, auth, paranoid, loginManager
 
 # CUSTOM EXTENSIONS ####################################################################################################
 from .extensions import database
@@ -70,12 +70,8 @@ def createApp(configClass: Type[Config] = Config) -> flask.Flask:
         # initialize the bootstrap theme
         bootstrap.init_app(app)
         logger.extensionOperational('Bootstrap')
-
-        # initialize the moment extension (for time and date)
-        moment.init_app(app)
-        logger.extensionOperational('Moment')
     except Exception as e:
-        _logAndRaiseException('Bootstrap & Moment', e)
+        _logAndRaiseException('Bootstrap', e)
 
     # AUTHENTICATION ###################################################################################################
     try:

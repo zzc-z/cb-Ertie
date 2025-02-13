@@ -41,21 +41,21 @@
                                 {% if detail.get('key') == 'lastPayment' %}
                                     {% if payload.get('isValid') %}
                                             <span class="badge badge-sm bg-success">
-                                                {{ moment(detail.get('value')).format('LL') }}
+                                                {{ detail.get('value') | localizeDate() }}
                                             </span>
                                     {% else %}
                                             <span class="badge badge-sm bg-danger">
-                                                {{ moment(detail.get('value')).format('LL') }}
+                                                {{ detail.get('value') | localizeDate() }}
                                             </span>
                                     {% endif %}
                                 {% else %}
                                     {% if payload.get('validInvoice') %}
                                             <span class="badge badge-sm bg-success">
-                                                {{ moment(detail.get('value')).format('LL') }}
+                                                {{ detail.get('value') | localizeDate() }}
                                             </span>
                                     {% else %}
                                             <span class="badge badge-sm bg-danger">
-                                                {{ moment(detail.get('value')).format('LL') }}
+                                                {{ detail.get('value') | localizeDate() }}
                                             </span>
                                     {% endif %}
                                 {% endif %}

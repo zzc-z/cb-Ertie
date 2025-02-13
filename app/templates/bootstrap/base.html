@@ -27,8 +27,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 {% block content %}{% endblock %} {# page content #}
 {% block scripts %}
     {{ bootstrap.load_js() }}                                       {# scripts #}
-    {{ moment.include_moment() }}
-    {{ moment.locale('lb') }}
      <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.0/build/js/intlTelInput.min.js"></script>
 {% endblock %}
 </body>

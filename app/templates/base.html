@@ -90,8 +90,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </li>
 
         <li class="list-group-item">
-            Wéini: {{ moment(history.getTimeOfChange()).format('LL @ HH:mm:ss') }}
-            ({{ moment(history.getTimeOfChange()).fromNow() }})
+            Wéini: {{ history.getTimeOfChange() | localizeDateTime() }}
         </li>
     </ul>
 
@@ -135,8 +134,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <tr>
 
                 <td>
-                    {{ moment(item.getTimeOfChange()).format('LL @ HH:mm:ss') }}
-                    ({{ moment(item.getTimeOfChange()).fromNow() }})
+                    {{ item.getTimeOfChange() | localizeDateTime() }}
                 </td>
 
                 <td>

@@ -24,10 +24,10 @@
                                         {% else %}
                                             <span class="badge bg-danger">
                                         {% endif %}
-                                                {{ moment(detail.get('value')).format('LL') }}
+                                                {{ detail.get('value') | localizeDate() }}
                                             </span>
                                     {% else %}
-                                        {{ moment(detail.get('value')).format('LL') }}
+                                        {{ detail.get('value') | localizeDate() }}
                                     {% endif %}
                                 {% elif detail.get('key') == 'positions' %}
                                     {% for position in detail.get('value') %}

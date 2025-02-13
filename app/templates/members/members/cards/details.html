@@ -24,8 +24,7 @@
                                 <img src="{{ detail.get('value') }}" alt="" height="100">
                             {% elif detail.get('key') in ['lastLogin', 'lastSeen'] %}
                                 {% if detail.get('value') is not none %}
-                                    {{ moment(member.getTime(mode=detail.get('key'))).format('LL @ HH:mm:ss') }} (
-                                    {{ moment(member.getTime(mode=detail.get('key'))).fromNow() }})
+                                    {{ member.getTime(mode=detail.get('key')) | localizeDateTime() }}
                                 {% else %}
                                     Nach Ni
                                 {% endif %}
