@@ -76,7 +76,7 @@ def lobby() -> str | flask.Response:
         query = query.order_by(Member.familyName.asc(), Member.givenName.asc())
 
         # create a list with dicts with more information
-        sponsors, levels = _createDict(query)
+        sponsors, levels, options = _createDict(query)
 
         # apply further filters
         sponsors, nAdditionalFilters = _applyAdditionalFilters(sponsors, form.getCleanDict(), levels)
@@ -91,9 +91,9 @@ def lobby() -> str | flask.Response:
         payload.update({
             'referrer': 'lobby',
             'sponsors': sponsors,
-            'options': database.getObjects(Option),
+            'options': options,
             'boni': database.getObjects(Bonus),
-            'levels': database.getObjects(Level, sortBy='threshold'),
+            'levels': levels,
             'form': form,
             'nFilters': nFilters + nAdditionalFilters,
             'pagination': pagination,
@@ -116,7 +116,9 @@ def lobby() -> str | flask.Response:
 # HELPERS ##############################################################################################################
 ########################################################################################################################
 def _createDict(query) -> Tuple[List, List]:
-    levels = database.getObjects(Level)
+    levels = database.getObjects(Level, sortBy='threshold')
+    options = database.getObjects(Option)
+
     currentDateTime = datetime.now()
     sponsors = [
         {
@@ -153,7 +155,7 @@ def _createDict(query) -> Tuple[List, List]:
 
     # order by
     sponsors = _orderBy(sponsors)
-    return sponsors, levels
+    return sponsors, levels, options
 
 
 def _orderBy(sponsors):

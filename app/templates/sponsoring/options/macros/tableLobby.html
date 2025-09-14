@@ -27,7 +27,7 @@
                     {{ option.value | localizeCurrency }}
                 </td>
                 <td style="text-align:center">
-                    {{ (option.sponsors | count) + (option.boni | count) }} / {{ option.limit }}
+                    {{ option.taken() }} / {{ option.limit }}
                 </td>
 
                 <td style="text-align:right">

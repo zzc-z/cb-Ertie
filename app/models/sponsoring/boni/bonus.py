@@ -68,12 +68,18 @@ class Bonus(MutableMixin, SearchableMixin, database.db.Model):
     option: sqlalchemy.orm.Mapped['Option'] = sqlalchemy.orm.relationship(back_populates='boni')
 
     # methods ##########################################################################################################
-    def eligibleSponsors(self, sponsors: List['Sponsor']) -> Set['Sponsor']:
+    def eligibleSponsors(self, sponsors: List['Sponsor']) -> tuple[Set['Sponsor'],int]:
         try:
             # for each level -> get sponsors
             eligibleSponsors = {sponsor for level in self.levels for sponsor in level.eligibleSponsors(sponsors)}
+            return eligibleSponsors, len(eligibleSponsors)
+        except Exception as e:
+            raise RuntimeError(f'Runtime Error @ Level.eligibleSponsors: {e}')
 
-            return eligibleSponsors
+    def nEligibleSponsors(self, sponsors: List['Sponsor']) -> int:
+        try:
+            _, nEligibleSponsors = self.eligibleSponsors(sponsors)
+            return nEligibleSponsors
         except Exception as e:
             raise RuntimeError(f'Runtime Error @ Level.eligibleSponsors: {e}')
 

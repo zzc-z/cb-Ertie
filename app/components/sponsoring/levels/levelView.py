@@ -45,8 +45,7 @@ def levelView(objectID: str) -> str | flask.Response:
         payload['object'] = obj
         payload['referrer'] = 'level'
         payload['nBoni'] = len(obj.boni)
-        payload['sponsors'] = obj.eligibleSponsors(database.getObjects(Sponsor))
-        payload['nSponsors'] = len(payload['sponsors'])
+        payload['sponsors'], payload['nSponsors'] = obj.eligibleSponsors(database.getObjects(Sponsor))
 
         # branch based on the requested tab
         match payload.get('tab'):

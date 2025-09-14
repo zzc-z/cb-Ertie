@@ -16,6 +16,7 @@ from app.models.searchableMixin import SearchableMixin
 from app.models.mutableMixin import MutableMixin
 from app.models.sponsoring import sponsorOptionsMapping
 from app.models.sponsoring.options.optionLuxNames import luxNames
+from app.models.sponsoring.sponsors import Sponsor
 
 # TYPE HINTS ###########################################################################################################
 from typing import List, TYPE_CHECKING, Set
@@ -71,7 +72,15 @@ class Option(MutableMixin, SearchableMixin, database.db.Model):
 
     # METHODS ##########################################################################################################
     def available(self) -> bool:
-        return len(self.sponsors) + len(self.boni) < self.limit
+        return self.taken() < self.limit
+
+    def taken(self) -> int:
+        sponsors = self.sponsors
+        otherSponsors = set(database.getObjects(Sponsor))-sponsors
+        nBonusSponsors = 0
+        for bonus in self.boni:
+            nBonusSponsors += bonus.nEligibleSponsors(otherSponsors)
+        return len(sponsors) + nBonusSponsors
 
     def availableForSponsor(self, sponsor: 'Sponsor') -> bool:
         return True if self in sponsor.options else self.available()

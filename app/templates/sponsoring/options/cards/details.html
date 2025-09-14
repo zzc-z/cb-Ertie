@@ -3,6 +3,7 @@
 {# ################################################################################################################## #}
 {% set object = payload.get('object') %}
 {% set details = payload.get('details') %}
+{% set nSponsors = payload.get('nSponsors') %}
 
 {# ################################################################################################################## #}
 {# CARD ############################################################################################################# #}
@@ -29,7 +30,7 @@
 
     <!-- progress bar -->
     {% set total = object.limit %}
-    {% set taken = (object.sponsors | count) + (object.boni | count) %}
+    {% set taken = nSponsors %}
     {% set utilisation = ((taken / total) * 100) | round(2, 'floor') %}
     {% if utilisation < 50 %}
         {% set classText = "progress-bar bg-success" %}

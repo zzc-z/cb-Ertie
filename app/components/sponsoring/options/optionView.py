@@ -18,6 +18,7 @@ import werkzeug.exceptions
 
 # DB & MODEL ###########################################################################################################
 from app.models.sponsoring.options import Option
+from app.models.sponsoring.sponsors import Sponsor
 
 # COMPONENT ############################################################################################################
 from app.components.sponsoring import bpSponsoring
@@ -25,6 +26,7 @@ from app.components.sponsoring import bpSponsoring
 # EXTENSIONS ###########################################################################################################
 from app.factory.extensions.custom.routeManager import routeManager
 from app.factory.extensions.custom.requestParser import requestParser
+from app.factory.extensions.custom.database import database
 
 
 ########################################################################################################################
@@ -43,12 +45,19 @@ def optionView(objectID: str) -> str | flask.Response:
         payload['object'] = obj
         payload['referrer'] = 'option'
 
+        # get sponsors
+        allSponsors = database.getObjects(Sponsor)
+        sponsors = set(obj.sponsors)
+        for bonus in obj.boni:
+            sponsors |= bonus.eligibleSponsors(allSponsors)[0]
+        payload['nSponsors'] = len(sponsors)
+
         # branch based on the requested tab
         match payload.get('tab'):
             case 'details':
                 payload['details'] = obj.viewPayload()
             case 'sponsors':
-                payload['sponsors'] = sorted([sponsor for sponsor in obj.sponsors], key=lambda s: s.name.casefold())
+                payload['sponsors'] = sorted(list(sponsors), key=lambda s: s.name.casefold())
             case 'boni':
                 payload['boni'] = sorted([bonus for bonus in obj.boni], key=lambda s: s.name.casefold())
             case 'history':
