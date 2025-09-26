@@ -38,6 +38,7 @@ from app.components.board import bpBoard
 from app.components.association import bpAssociation
 from app.components.sponsoring import bpSponsoring
 from app.components.sports import bpSports
+from app.components.invoices import bpInvoices
 
 
 ########################################################################################################################
@@ -157,6 +158,10 @@ def createApp(configClass: Type[Config] = Config) -> flask.Flask:
         # initialize the sponsoring module
         app.register_blueprint(bpSponsoring)
         logger.moduleOperational('Sponsoring')
+
+        # initialize the invoices module
+        app.register_blueprint(bpInvoices)
+        logger.moduleOperational('Invoices')
 
         # initialize the administration module
         app.register_blueprint(bpAdmin)

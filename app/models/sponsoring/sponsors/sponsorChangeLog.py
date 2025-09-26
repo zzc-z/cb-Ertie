@@ -33,7 +33,7 @@ class SponsorChangeLog(ChangeLogMixin, database.db.Model):
     __tablename__ = 'sponsor_changelog'
 
     # TRACK CHANGES ####################################################################################################
-    __trackedFields__ = {'lastPayment', 'name', 'lastInvoice', 'anonymous', 'donation'}
+    __trackedFields__ = {'name', 'anonymous', 'donation'}
     __luxNames__ = luxNames
 
     # DATABASE MODEL ###################################################################################################
@@ -41,20 +41,12 @@ class SponsorChangeLog(ChangeLogMixin, database.db.Model):
     objectFK: sqlalchemy.orm.Mapped[int] = sqlalchemy.orm.mapped_column('object_fk',
                                                                         sqlalchemy.ForeignKey('sponsor.uid'),
                                                                         index=True, nullable=False)
-    new_lastPayment: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column('new_last_payment',
-                                                                                          sqlalchemy.Date)
-    new_lastInvoice: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column('new_last_invoice',
-                                                                                          sqlalchemy.Date)
     new_name: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_name',
                                                                                   sqlalchemy.String(64))
     new_anonymous: sqlalchemy.orm.Mapped[Optional[bool]] = sqlalchemy.orm.mapped_column('new_anonymous',
                                                                                         sqlalchemy.Boolean)
     new_donation: sqlalchemy.orm.Mapped[Optional[float]] = sqlalchemy.orm.mapped_column('new_donation',
                                                                                           sqlalchemy.Float)
-    old_lastPayment: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column('old_last_payment',
-                                                                                          sqlalchemy.Date)
-    old_lastInvoice: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column('old_last_invoice',
-                                                                                          sqlalchemy.Date)
     old_name: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_name',
                                                                                   sqlalchemy.String(64))
     old_anonymous: sqlalchemy.orm.Mapped[Optional[bool]] = sqlalchemy.orm.mapped_column('old_anonymous',

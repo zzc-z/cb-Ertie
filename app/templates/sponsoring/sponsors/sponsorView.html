@@ -29,6 +29,8 @@
         {% include 'addresses/cards/details.html' %}
     {% elif tab == 'details' %}
         {% include 'sponsoring/sponsors/cards/details.html' %}
+    {% elif tab == 'invoices' %}
+        {% include 'invoices/tables/invoices.html' %}
     {% elif tab == 'history' %}
 
         {# show history table #}
@@ -91,7 +93,7 @@
 {% endblock %}
 
 {% block cardFooter %}
-    {% if tab == 'details' %}
+    {% if tab == 'details' or tab == 'invoices' %}
         {% include 'sponsoring/sponsors/cards/footer.html' %}
     {% elif tab == 'address' %}
         {% include 'addresses/cards/footer.html' %}

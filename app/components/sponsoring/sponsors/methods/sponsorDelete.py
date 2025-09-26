@@ -37,7 +37,7 @@ def delete(objectID: int) -> int:
             obj.removeBonus(option)
 
         # finally delete the sponsoring details
-        return database.deleteObjectAndHistory(Sponsor, objectID, associatedObjects=['address', 'member'])
+        return database.deleteObjectAndHistory(Sponsor, objectID, associatedObjects=['address', 'member', 'invoices'])
 
     except SQLAlchemyError as e:
         raise RuntimeError(f'DB Error @ sponsorDelete.delete: {e}') from e

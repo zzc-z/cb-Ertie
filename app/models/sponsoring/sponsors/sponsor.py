@@ -28,6 +28,7 @@ if TYPE_CHECKING:
     from app.models.sponsoring.options.option import Option
     from app.models.members.members.member import Member
     from app.models.addresses.address import Address
+    from app.models.invoices.invoice import Invoice
 
 
 ########################################################################################################################
@@ -38,9 +39,9 @@ class Sponsor(MutableMixin, SearchableMixin, database.db.Model):
     __tablename__ = 'sponsor'
 
     # TRACK CHANGES ####################################################################################################
-    __columns__ = {'memberFK', 'lastPayment', 'name', 'lastInvoice', 'anonymous', 'donation'}
+    __columns__ = {'memberFK', 'name', 'anonymous', 'donation'}
     __required__ = {'memberFK', 'name', 'anonymous'}
-    __mutable__ = {'memberFK', 'lastPayment', 'name', 'lastInvoice', 'anonymous', 'donation'}
+    __mutable__ = {'memberFK', 'name', 'anonymous', 'donation'}
     __unique__ = {'name'}
     __luxNames__ = luxNames
 
@@ -53,10 +54,6 @@ class Sponsor(MutableMixin, SearchableMixin, database.db.Model):
         'member_fk', sqlalchemy.Integer, sqlalchemy.ForeignKey('member.uid'))
     name = sqlalchemy.orm.mapped_column('name', sqlalchemy.String(64), unique=True, nullable=False)
     donation = sqlalchemy.orm.mapped_column('donation', sqlalchemy.Float, default=0)
-    lastPayment: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column(
-        'last_payment', sqlalchemy.Date)
-    lastInvoice: sqlalchemy.orm.Mapped[Optional[date]] = sqlalchemy.orm.mapped_column(
-        'last_invoice', sqlalchemy.Date)
     anonymous: sqlalchemy.orm.Mapped[bool] = sqlalchemy.orm.mapped_column('anonymous', sqlalchemy.Boolean,
                                                                           nullable=False)
 
@@ -69,6 +66,9 @@ class Sponsor(MutableMixin, SearchableMixin, database.db.Model):
     member: sqlalchemy.orm.Mapped['Member'] = sqlalchemy.orm.relationship(back_populates='sponsor')
     address: sqlalchemy.orm.Mapped[Optional['Address']] = sqlalchemy.orm.relationship(back_populates='sponsor',
                                                                                       foreign_keys='Address.sponsorFK')
+    invoices: sqlalchemy.orm.Mapped[List['Invoice']] = sqlalchemy.orm.relationship(back_populates='sponsor',
+                                                                                  foreign_keys='Invoice.sponsorFK',
+                                                                                  order_by='desc(Invoice.date)')
     options: sqlalchemy.orm.Mapped[Set['Option']] = sqlalchemy.orm.relationship(secondary=sponsorOptionsMapping,
                                                                                 back_populates='sponsors',
                                                                                 order_by='desc(Option.value)')

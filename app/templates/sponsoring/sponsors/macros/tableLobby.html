@@ -93,21 +93,21 @@
 
                 <td style="text-align:center">
                     {% if obj.get('isValid') %}
-                        {% if obj.get('lastPaymentDelta') > 360-90 %}
-                            <span class="badge rounded-pill badge-sm bg-warning"> {{ obj.get('lastPayment') }} </span>
+                        {% if obj.get('lastInvoicePaymentDelta') > 360-90 %}
+                            <span class="badge rounded-pill badge-sm bg-warning"> {{ obj.get('lastInvoicePayment') }} </span>
                         {% else %}
-                            <span class="badge rounded-pill badge-sm bg-success"> {{ obj.get('lastPayment') }} </span>
+                            <span class="badge rounded-pill badge-sm bg-success"> {{ obj.get('lastInvoicePayment') }} </span>
                         {% endif %}
                     {% else %}
-                        <span class="badge rounded-pill badge-sm bg-danger"> {{ obj.get('lastPayment') }} </span>
+                        <span class="badge rounded-pill badge-sm bg-danger"> {{ obj.get('lastInvoicePayment') }} </span>
                     {% endif %}
                 </td>
 
                 <td style="text-align:center">
                     {% if obj.get('validInvoice') %}
-                        <span class="badge rounded-pill badge-sm bg-success"> {{ obj.get('lastInvoice') }} </span>
+                        <span class="badge rounded-pill badge-sm bg-success"> {{ obj.get('lastInvoiceDate') }} </span>
                     {% else %}
-                        <span class="badge rounded-pill badge-sm bg-danger"> {{ obj.get('lastInvoice') }} </span>
+                        <span class="badge rounded-pill badge-sm bg-danger"> {{ obj.get('lastInvoiceDate') }} </span>
                     {% endif %}
                 </td>
 

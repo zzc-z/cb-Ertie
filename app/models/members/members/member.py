@@ -26,6 +26,7 @@ from app.models.members.membersClubMembership.memberClubMembership import Member
 from app.models.members.membersAssociationAffiliation.memberAssociationAffiliation import MemberAssociationAffiliation
 from app.models.searchableMixin import SearchableMixin
 from app.models.addresses import Address
+from app.models.invoices import Invoice
 from app.models.sponsoring.sponsors.sponsor import Sponsor
 from app.models.mutableMixin import MutableMixin
 from app.models.members.members.memberLuxNames import luxNames, luxNamesRoles
@@ -107,6 +108,9 @@ class Member(MutableMixin, UserMixin, SearchableMixin, database.db.Model):
 
     address: sqlalchemy.orm.Mapped[Optional[Address]] = sqlalchemy.orm.relationship(back_populates='member',
                                                                                     foreign_keys='Address.memberFK')
+    invoices: sqlalchemy.orm.Mapped[List[Invoice]] = sqlalchemy.orm.relationship(back_populates='member',
+                                                                                    foreign_keys='Invoice.memberFK',
+                                                                                    order_by='desc(Invoice.date)')
     sponsor: sqlalchemy.orm.Mapped[Optional[Sponsor]] = sqlalchemy.orm.relationship(back_populates='member',
                                                                                     foreign_keys='Sponsor.memberFK')
 

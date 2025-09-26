@@ -1,0 +1,9 @@
+"""
+Methods to work with the Invoice DB model.
+
+:Authors:
+    - Gilles Bellot
+
+SPDX-FileCopyrightText: © 2024 Gilles Bellot <licence@sl.bell0bytes.eu>
+SPDX-License-Identifier: AGPL-3.0-or-later
+"""

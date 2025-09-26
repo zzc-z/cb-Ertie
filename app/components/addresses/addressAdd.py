@@ -60,6 +60,10 @@ def addressAdd() -> str | flask.Response:
                         # return to the membership card tab of the member
                         return flask.redirect(flask.url_for('members.memberView',
                                                             objectID=memberFK, tab='club'))
+                    elif sponsorFK is not None:
+                        # return to the invoices card tab of the sponsor
+                        return flask.redirect(flask.url_for('sponsoring.sponsorView',
+                                                            objectID=sponsorFK, tab='invoices'))
                     else:
                         return flask.redirect(flask.session['referrer'])
 

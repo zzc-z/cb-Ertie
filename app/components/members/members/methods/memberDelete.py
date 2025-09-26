@@ -31,7 +31,7 @@ def delete(objectID: int) -> int:
         # delete the associated address first
         return database.deleteObjectAndHistory(Member, objectID,
                                                associatedObjects=['address', 'clubMembership', 'boardElection',
-                                                                  'associationAffiliation', 'sponsor'])
+                                                                  'associationAffiliation', 'sponsor', 'invoices'])
     except SQLAlchemyError as e:
         raise RuntimeError(f'DB Error @ memberDelete.delete: {e}') from e
     except Exception as e:

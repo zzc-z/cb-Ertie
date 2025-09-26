@@ -123,26 +123,27 @@ def _createDict(query) -> Tuple[List, List]:
     sponsors = [
         {
             'member': member,
-            'isValid': (False if not member.sponsor.lastPayment
-                        else (datetime(member.sponsor.lastPayment.year,
-                                       member.sponsor.lastPayment.month,
-                                       member.sponsor.lastPayment.day)
+            'lastInvoice': member.sponsor.invoices[0] if member.sponsor.invoices else None,
+            'isValid': (False if not member.sponsor.invoices or not member.sponsor.invoices[0].payment
+                        else (datetime(member.sponsor.invoices[0].payment.year,
+                                       member.sponsor.invoices[0].payment.month,
+                                       member.sponsor.invoices[0].payment.day)
                               + timedelta(days=365)) > currentDateTime),
-            'lastPayment': ('Nach Ni Bezuelt'
-                            if member.sponsor.lastPayment is None
-                            else member.sponsor.lastPayment.strftime('%d/%m/%Y')),
-            'lastPaymentDelta': (currentDateTime - datetime(member.sponsor.lastPayment.year,
-                                                           member.sponsor.lastPayment.month,
-                                                           member.sponsor.lastPayment.day)).days,
-            'lastPaymentISO': member.sponsor.lastPayment,
-            'lastInvoice': ('Nach Ni Verschéckt'
-                            if member.sponsor.lastInvoice is None
-                            else member.sponsor.lastInvoice.strftime('%d/%m/%Y')),
-            'lastInvoiceISO': member.sponsor.lastInvoice,
-            'validInvoice': (False if not member.sponsor.lastInvoice
-                             else (datetime(member.sponsor.lastInvoice.year,
-                                            member.sponsor.lastInvoice.month,
-                                            member.sponsor.lastInvoice.day)
+            'lastInvoicePayment': ('Nach Ni Bezuelt'
+                            if member.sponsor.invoices == [] or member.sponsor.invoices[0].payment is None
+                            else member.sponsor.invoices[0].payment.strftime('%d/%m/%Y')),
+            'lastInvoicePaymentDelta': (currentDateTime - datetime(member.sponsor.invoices[0].payment.year,
+                                                           member.sponsor.invoices[0].payment.month,
+                                                           member.sponsor.invoices[0].payment.day)).days if member.sponsor.invoices and member.sponsor.invoices[0].payment else -1,
+            'lastInvoicePaymentISO': member.sponsor.invoices[0].payment if member.sponsor.invoices else '',
+            'lastInvoiceDate': ('Nach Ni Verschéckt'
+                            if member.sponsor.invoices == []
+                            else member.sponsor.invoices[0].date.strftime('%d/%m/%Y')),
+            'lastInvoiceDateISO': member.sponsor.invoices[0].date if member.sponsor.invoices else '',
+            'validInvoice': (False if not member.sponsor.invoices
+                             else (datetime(member.sponsor.invoices[0].date.year,
+                                            member.sponsor.invoices[0].date.month,
+                                            member.sponsor.invoices[0].date.day)
                                    + timedelta(days=365)) > currentDateTime),
             **({'totalAmount': highestLevel[0],
                 'highestLevel': highestLevel[1],
@@ -177,12 +178,12 @@ def _orderBy(sponsors):
                                  key=lambda x: x['totalAmount'], reverse=False),
                           key=lambda x: x['nBoni'], reverse=reverse)
         case 'payment':
-            return sorted(sorted(sorted([sponsor for sponsor in sponsors if sponsor['lastPaymentISO'] is not None],
+            return sorted(sorted(sorted([sponsor for sponsor in sponsors if sponsor['lastInvoicePaymentISO'] is not None],
                                         key=lambda x: x['member'].sponsor.name.casefold(), reverse=False),
                                  key=lambda x: x['totalAmount'], reverse=False),
                           key=lambda x: x['lastPaymentISO'], reverse=reverse)
         case 'invoice':
-            return sorted(sorted(sorted([sponsor for sponsor in sponsors if sponsor['lastInvoiceISO'] is not None],
+            return sorted(sorted(sorted([sponsor for sponsor in sponsors if sponsor['lastInvoiceDateISO'] is not None],
                                         key=lambda x: x['member'].sponsor.name.casefold(), reverse=False),
                                  key=lambda x: x['totalAmount'], reverse=False),
                           key=lambda x: x['lastInvoiceISO'], reverse=reverse)

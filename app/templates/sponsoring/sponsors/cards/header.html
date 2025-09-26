@@ -31,6 +31,14 @@
 </li>
 
 <li class="nav-item">
+    <a class="nav-link {% if tab == 'invoices' %} active {% endif %}"
+       href="{{ url_for('sponsoring.sponsorView', objectID = sponsor.uid, tab = 'invoices') }}"
+       style="color:black">
+        Rechnungen
+    </a>
+</li>
+
+<li class="nav-item">
     <a class="nav-link {% if tab == 'history' %} active {% endif %}"
        href="{{ url_for('sponsoring.sponsorView', objectID = sponsor.uid, tab = 'history') }}"
        style="color:black">

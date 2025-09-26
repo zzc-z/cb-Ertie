@@ -16,6 +16,7 @@ from datetime import datetime, timezone
 # FLASK ################################################################################################################
 import flask
 import flask_login
+import sqlalchemy
 
 # ERTIË ################################################################################################################
 from app import createApp
@@ -51,21 +52,33 @@ try:
     # create Jinja2 filters for localized numbers, currencies and dates
     @ertie.template_filter()
     def localizeNumber(value):
-        return locale.str(value)
+        try:
+            return locale.str(value)
+        except Exception:
+            return value
 
 
     @ertie.template_filter()
     def localizeCurrency(value):
-        return locale.currency(value, symbol=True, grouping=True, international=False)
+        try:
+            return locale.currency(value, symbol=True, grouping=True, international=False)
+        except Exception:
+            return value
 
 
     @ertie.template_filter()
     def localizeDate(date, year=True):
-        return date.strftime("%d. %B %Y") if year else date.strftime("%d. %B")
+        try:
+            return date.strftime("%d. %B %Y") if year else date.strftime("%d. %B")
+        except Exception:
+            return date
 
     @ertie.template_filter()
     def localizeDateTime(dateTime):
-        return dateTime.strftime("%d. %B %Y @ %H:%M:%S")
+        try:
+            return dateTime.strftime("%d. %B %Y @ %H:%M:%S")
+        except Exception:
+            return dateTime
 
 except ImportError as e:
     print(f"Critical Error (Ertië): Missing dependency - {e}")

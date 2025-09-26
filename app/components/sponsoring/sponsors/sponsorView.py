@@ -59,17 +59,20 @@ def sponsorView(objectID: str) -> str | flask.Response:
                 totalAmount, highestLevel, boni = gta(obj.options, levels, getBoni=True, donation=obj.donation)
                 payload['details'].append({'key': 'level', 'value': highestLevel, 'lux': 'Level'})
                 payload['details'].append({'key': 'totalAmount', 'value': totalAmount, 'lux': 'Wäert'})
-                payload['isValid'] = (False if not obj.lastPayment else (datetime(
-                    obj.lastPayment.year, obj.lastPayment.month, obj.lastPayment.day) + timedelta(
+                payload['isValid'] = (False if not obj.invoices or not obj.invoices[0].payment else (datetime(
+                    obj.invoices[0].payment.year, obj.invoices[0].payment.month, obj.invoices[0].payment.day) + timedelta(
                     days=365)) > datetime.now())
-                payload['validInvoice'] = (False if not obj.lastInvoice else (datetime(
-                    obj.lastInvoice.year, obj.lastInvoice.month, obj.lastInvoice.day) + timedelta(
+                payload['validInvoice'] = (False if not obj.invoices else (datetime(
+                    obj.invoices[0].date.year, obj.invoices[0].date.month, obj.invoices[0].date.day) + timedelta(
                     days=365)) > datetime.now())
 
                 payload['boni'] = boni
 
                 # sort options by value
                 payload['options'] = sorted(list(obj.options), key=lambda x: x.value, reverse=True)
+
+            case 'invoices':
+                payload['invoices'] = obj.invoices
 
             case 'account':
                 # set the object to the associated member account
