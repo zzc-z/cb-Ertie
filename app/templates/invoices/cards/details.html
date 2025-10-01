@@ -13,9 +13,15 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm">{{ detail.get('lux') }}</div>
+                    {% if detail.get('key') == 'date' or  detail.get('key') == 'payment' %}
+                        <div class="col-lg" style="text-align:right">
+                            {{ detail.get('value') | localizeDate }}
+                        </div>
+                    {% else %}
                     <div class="col-lg" style="text-align:right">
                             {{ detail.get('value') }}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </li>

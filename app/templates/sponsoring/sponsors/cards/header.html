@@ -44,7 +44,7 @@
        style="color:black">
         Ännerungen
         <span class="badge badge-sm {% if sponsor.history | count != 0 %} bg-info {% else %} bg-dark {% endif %}">
-                    {{ sponsor.history | count }}
+                    {{ sponsor.history | count + sponsor.member.history | count + sponsor.member.address.history | count }}
                 </span>
     </a>
 </li>

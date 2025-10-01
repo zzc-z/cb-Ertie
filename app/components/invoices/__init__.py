@@ -46,3 +46,4 @@ from .invoiceDelete import invoiceDelete
 from .invoiceEdit import invoiceEdit
 from .invoiceViewHistory import invoiceViewHistory
 from .invoiceView import invoiceView
+from .invoicePay import invoicePay

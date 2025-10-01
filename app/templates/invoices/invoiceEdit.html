@@ -14,8 +14,8 @@
 {# ################################################################################################################## #}
 {% block app_content %}
     <h1 style="text-align: center;">
-        <a href="{{ url_for('w', objectID=object.uid) }}">&#8592;</a>
-        {{ object.member }}
+        <a href="{{ url_for('invoices.invoiceView', objectID=object.uid) }}">&#8592;</a>
+        {{ object }}
     </h1>
     <hr>
     {{ bootstrapForm.render_form(form, form_type='horizontal', button_map={'submit': 'outline-warning'}) }}

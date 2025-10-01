@@ -14,7 +14,17 @@
 {# MAIN CONTENT ##################################################################################################### #}
 {# ################################################################################################################## #}
 {% block cardTitle %}
-    <h1 style="text-align: center;">{{ object }}</h1>
+    {% if object.sponsorFK %}
+    <h1 style="text-align: center;">
+        <a href="{{ url_for('sponsoring.sponsorView', objectID=object.sponsorFK, tab='invoices') }}">&#8592;</a>
+        {{ object }}
+    </h1>
+    {% else %}
+    <h1 style="text-align: center;">
+        <a href="{{ url_for('members.memberView', objectID=object.memberFK, tab='invoices') }}">&#8592;</a>
+        {{ object }}
+    </h1>
+    {% endif %}
 {% endblock %}
 
 {% block cardNavigation %}

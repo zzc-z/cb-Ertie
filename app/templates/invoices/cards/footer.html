@@ -16,7 +16,7 @@
             </a>
 
             <a class="btn btn-lg btn-outline-danger"
-               href="{{ url_for('invoices.invoiceDelete', objectID = invoice.uid) }}">
+               href="{{ url_for('invoices.invoiceDelete', objectID = invoice.uid, sponsorFK = invoice.sponsorFK, memberFK=invoice.memberFK) }}">
                 Läschen
             </a>
 

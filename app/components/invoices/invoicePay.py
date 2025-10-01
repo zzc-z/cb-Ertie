@@ -1,5 +1,5 @@
 """
-Route to update a sponsor's invoice status.
+Route to update an invoice's payment date to "today".
 
 :Authors:
     - Gilles Bellot
@@ -18,8 +18,8 @@ import werkzeug.exceptions
 import werkzeug.urls
 
 # APPLICATION ##########################################################################################################
-from app.components.sponsoring import bpSponsoring
-from app.components.sponsoring.sponsors.methods.sponsorInvoice import invoice
+from app.components.invoices import bpInvoices
+from app.components.invoices.methods.invoicePay import pay
 
 # EXTENSIONS ###########################################################################################################
 from app.factory.extensions.custom.returnCodes import returnCodes
@@ -29,11 +29,11 @@ from app.factory.extensions.custom.inputValidator import inputValidator
 ########################################################################################################################
 # ROUTE ################################################################################################################
 ########################################################################################################################
-@bpSponsoring.route('/sponsors/invoice/<objectID>', methods=['GET', 'POST'])
-def sponsorInvoice(objectID: str) -> str | flask.Response:
+@bpInvoices.route('/invoices/pay/<objectID>', methods=['GET', 'POST'])
+def invoicePay(objectID: str) -> str | flask.Response:
     try:
         # validate and commit the modifications to the DB
-        match invoice(inputValidator.digitStringOrPositiveInteger(objectID)):
+        match pay(inputValidator.digitStringOrPositiveInteger(objectID)):
             case returnCodes.notFound:
                 returnCodes.flashNotFound()
             case returnCodes.duplicate:
@@ -47,8 +47,8 @@ def sponsorInvoice(objectID: str) -> str | flask.Response:
         return flask.redirect(flask.session['referrer'])
 
     except werkzeug.exceptions.Unauthorized as e:
-        raise werkzeug.exceptions.Unauthorized(f'Route Error @ sponsorInvoice: {e}') from e
+        raise werkzeug.exceptions.Unauthorized(f'Route Error @ invoicePay: {e}') from e
     except werkzeug.exceptions.Forbidden as e:
-        raise werkzeug.exceptions.Forbidden(f'Route Error @ sponsorInvoice: {e}') from e
+        raise werkzeug.exceptions.Forbidden(f'Route Error @ invoicePay: {e}') from e
     except Exception as e:
-        raise werkzeug.exceptions.InternalServerError(f'Route Error @ sponsorInvoice: {e}') from e
+        raise werkzeug.exceptions.InternalServerError(f'Route Error @ invoicePay: {e}') from e

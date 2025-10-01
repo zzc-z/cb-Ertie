@@ -14,5 +14,3 @@ from .sponsorDelete import sponsorDelete
 from .sponsorEdit import sponsorEdit
 from .sponsorView import sponsorView
 from .sponsorViewHistory import sponsorViewHistory
-from .sponsorPay import sponsorPay
-from .sponsorInvoice import sponsorInvoice

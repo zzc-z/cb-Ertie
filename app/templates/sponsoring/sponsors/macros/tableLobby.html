@@ -122,9 +122,11 @@
                 <td style="text-align:right">
                     <a href="{{ url_for('sponsoring.sponsorView', objectID=member.sponsor.uid, tab='details') }}"
                        class="btn btn-sm btn-outline-info">View</a>
-                    <a href="{{ url_for('sponsoring.sponsorPay', objectID=member.sponsor.uid) }}"
-                       class="btn btn-sm btn-outline-success">Bezuelt</a>
-                    <a href="{{ url_for('sponsoring.sponsorInvoice', objectID=member.sponsor.uid) }}"
+                    {% if member.sponsor.invoices %}
+                        <a href="{{ url_for('invoices.invoicePay', objectID=member.sponsor.invoices[0].uid) }}"
+                           class="btn btn-sm btn-outline-success">Bezuelt</a>
+                    {% endif %}
+                    <a href="{{ url_for('invoices.invoiceAdd', sponsorFK=member.sponsor.uid) }}"
                        class="btn btn-sm btn-outline-primary">Rechnung</a>
                 </td>
             </tr>
