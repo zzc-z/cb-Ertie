@@ -12,9 +12,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 # INCLUDES #############################################################################################################
 ########################################################################################################################
 
-# PYTHON ###############################################################################################################
-from collections import defaultdict
-
 # FLASK ################################################################################################################
 import flask
 import werkzeug.exceptions
@@ -25,6 +22,7 @@ from app.models.sports.seasons.season import Season
 
 # BLUEPRINTS ###########################################################################################################
 from app.components.sports import bpSports
+from app.components.main.methods.mainCheck import checkForAssociationAndClub
 
 # EXTENSIONS ###########################################################################################################
 from app.factory.extensions.custom.database import database
@@ -43,6 +41,10 @@ def lobby() -> str | flask.Response:
     try:
         # get the payload
         payload = requestParser.getRequestArguments()
+
+        validClubAndAssociation, redirectTo, _, _ = checkForAssociationAndClub()
+        if not validClubAndAssociation:
+            return flask.redirect(redirectTo)
 
         # get the current and past seasons
         currentSeason = database.db.session.query(Season).filter(Season.completed == False).scalar()

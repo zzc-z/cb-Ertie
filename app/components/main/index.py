@@ -28,6 +28,7 @@ from app.factory.extensions.custom.database import database
 # BLUEPRINT ############################################################################################################
 ########################################################################################################################
 bpMain = flask.Blueprint('main', __name__)
+from app.components.main.methods.mainCheck import checkForAssociationAndClub
 
 
 ########################################################################################################################
@@ -39,25 +40,9 @@ bpMain = flask.Blueprint('main', __name__)
 @bpMain.route('/index')
 def index() -> str | flask.Response:
     try:
-        club, association = None, None
-
-        try:
-            club = database.getObjects(Club)[0]
-            if club is None:
-                flask.flash('Erstellt wann ech gelift fir d\'éischt Äre Veräin.', 'warning')
-                return flask.redirect(flask.url_for('club.lobby'))
-        except IndexError:
-            flask.flash('Erstellt wann ech gelift fir d\'éischt Äre Veräin.', 'warning')
-            return flask.redirect(flask.url_for('club.lobby'))
-
-        try:
-            association = database.getObjects(Association)[0]
-            if association is None:
-                flask.flash('Definéiert wann ech gelift d\'Federatioun an där äre Veräin agedroen ass.', 'warning')
-                return flask.redirect(flask.url_for('association.lobby'))
-        except IndexError:
-            flask.flash('Definéiert wann ech gelift d\'Federatioun an där äre Veräin agedroen ass.', 'warning')
-            return flask.redirect(flask.url_for('association.lobby'))
+        validClubAndAssociation, redirectTo, club, association = checkForAssociationAndClub()
+        if not validClubAndAssociation:
+            return flask.redirect(redirectTo)
 
         payload = {
             'env': Config.ERTIE_ENV,
