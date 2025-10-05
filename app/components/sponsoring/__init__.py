@@ -46,5 +46,4 @@ from .lobbyExport import export
 from .options import optionView, optionViewHistory, optionEdit, optionAdd, optionDelete
 from .boni import bonusAdd, bonusDelete, bonusView, bonusViewHistory, bonusEdit
 from .levels import levelViewHistory, levelView, levelAdd, levelEdit, levelDelete
-from .sponsors import sponsorEdit, sponsorAdd, sponsorView, sponsorViewHistory, sponsorDelete, sponsorPay, \
-    sponsorInvoice
+from .sponsors import sponsorEdit, sponsorAdd, sponsorView, sponsorViewHistory, sponsorDelete
