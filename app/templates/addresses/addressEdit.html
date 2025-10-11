@@ -28,22 +28,75 @@
 
 {% block scripts %}
     {{ super() }}
+
     <script>
         var wtf_phone_field = document.getElementById('phone');
-        wtf_phone_field.style.position = 'absolute';
-        wtf_phone_field.style.top = '-9999px';
-        wtf_phone_field.style.left = '-9999px';
-        wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
-        var fancy_phone_field = document.getElementById('_phone');
-        var fancy_phone_iti = window.intlTelInput(fancy_phone_field, {
-            separateDialCode: true,
-            onlyCountries: ["lu", "de", "be", "fr", "nl"],
-            preferredCountries: ["lu"],
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.0/build/js/utils.js"
-        });
-        fancy_phone_iti.setNumber(wtf_phone_field.value);
-        fancy_phone_field.addEventListener('blur', function () {
-            wtf_phone_field.value = fancy_phone_iti.getNumber();
-        });
+        if (wtf_phone_field) {
+            wtf_phone_field.style.position = 'absolute';
+            wtf_phone_field.style.top = '-9999px';
+            wtf_phone_field.style.left = '-9999px';
+            wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
+            var fancy_phone_field = document.getElementById('_phone');
+
+            function syncRaw() {
+                // fallback: copy raw value if plugin not available
+                wtf_phone_field.value = fancy_phone_field.value || '';
+            }
+
+            if (globalThis.intlTelInput) {
+                var fancy_phone_iti = globalThis.intlTelInput(fancy_phone_field, {
+                    separateDialCode: true,
+                    onlyCountries: ["lu", "de", "be", "fr", "nl"],
+                    preferredCountries: ["lu"],
+                    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.0/build/js/utils.js"
+                });
+
+                function syncWithFallback() {
+                    var raw = fancy_phone_field.value || '';
+                    if (!raw) {
+                        wtf_phone_field.value = '';
+                        return;
+                    }
+                    var e164 = fancy_phone_iti.getNumber();
+                    if (e164) {
+                        wtf_phone_field.value = e164;
+                        return;
+                    }
+                    var cd = typeof fancy_phone_iti.getSelectedCountryData === 'function' ? fancy_phone_iti.getSelectedCountryData() : null;
+                    var dial = cd && cd.dialCode ? cd.dialCode : '';
+                    var digits = raw.replaceAll(/\D+/g, '');
+                    if (dial && digits) {
+                        if (digits.startsWith(dial)) {
+                            wtf_phone_field.value = '+' + digits;
+                        } else {
+                            wtf_phone_field.value = '+' + dial + digits;
+                        }
+                    } else {
+                        // last resort: keep raw
+                        wtf_phone_field.value = raw;
+                    }
+                }
+
+                // initialize the fancy input with the current value and sync the hidden field once
+                fancy_phone_iti.setNumber(wtf_phone_field.value);
+                syncWithFallback();
+                
+                // keep hidden field in sync on input changes
+                fancy_phone_field.addEventListener('input', syncWithFallback);
+                fancy_phone_field.addEventListener('blur', syncWithFallback);
+
+                // ensure sync on form submit even if the field never blurred
+                if (wtf_phone_field.form) {
+                    wtf_phone_field.form.addEventListener('submit', syncWithFallback);
+                }
+            } else {
+                // graceful fallback when intl-tel-input is missing
+                fancy_phone_field.addEventListener('input', syncRaw);
+                fancy_phone_field.addEventListener('blur', syncRaw);
+                if (wtf_phone_field.form) {
+                    wtf_phone_field.form.addEventListener('submit', syncRaw);
+                }
+            }
+        }
     </script>
 {% endblock %}
