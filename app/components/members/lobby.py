@@ -141,7 +141,7 @@ def _createDict(query) -> List:
                                        member.clubMembership.lastPayment.month,
                                        member.clubMembership.lastPayment.day)
                               + timedelta(days=365)) > datetime.now()),
-            'lastPayment': ('Nach Ni Bezuelt'
+            'lastPayment': ('Net Bezuelt'
                             if member.clubMembership is None or member.clubMembership.lastPayment is None
                             else member.clubMembership.lastPayment.strftime('%d/%m/%Y')),
             'eligibleToVote': False if member.clubMembership is None

@@ -129,14 +129,14 @@ def _createDict(query) -> Tuple[List, List]:
                                        member.sponsor.invoices[0].payment.month,
                                        member.sponsor.invoices[0].payment.day)
                               + timedelta(days=365)) > currentDateTime),
-            'lastInvoicePayment': ('Nach Ni Bezuelt'
+            'lastInvoicePayment': ('Net Bezuelt'
                             if member.sponsor.invoices == [] or member.sponsor.invoices[0].payment is None
                             else member.sponsor.invoices[0].payment.strftime('%d/%m/%Y')),
             'lastInvoicePaymentDelta': (currentDateTime - datetime(member.sponsor.invoices[0].payment.year,
                                                            member.sponsor.invoices[0].payment.month,
                                                            member.sponsor.invoices[0].payment.day)).days if member.sponsor.invoices and member.sponsor.invoices[0].payment else -1,
             'lastInvoicePaymentISO': member.sponsor.invoices[0].payment if member.sponsor.invoices else '',
-            'lastInvoiceDate': ('Nach Ni Verschéckt'
+            'lastInvoiceDate': ('Net Verschéckt'
                             if member.sponsor.invoices == []
                             else member.sponsor.invoices[0].date.strftime('%d/%m/%Y')),
             'lastInvoiceDateISO': member.sponsor.invoices[0].date if member.sponsor.invoices else '',
