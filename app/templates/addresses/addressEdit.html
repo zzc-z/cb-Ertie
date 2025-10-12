@@ -32,18 +32,24 @@
     <script>
         var wtf_phone_field = document.getElementById('phone');
         if (wtf_phone_field) {
+            // hide the original phone field off-screen, but keep it in the DOM for the fancy input to use
             wtf_phone_field.style.position = 'absolute';
             wtf_phone_field.style.top = '-9999px';
             wtf_phone_field.style.left = '-9999px';
+
+            // create a new input field, visible to the user, for the fancy phone input
             wtf_phone_field.parentElement.insertAdjacentHTML('beforeend', '<div><input type="tel" id="_phone"></div>');
             var fancy_phone_field = document.getElementById('_phone');
 
             function syncRaw() {
-                // fallback: copy raw value if plugin not available
+                // fallback: copy raw value if plugin not available, i.e. without any formatting or validation
+                // returns an empty string if the visible field is empty
                 wtf_phone_field.value = fancy_phone_field.value || '';
             }
 
             if (globalThis.intlTelInput) {
+                // if the intlTelInput library is available, use it for the fancy input
+                // initialize the fancy input with only selected countries and preferred country
                 var fancy_phone_iti = globalThis.intlTelInput(fancy_phone_field, {
                     separateDialCode: true,
                     onlyCountries: ["lu", "de", "be", "fr", "nl"],
@@ -52,27 +58,40 @@
                 });
 
                 function syncWithFallback() {
+                    // if the fancy input field is empty, set the hidden fiend to an empty string and return
                     var raw = fancy_phone_field.value || '';
                     if (!raw) {
                         wtf_phone_field.value = '';
                         return;
                     }
+
+                    // use the intlTelInput library to get the phone number in E.164 format, save it to the hidden field and return
                     var e164 = fancy_phone_iti.getNumber();
                     if (e164) {
                         wtf_phone_field.value = e164;
                         return;
                     }
+
+                    // if the intlTelInput library couldn't get the phone number in E.164 format, try to get the country data and format it manually
+
+                    // first get the country data ; check if the function exists, and then use it to extract the country data ; if not, return null
                     var cd = typeof fancy_phone_iti.getSelectedCountryData === 'function' ? fancy_phone_iti.getSelectedCountryData() : null;
+
+                    // now get the dial code from the country data, if the country data has no dial code property, return an empty string
                     var dial = cd && cd.dialCode ? cd.dialCode : '';
+
+                    // finally use regexp to clean the user input, replacing all non-digit characters with an empty string
                     var digits = raw.replaceAll(/\D+/g, '');
+
                     if (dial && digits) {
+                        // if the dial code and digits are both non-empty, prepend the dial code to the digits, and save the result to the hidden field
                         if (digits.startsWith(dial)) {
                             wtf_phone_field.value = '+' + digits;
                         } else {
                             wtf_phone_field.value = '+' + dial + digits;
                         }
                     } else {
-                        // last resort: keep raw
+                        // last resort: just copy the raw input as-is
                         wtf_phone_field.value = raw;
                     }
                 }

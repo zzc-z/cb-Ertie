@@ -63,11 +63,14 @@
             {% set member = member.get('member') %}
             <tr>
                 <td>
+                    {% if nationality is none %}
+                    N/A
+                    {% else %}
                     <img
                             src="https://flagcdn.com/w20/{{ nationality }}.png"
                             srcset="https://flagcdn.com/w40/{{ nationality }}.png 2x" width="20"
                             alt="NA">
-
+                    {% endif %}
                 </td>
                 <td>
                     {{ member.familyName }}
@@ -88,7 +91,7 @@
                         Net Bekannt
                     {% else %}
                         <div><input type="tel" id="_phone{{ member.uid }}" value="{{ member.address.phone }}"
-                                    readonly="readonly"></div>
+                                    readonly="readonly" style="border: none; outline: none;"></div>
                     {% endif %}
                 </td>
 

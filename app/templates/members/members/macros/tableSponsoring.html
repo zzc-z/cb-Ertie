@@ -47,7 +47,7 @@
                     {% elif member.address.phone is none or member.address.phone == '' %}
                     {% else %}
                         <div><input type="tel" id="_phone{{ member.uid }}" value="{{ member.address.phone }}"
-                                    readonly="readonly"></div>
+                                    readonly="readonly" style="border: none; outline: none;"></div>
                     {% endif %}
                 </td>
                 <td style="text-align:center">
