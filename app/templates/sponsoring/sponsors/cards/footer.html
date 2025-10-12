@@ -11,14 +11,6 @@
 <div class="container">
     {% if tab == 'details' %}
         <div class="d-grid gap-2 row-cols-lg-2 d-md-flex justify-content-md-center">
-            <!--<a class="btn btn-outline-success btn-lg"
-               href="{{ url_for('sponsoring.sponsorInvoice', objectID = sponsor.uid) }}">
-                Rechnung
-            </a>
-            <a class="btn btn-outline-success btn-lg"
-               href="{{ url_for('sponsoring.sponsorPay', objectID = sponsor.uid) }}">
-                Bezuelt
-            </a>-->
             <a class="btn btn-outline-warning btn-lg"
                href="{{ url_for('sponsoring.sponsorEdit', objectID = sponsor.uid) }}">
                 Änneren
