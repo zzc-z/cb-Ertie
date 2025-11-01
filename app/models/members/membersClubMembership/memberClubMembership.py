@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 from __future__ import annotations
 
 # FLASK & PYTHON #######################################################################################################
-from datetime import date, timedelta
+from datetime import date
 
 # DB & MODELS ##########################################################################################################
 from flask_login import UserMixin
@@ -19,6 +19,7 @@ import sqlalchemy.orm
 from app.factory.extensions import database
 from app.models.mutableMixin import MutableMixin
 from app.models.members.membersClubMembership.memberClubMembershipChangeLog import MemberClubMembershipChangeLog
+from app.models.club.club import Club
 
 # HELPERS ##############################################################################################################
 from app.models.members.membersClubMembership.memberClubMembershipLuxNames import luxNames
@@ -85,7 +86,7 @@ class MemberClubMembership(MutableMixin, UserMixin, database.db.Model):
     member: sqlalchemy.orm.Mapped['Member'] = sqlalchemy.orm.relationship(back_populates='clubMembership')
 
     # METHODS ##########################################################################################################
-    def viewPayload(self):
+    def viewPayload(self, sort: bool = True):
         try:
             payload = super().viewPayload()
 
@@ -99,11 +100,20 @@ class MemberClubMembership(MutableMixin, UserMixin, database.db.Model):
                 })
             else:
                 lpDate = lastPayment.get('value')
-                if date(lpDate.year, lpDate.month, lpDate.day) < date.today() - timedelta(days=365):
-                    # the last payment was done over a year ago
-                    lastPayment['valid'] = False
-                else:
-                    lastPayment['valid'] = True
+
+                # get the end date of the club's fiscal year
+                club = database.getObjects(Club)[0]
+                fiscalYearEnd = club.fiscalYearEnd
+
+                # calculate the year of the next fiscal end date ; add 1 to the year if the end year has already passed
+                today = date.today()
+                nextFiscalYearEnd = date(
+                    today.year + (1 if date(today.year, fiscalYearEnd.month, fiscalYearEnd.day) < today else 0),
+                    fiscalYearEnd.month,
+                    fiscalYearEnd.day)
+
+                # now check whether the last payment was done before the fiscal year-end date
+                lastPayment['valid'] = lpDate < nextFiscalYearEnd
                 payload[payload.index(lastPayment)] = lastPayment
 
             return payload
