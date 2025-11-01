@@ -78,6 +78,9 @@ def lobby() -> str | flask.Response:
         # create a list with dicts with more information
         sponsors, levels, options = _createDict(query)
 
+        # compute the total amount
+        nTotalIncome = sum(sponsor.get('totalAmount',0) for sponsor in sponsors)
+
         # apply further filters
         sponsors, nAdditionalFilters = _applyAdditionalFilters(sponsors, form.getCleanDict(), levels)
 
@@ -90,6 +93,7 @@ def lobby() -> str | flask.Response:
         # render the template with the sponsor information as payload
         payload.update({
             'referrer': 'lobby',
+            'nTotalIncome': nTotalIncome,
             'sponsors': sponsors,
             'options': options,
             'boni': database.getObjects(Bonus),
