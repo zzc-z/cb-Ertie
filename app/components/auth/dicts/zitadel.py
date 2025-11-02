@@ -11,7 +11,7 @@ dictZitadelRoles = [
     {'key': 'admin', 'name': 'Administrator', 'description': 'System Administrator'},
     {'key': 'player', 'name': 'Spiller', 'description': 'Spiller'},
     {'key': 'board', 'name': 'Virstand', 'description': 'Virstand'},
-    {'key': 'theatre', 'name': 'Theater', 'desription': 'Theater'},
+    {'key': 'theatre', 'name': 'Theater', 'description': 'Theater'},
     {'key': 'member', 'name': 'Member', 'description': 'Member'},
     {'key': 'sponsor', 'name': 'Sponsor', 'description': 'Sponsor'},
     {'key': 'honour', 'name': 'Éieremember', 'description': 'Éieremember'},
