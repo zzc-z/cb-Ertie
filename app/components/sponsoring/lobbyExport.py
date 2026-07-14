@@ -60,8 +60,11 @@ def export() -> str | flask.Response:
             totalValue, level, boni = gta(member.sponsor.options, database.getObjects(Level), getBoni=True,
                                           donation=member.sponsor.donation)
             csv += f';{optionsString};{totalValue}'
-            csv += f';{member.sponsor.lastPayment.strftime("%d/%m/%Y") if member.sponsor.lastPayment else ""}'
-            csv += f';{member.sponsor.lastInvoice.strftime("%d/%m/%Y") if member.sponsor.lastPayment else ""}'
+
+            lastInvoicePayment = member.sponsor.invoices[0].payment.strftime('%d/%m/%Y') if member.sponsor.invoices else None
+            lastInvoice = member.sponsor.invoices[0].date.strftime('%d/%m/%Y') if member.sponsor.invoices else None
+            csv += f';{lastInvoicePayment if lastInvoicePayment else ""}'
+            csv += f';{lastInvoice if lastInvoice else ""}'
             csv += f';{level}'
 
             boniString = ''
