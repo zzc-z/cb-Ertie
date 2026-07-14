@@ -61,10 +61,10 @@ def export() -> str | flask.Response:
                                           donation=member.sponsor.donation)
             csv += f';{optionsString};{totalValue}'
 
-            lastInvoicePayment = member.sponsor.invoices[0].payment.strftime('%d/%m/%Y') if member.sponsor.invoices else None
-            lastInvoice = member.sponsor.invoices[0].date.strftime('%d/%m/%Y') if member.sponsor.invoices else None
-            csv += f';{lastInvoicePayment if lastInvoicePayment else ""}'
-            csv += f';{lastInvoice if lastInvoice else ""}'
+            lastInvoicePayment = member.sponsor.invoices[0].payment if member.sponsor.invoices else None
+            lastInvoiceDate = member.sponsor.invoices[0].date if member.sponsor.invoices else None
+            csv += f';{lastInvoicePayment.strftime("%d/%m/%Y") if lastInvoicePayment else ""}'
+            csv += f';{lastInvoiceDate.strftime("%d/%m/%Y") if lastInvoiceDate else ""}'
             csv += f';{level}'
 
             boniString = ''
